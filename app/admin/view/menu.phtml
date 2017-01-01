@@ -1,0 +1,58 @@
+<!-- the class "active" is used to highlight the current/active linke -->    
+<?php 
+    $selMenu = $_layoutParams['selMenu'];
+    $subMenu = $_GET["accion"];    
+?>
+<div >
+<input type="hidden" name="ruta" id="ruta" value="<?php echo PATH_JS;?>"/>
+
+<!-- Begin Vista-Buttons.com -->
+<link href="<?php echo PATH_JS;?>menu-files/styles_zqsjt.css" type="text/css" rel="stylesheet"/>
+<ul id="vbUL_zqsjt" class="vbULzqsjt" style="visibility:hidden;">
+<li><a href="<?php echo BASE_URL;?>?accion=doc-add" title="Nuevo Documento">Nuevo&nbsp;Documento</a></li>
+<li class="separator"></li>
+<li><a href="<?php echo BASE_URL;?>?accion=doc" title="Listado de documentos">Listado&nbsp;de&nbsp;documentos</a></li></ul>
+<ul id="vbUL_uqsjt" class="vbULzqsjt" style="visibility:hidden;">
+<li><a href="<?php echo BASE_URL;?>?accion=pro" title="Listado de Productos">Listado&nbsp;de&nbsp;Productos</a></li>
+<li><a href="<?php echo BASE_URL;?>?accion=pro-add" title="Nuevo Producto">Nuevo&nbsp;Producto</a></li>
+<li class="separator"></li>
+<li><a href="<?php echo BASE_URL;?>?accion=cat&p=0" title="Categorias">Categorias</a></li>
+<li><a title="Ficha descriptiva">Ficha&nbsp;descriptiva</a></li>
+<li class="separator"></li>
+<li><a href="<?php echo BASE_URL;?>?accion=dep" title="Depositos">Depositos</a></li>
+<li><a href="<?php echo BASE_URL;?>?accion=prov" title="Proveedores">Proveedores</a></li>
+<li><a href="<?php echo BASE_URL;?>?accion=list" title="Listas de Precios">Listas&nbsp;de&nbsp;Precios</a></li></ul>
+<ul id="vbUL_vqsjt" class="vbULzqsjt" style="visibility:hidden;">
+<li><a href="<?php echo BASE_URL;?>?accion=cli" title="Listado de Clientes">Listado&nbsp;de&nbsp;Clientes</a></li>
+<li><a href="<?php echo BASE_URL;?>?accion=cli-add" title="Nuevo Cliente">Nuevo&nbsp;Cliente</a></li>
+<li class="separator"></li>
+<li><a title="Pagos">Pagos</a><img src="<?php echo PATH_JS;?>menu-files/arzqsjt.gif"/>
+<ul id="vbUL_bqsjt" class="vbULzqsjt">
+<li><a href="<?php echo BASE_URL;?>?accion=pag-add" title="Nuevo pago">Nuevo&nbsp;pago</a></li>
+<li><a href="<?php echo BASE_URL;?>?accion=pag" title="Listado">Listado</a></li></ul></li>
+<li class="separator"></li>
+<li><a href="<?php echo BASE_URL;?>?accion=condFiscal" title="Condicion fiscal">Condicion&nbsp;fiscal</a></li></ul>
+<ul id="vbUL_yqsjt" class="vbULzqsjt" style="visibility:hidden;">
+<li><a href="<?php echo BASE_URL;?>?accion=rep-add" title="Nueva reparacion">Nueva&nbsp;reparacion</a></li>
+<li><a href="<?php echo BASE_URL;?>?accion=rep" title="Listado de reparaciones">Listado&nbsp;de&nbsp;reparaciones</a></li></ul>
+<ul id="vbUL_lqsjt" class="vbULzqsjt" style="visibility:hidden;">
+<li><a href="<?php echo BASE_URL;?>?accion=mon" title="Monedas">Monedas</a></li>
+<li class="separator"></li>
+<li><a href="<?php echo BASE_URL;?>?accion=suc" title="Sucursales">Sucursales</a></li>
+<li class="separator"></li>
+<li><a href="<?php echo BASE_URL;?>?accion=user" title="Usuarios">Usuarios</a></li>
+<li class="separator"></li>
+<li><a href="<?php echo BASE_URL;?>?accion=logout" title="Salir">Salir</a></li></ul>
+<script type="text/javascript" src="<?php echo PATH_JS;?>menu-files/sczqsjt.js"></script>
+<table id="vista-buttons.com:idzqsjt" width=0 cellpadding=0 cellspacing=0 border=0><tr><td style="padding-right:0px" title ="Ventas">
+<a onMouseOver='xpe("zqsjto");xpshow("zqsjt",0,this);xpsmover(this);' onMouseOut='xpsmout(this);' onMouseDown='xpe("zqsjtc");'><img id="xpi_zqsjt" src="<?php echo PATH_JS;?>menu-files/btzqsjt_0.gif" name="vbzqsjt" width="110" height="25" border="0" alt="Ventas"/></a></td><td style="padding-right:0px" title ="Productos">
+<a onMouseOver='xpe("uqsjto");xpshow("uqsjt",0,this);xpsmover(this);' onMouseOut='xpsmout(this);' onMouseDown='xpe("uqsjtc");'><img id="xpi_uqsjt" src="<?php echo PATH_JS;?>menu-files/btuqsjt_0.gif" name="vbuqsjt" width="110" height="25" border="0" alt="Productos"/></a></td><td style="padding-right:0px" title ="Clientes">
+<a onMouseOver='xpe("vqsjto");xpshow("vqsjt",0,this);xpsmover(this);' onMouseOut='xpsmout(this);' onMouseDown='xpe("vqsjtc");'><img id="xpi_vqsjt" src="<?php echo PATH_JS;?>menu-files/btvqsjt_0.gif" name="vbvqsjt" width="110" height="25" border="0" alt="Clientes"/></a></td><td style="padding-right:0px" title ="Reparaciones">
+<a onMouseOver='xpe("yqsjto");xpshow("yqsjt",0,this);xpsmover(this);' onMouseOut='xpsmout(this);' onMouseDown='xpe("yqsjtc");'><img id="xpi_yqsjt" src="<?php echo PATH_JS;?>menu-files/btyqsjt_0.gif" name="vbyqsjt" width="110" height="25" border="0" alt="Reparaciones"/></a></td><td style="padding-right:0px" title ="Informes">
+<a onMouseOver='xpe("xqsjto");' onMouseOut='xpe("xqsjtn");' onMouseDown='xpe("xqsjtc");'><img id="xpi_xqsjt" src="<?php echo PATH_JS;?>menu-files/btxqsjt_0.gif" name="vbxqsjt" width="110" height="25" border="0" alt="Informes"/></a></td><td style="padding-right:0px" title ="Configuraciones">
+<a onMouseOver='xpe("lqsjto");xpshow("lqsjt",0,this);xpsmover(this);' onMouseOut='xpsmout(this);' onMouseDown='xpe("lqsjtc");'><img id="xpi_lqsjt" src="<?php echo PATH_JS;?>menu-files/btlqsjt_0.gif" name="vblqsjt" width="110" height="25" border="0" alt="Configuraciones"/></a></td></tr></table>
+
+<!-- End Vista-Buttons.com -->
+</div> <!--  end div #nav -->    
+    
+    

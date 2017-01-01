@@ -1,0 +1,133 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validity(function() {
+
+                $("#nombre").minLength(3).require("El Nombre es obligatorio");
+                $("#email").match("email").require();
+                $("#nick").minLength(3).require();
+                $("#tel").match("number");
+                $("#tel2").match("number");
+                $("#dni").match("number");
+                $("#pass").minLength(4).require();
+            });
+        });
+    </script>
+	 <?php
+
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha Editado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, Usuario no Editado.</div>
+    			<?php
+            case '4':
+    			?>
+    			<div class="fail large png_bg">Error, Registro no Encontrado.</div>
+    			<?php
+    		break;
+
+    	}
+    }
+	?>
+        <h2>Editar Usuarios</h2>
+        <p>
+            <label><a href="<?php echo BASE_URL;?>?accion=user"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
+        </p>
+    <form action="" method="post" name="form" id="form">
+
+            <p>
+            <label>Nombre</label>
+            <input name="nombre" id="nombre" type="text" class="input medium"  value="<?php echo $datos[0]["Nombre"];?>" />
+            </p>
+            <p>
+            <label>E-Mail</label>
+            <input name="email" id="email" type="text" class="input large" value="<?php echo $datos[0]["Email"];?>" />
+            </p>
+            <p>
+            <label>Login/Nick</label>
+            <input name="login" id="nick" type="text" class="input medium"  value="<?php echo $datos[0]["Login"];?>" />
+            </p>
+            <p>
+            <label>Password</label>
+            <input name="pass" id="pass" type="password" class="input medium"  value="<?php echo $datos[0]["Pass"];?>" />
+            </p>
+            <p><label>Domicilio</label>
+            <input name="dom" type="text" class="input large" id="textfield2" value="<?php echo $datos[0]["Dom"];?>"/>
+            </p>
+            <p><label>Localidad</label>
+            <input name="loc" type="text" class="input medium" id="textfield2" value="<?php echo $datos[0]["Loc"];?>"/>
+            </p>
+            <p><label>Codigo Postal</label>
+            <input name="cp" type="text" class="input medium" id="textfield2" value="<?php echo $datos[0]["Cp"];?>"/>
+            </p>
+            <p><label>Provincia</label>
+            <input name="prov" type="text" class="input medium" id="textfield2" value="<?php echo $datos[0]["Prov"];?>"/>
+            </p>
+            <p><label>Dni</label>
+            <input name="dni" id="dni" type="text" class="input medium"  value="<?php echo $datos[0]["Dni"];?>"/>
+            </p>
+            <p><label>Telefono</label>
+            <input name="tel" id="tel" type="text" class="input medium"  value="<?php echo $datos[0]["Tel"];?>"/>
+            </p>
+            <p><label>Telefono 2</label>
+            <input name="tel2" id="tel2" type="text" class="input medium"  value="<?php echo $datos[0]["Tel2"];?>"/>
+            </p>
+            <p><label>Fecha de Nacimiento (dd/mm/aa)</label>
+            <?php
+                $fe= strtotime($datos[0]["FechaNacimiento"]); //convertir la fecha a formato unix para func date()
+                echo Conectar::crear_selects_fecha(date("d",$fe), date("m",$fe), date("Y",$fe));
+            ?>
+            </p>
+            <p><label>Sexo</label>
+            <select name="sexo" class="select input">
+                <option value="M" <?php if($datos[0]["Sexo"]=="M") echo "selected"?>>Masculino</option>
+                <option value="F" <?php if($datos[0]["Sexo"]=="F") echo "selected"?>>Femenino</option>
+            </select>
+            </p>
+            </p>
+            <p>
+             <label>Nivel de Acceso</label>
+            <select name="NivelAcceso" class="select input">
+                <option value="1" <?php if($datos[0]["NivelAcceso"]=="1") echo "selected"?>>Vendedor</option>
+                <option value="2" <?php if($datos[0]["NivelAcceso"]=="2") echo "selected"?>>Administrador</option>
+                <option value="3" <?php if($datos[0]["NivelAcceso"]=="3") echo "selected"?>>Root</option>
+            </select>
+            </p>
+            <p>
+            <label>Estado</label>
+            <select name="estado" class="select input">
+                <option value="1" <?php if($datos[0]["Estado"]=="1") echo "selected"?>>Activo</option>
+                <option value="0" <?php if($datos[0]["Estado"]=="0") echo "selected"?>>Inactivo</option>
+            </select>
+            <p>
+            <label>Observaciones</label>
+            <textarea name="observaciones" cols="50" rows="6" class="styled_textarea wysiwyg"><?php echo $datos[0]["Observaciones"];?></textarea>
+            </p>
+            <p>
+            <label>Aviso Emergente</label>
+            <textarea name="avisoemergente" maxlength="200" cols="50" rows="4" class="styled_textarea wysiwyg"><?php echo $datos[0]["AvisoEmergente"];?></textarea>
+            </p>
+            <input type="hidden" name="id" value="<?php echo $_GET["id"];?>" />
+            <input type="hidden" name="grabar" value="si" />
+
+            <input type="submit" class="button" value="Guardar" title="Guardar" />
+            </p>
+            </form>
+
+            <p>
+            <label><a href="<?php echo BASE_URL;?>?accion=user"><img src="<?php echo BASE_URL;?>public/images/arrow_left_32.png" border="0" width="24" height="24"></a></label>
+            </p>

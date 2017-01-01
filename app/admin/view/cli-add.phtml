@@ -1,0 +1,141 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validity(function() {
+                
+                $("#Nombre").minLength(3).require();
+                $("#Email").match("email").require();
+                $("#Nick").minLength(3).require();
+                $("#Tel").match("number");
+                $("#Tel2").match("number");
+                $("#Cuit").match(/^\d{2}[-]\d{8}[-]\d{1}$/, "Formato invalido, tiene que ser xx-xxxxxxxx-x");
+                $("#Dni").match("number");
+                $("#Pass").minLength(4).require();
+                $("#idCondfiscal").greaterThan( 0, "Debes seleccionar una opcion" ).require();
+                $("#idLista").greaterThan( 0, "Debes seleccionar una lista" ).require();
+            });    
+        });    
+    </script>
+
+	 <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha creado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, registro no Creado.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+        <h2>Agregar Cliente</h2>
+        
+    <form action="" method="post" name="form" id="form">
+            <p>
+            <label><a href="<?php echo BASE_URL;?>?accion=cli"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
+            </p>
+
+            <p>
+            <label>Nombre (*)</label>
+            <input name="Nombre" id="Nombre" type="text" class="input medium"  />
+            </p>
+            <p>
+            <label>Razon Social</label>
+            <input name="Razonsocial" id="Razonsocial" type="text" class="input medium"  />
+            </p>
+            <p>
+            <label>E-Mail (*)</label>
+            <input name="Email" id="Email" type="text" class="input large"  />
+            </p>
+            <p>
+            <label>Login/Nick (*)</label>
+            <input name="Login" id="Nick" type="text" class="input medium"  />
+            <input type="button" value="comprobar disponibilidad"  class="button" id="disponible" />
+            </p>
+            <p>
+            <label>Password (*)</label>
+            <input name="Pass" id="Pass" type="password" class="input medium"  />
+            </p>
+            <p><label>Domicilio</label>
+            <input name="Dom" type="text" class="input large" />
+            </p>
+            <p><label>Domicilio de entrega</label>
+            <input name="Domentrega" type="text" class="input large" />
+            </p>
+            <p><label>Localidad</label>
+            <input name="Loc" type="text" class="input medium" id="textfield2"/>
+            </p>
+            <p><label>Codigo Postal</label>
+            <input name="Cp" type="text" class="input medium" />
+            </p>
+            <p><label>Provincia</label>
+            <input name="Prov" type="text" class="input medium" id="textfield2"/>
+            </p>            
+            <p><label>Telefono</label>
+            <input name="Tel" id="Tel" type="text" class="input medium" />
+            </p>
+            <p><label>Telefono 2</label>
+            <input name="Tel2" id="Tel2" type="text" class="input medium" />
+            </p>
+            <p><label>Fecha de Nacimiento (dd/mm/aa)</label>            
+            <?php echo Conectar::crear_selects_fecha(); ?>
+            </p>
+            <p><label>Sexo</label>
+            <select name="Sexo" class="select input">
+                <option value="M" selected="selected">Masculino</option>
+                <option value="F">Femenino</option>
+            </select>
+            </p>
+            <p><label>Dni</label>
+            <input name="Dni" id="Dni" type="text" class="input medium" />
+            </p>
+            <p><label>Numero de Cuit (xx-xxxxxxxx-x)</label>
+            <input name="Cuit" id="Cuit" type="text" class="input medium" />
+            </p>            
+            <p><label>Condicion fiscal</label>            
+                <?php echo $selCF;?>
+            </p>                                    
+            <p><label>Lista de Precios (*)</label>                        
+                <?php echo $selLista;?>
+            </p>
+            
+            <p>
+            <input type="checkbox" class="checkbox" title="Estado" checked="checked" value="1" name="Estado" id="Estado" />
+            Activo            
+            </p>
+            <p>
+            <input type="checkbox" class="checkbox" title="permitir que este cliente acepte promociones" checked="checked" value="1" name="Promociones" id="Promociones" />
+            Permitir que acepte promociones            
+            </p>
+            <p>            
+            <label>Observaciones</label>
+            <textarea name="Observaciones" cols="50" rows="6" class="styled_textarea wysiwyg"></textarea>
+            </p>
+            <p>
+            <label>Aviso Emergente</label>
+            <textarea name="AvisoEmergente" maxlength="200" cols="50" rows="4" class="styled_textarea wysiwyg"></textarea>
+            </p>            
+            
+            <p><label>Foto</label>
+            <input name="Foto" id="Foto" type="text" class="input medium" />
+            </p> 
+            
+            <input type="hidden" name="grabar" value="si" />            
+            <input type="submit" class="button" value="Crear" title="Crear Nuevo Usuario" />
+            </p>
+            </form>
+

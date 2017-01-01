@@ -1,0 +1,54 @@
+<!-- the class "active" is used to highlight the current/active linke -->    
+<?php 
+    $selMenu = $_layoutParams['selMenu'];
+    $subMenu = $_GET["accion"];    
+?>
+<div id="nav">
+    <ul>
+    	   
+           <li <?php if($selMenu == "home") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>" title="Home">Home</a></li>             
+           <li <?php if($selMenu == "cli") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=cli" title="Clientes">Clientes</a></li>
+           <li <?php if($selMenu == "pro") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=pro" title="Productos">Productos</a></li> 
+           <li <?php if($selMenu == "dep") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=dep" title="Depositos">Depositos</a></li>           
+           <li <?php if($selMenu == "prov") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=prov" title="Proveedores">Proveedores</a></li>           
+           <li <?php if($selMenu == "rep") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=rep" title="Reparaciones">Reparaciones</a></li>
+           <li <?php if($selMenu == "conf") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=conf" title="Configuraciones">Configuraciones</a></li>                             
+    </ul>
+</div> <!--  end div #nav -->    
+        <div id="sub_nav">    
+            <?php  
+               
+        	switch ($selMenu)
+        	{
+        		case 'cli':
+        			?>
+        			<li <?php if($subMenu == "condFiscal") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=condFiscal" title="Condicion Fiscal">Condicion Fiscal</a></li>
+                    <li <?php if($subMenu == "pag") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=pag" title="Pagos">Pagos</a></li>                     
+                    <li <?php if($subMenu == "doc") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=doc" title="Documentos">Documentos</a></li>
+        			<li <?php if($subMenu == "mon") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=mon" title="Monedas">Monedas</a></li>
+                    <?php
+        		break;
+                
+        		case 'pro':
+        			?>
+        			<li <?php if($subMenu == "cat") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=cat&p=0" title="Categorías">Categorías</a></li>
+        			<li <?php if($subMenu == "gen") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=gen" title="Generos">Generos</a></li>
+                    <li <?php if($subMenu == "mon") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=mon" title="Monedas">Monedas</a></li>
+                    <li <?php if($subMenu == "dep") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=dep" title="Depositos">Depositos</a></li>
+                    <?php
+        		break;
+                case 'conf':
+        			?>
+        			<li <?php if($subMenu == "user") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=user" title="Usuarios">Usuarios</a></li>
+                    <li <?php if($subMenu == "suc") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=suc" title="Sucursales">Sucursales</a></li>        			
+                    <li <?php if($subMenu == "list") echo 'class="active"'?>><a href="<?php echo BASE_URL;?>?accion=list" title="Listas de Precios">Listas</a></li>
+                    <?php
+        		break;
+        		
+        	}            
+            ?>
+            
+                   
+        </div>   
+    
+    

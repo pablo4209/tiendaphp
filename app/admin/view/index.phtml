@@ -1,0 +1,88 @@
+<!--Desarrollado por www.cesarcancino.com-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="<?php echo BASE_URL . 'view/layout/' . DEFAULT_LAYOUT . '/img/'; ?>chart_16.png">
+<link href="<?php echo BASE_URL . 'view/layout/' . DEFAULT_LAYOUT . '/css/'; ?>admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo BASE_URL . 'view/layout/' . DEFAULT_LAYOUT . '/css/'; ?>themes/blue.css" rel="stylesheet" type="text/css" />
+<title><?php echo APP_NAME; ?></title>
+
+<script language="javascript" type="text/javascript" src="<?php echo BASE_URL . 'view/layout/' . DEFAULT_LAYOUT . '/js/'; ?>funciones.js"></script>  
+    
+<!--[if IE 6]>
+<script src="<?php echo BASE_URL . 'view/layout/' . DEFAULT_LAYOUT . '/js/'; ?>pngfix.js"></script>
+<script>
+    DD_belatedPNG.fix('.png_bg');
+</script>        
+<![endif]-->
+</head>
+
+<body onload="document.form.reset();document.form.login.focus();">
+
+<!-- START ADMIN WRAPPER -->
+<center>
+<div id="admin_wrapper">
+    
+	
+	<h1>Intranet DigitalStore</h1>
+	<?php
+    
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Los datos ingresados no son correctos.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="attention large png_bg">Debe estar logueado para ver este contenido.</div>
+    			<?php
+    		break;
+    		case '3':
+    			?>
+    			<div class="success large png_bg">Ha cerrado su sesión correctamente.</div>
+    			<?php
+            break;
+    		case '4':
+    			?>
+    			<div class="attention large png_bg">Este Usuario se encuentra Inactivo, comunicate con el Administrador.</div>
+    			<?php
+    		break;
+    	}
+    }
+	?>
+	
+	
+    <!--<div class="information large png_bg">For the demo, just hit the login button</div>-->
+	
+	<form action="" method="post" name="form">		
+        <p><label>Login</label>
+	      <input name="login" type="text" class="input large" />
+	  </p>
+		
+	  <p><label>Password</label>
+		<input name="pass" type="password" class="input large" />
+	  </p>
+	  
+	  <p><div id="valor"></div></p>
+	  
+	  <p>
+      <input type="hidden" name="grabar" value="si" />
+      <input type="button" value="Entrar"  class="button" onclick="valida_logueo()"/>
+		<input type="button"  value="Limpiar" class="button" onclick="window.location='<?php echo BASE_URL;?>?accion=home';" />
+	  </p>
+	  <!--<div class="success large png_bg">This is a success message.</div>
+	  <div class="fail large png_bg">This is a failure message.</div>
+	  <div class="attention large png_bg">This is an attention message.</div>-->
+	</form>
+
+</div>
+<!-- END ADMIN WRAPPER -->
+</center>
+</body>
+</html>

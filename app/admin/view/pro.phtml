@@ -1,0 +1,179 @@
+
+      <?php
+  
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Este registro no pudo ser eliminado.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha eliminado exitosamente.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+	 
+     <h2>Listado de Productos</h2>
+     <p>Categoria: <?php echo $selCat; ?>
+     Buscar: <input name="Buscar" id="txtBuscar" name="txtBuscar" type="text" title="Escribe el texto a buscar" class="input middle" />
+     <input type="button" id="btnBuscar" class="button" value="Buscar" title="Buscar"  />
+     </p>
+     <hr />
+     <table>
+         <tr>
+    		<td valign="middle" align="left" colspan="10">
+    		
+    		<a href="<?php echo BASE_URL;?>?accion=pro-add" title="Nuevo Producto">Agregar Producto<img src="<?php echo PATH_IMG;?>add_32.png" border="0" width="16" height="16" /></a>
+    		
+    		</td>
+   		 </tr> 
+     </table>
+     <div class="pager">
+        <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/first.png" class="first"/>
+                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/prev.png" class="prev"/>
+                <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/next.png" class="next"/>
+                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/last.png" class="last"/>
+                <select class="pagesize">
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="200">200</option>
+                </select>
+     </div>
+     <table id="tabla"  class="tablesorter">        
+        <thead>               
+        <tr>
+              <th>1</th> <!-- tfoot text will be updated at the same time as the thead -->
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+              <th>6</th>
+              <th>Editar</th>                            
+            </tr>
+        </thead> 
+        <tbody>
+        
+        </tbody>        
+     </table>
+     <div class="pager">
+        <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/first.png" class="first"/>
+                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/prev.png" class="prev"/>
+                <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/next.png" class="next"/>
+                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/last.png" class="last"/>
+                <select class="pagesize">
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="200">200</option>
+                </select>
+     </div>
+     
+     <script type="text/javascript" defer="defer">
+    	$(document).ready(function() 
+        { 
+            
+            $("#idCategoria").change(function() {               
+                      $("table").trigger("update");                                                      
+              });
+            $("#btnBuscar").click(function() {                       
+                      $("table").trigger("update");                                                      
+              });  
+            
+            $("#tabla").tablesorter({                        
+                        theme : 'blue',
+                        widgets: ["zebra"],
+                        headers : { 6 : { sorter: false } }
+            })        
+            .tablesorterPager({        
+              container: $(".pager"),
+              ajaxUrl : '<?php echo BASE_URL;?>?accion=pro-ajax&page={page}&size={size}&{sortList:column}',        
+              // modify the url after all processing has been applied
+              customAjaxUrl: function(table, url) {
+                  // manipulate the url string as you desire
+                  // url += '&cPage=' + window.location.pathname;
+                  // trigger my custom event                  
+                  $(table).trigger('changingUrl', url);
+                  // send the server the current page                  
+                  url = url+"&idcat="+$("#idCategoria").val()+"&txtbuscar="+$("#txtBuscar").val(); 
+                  //alert (url);
+                  return url;
+              },
+        
+              ajaxObject: {
+                dataType: 'json'
+              },
+              ajaxProcessing: function(data){
+                if (data && data.hasOwnProperty('rows')) {                  
+                  var r, row, c, d = data.rows,                  
+                  // total number of rows (required)                  
+                  total = data.total_rows,
+                  // array of header names (optional)
+                  headers = data.headers,
+                  // all rows: array of arrays; each internal array has the table cell data for that row
+                  rows = [],
+                  // len should match pager set size (c.size)
+                  len = d.length;  
+                  // this will depend on how the json is set up - see City0.json
+                  // rows                  
+                  for ( r=0; r < len; r++ ) {
+                    row = []; // new row array
+                    // cells
+                    var x=1, idprod;
+                    for ( c in d[r] ) {                      
+                      if (typeof(c) === "string" ) {
+                        if( x === 1)//como primer elemento en formato json recibe el idproducto
+                        {                            
+                            idprod = d[r][c];                            
+                        }
+						row.push(d[r][c]); // add each table cell data to row array    
+                        
+                        x=x+1;                        
+                      }                      
+                    }
+                    if(len){
+                        row.push('<a href="<?php echo BASE_URL;?>?accion=pro-edit&id='+idprod+'" title="Editar Producto"><img src="<?php echo PATH_IMG;?>b_edit.png" border="0" width="16" height="16"></a>'); //interceptar valor idProducto para que no lo muestre y crear vinculo
+                        
+                    }
+                    rows.push(row); // add new row array to rows array
+                  }
+                  // in version 2.10, you can optionally return $(rows) a set of table rows within a jQuery object                  
+                  return [ total, rows, headers ];
+                }
+              },        
+              // output string - default is '{page}/{totalPages}'; possible variables: {page}, {totalPages}, {startRow}, {endRow} and {totalRows}
+              output: '{startRow} to {endRow} ({totalRows})',        
+              // apply disabled classname to the pager arrows when the rows at either extreme is visible - default is true
+              updateArrows: true,        
+              // starting page of the pager (zero based index)
+              page: 0,        
+              // Number of visible rows - default is 10
+              size: 50,        
+              // if true, the table will remain the same height no matter how many records are displayed. The space is made up by an empty
+              // table row set to a height to compensate; default is false
+              fixedHeight: false,        
+              // remove rows from the table to speed up the sort of large tables.
+              // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+              removeRows: false,        
+              // css class names of pager arrows
+              cssNext        : '.next',  // next page arrow
+              cssPrev        : '.prev',  // previous page arrow
+              cssFirst       : '.first', // go to first page arrow
+              cssLast        : '.last',  // go to last page arrow
+              cssPageDisplay : '.pagedisplay', // location of where the "output" is displayed
+              cssPageSize    : '.pagesize', // page size selector - select dropdown that sets the "size" option
+              cssErrorRow    : 'tablesorter-errorRow', // error information row        
+              // class added to arrows when at the extremes (i.e. prev/first arrows are "disabled" when on the first page)
+              cssDisabled    : 'disabled' // Note there is no period "." in front of this class name        
+            });
+        } 
+    	); 
+    </script>    

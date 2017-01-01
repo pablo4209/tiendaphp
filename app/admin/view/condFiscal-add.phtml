@@ -1,0 +1,64 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validity(function() {                
+                $("#Nombre").maxLength(50).minLength(2).require();                               
+            });    
+        });    
+    </script>
+
+	 <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha creado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, Registro no creado.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+        <h2>Agregar Registro</h2>
+        
+    <form action="" method="post" name="form" id="form">
+            <p>
+            <label><a href="<?php echo BASE_URL;?>?accion=condFiscal"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
+            </p>
+
+            <p>
+            <label >Nombre (*)</label>
+            <input name="Nombre" id="Nombre" type="text" title="Nombre" class="input medium"  />
+            </p>
+            <p>
+            <label>Descripcion</label>
+            <input name="Descripcion" id="Descripcion" type="text" title="Descripcion" class="input large" />
+            </p>                            
+            
+            <p>
+            <input type="checkbox" class="checkbox" title="hacer que este registro sea el predeterminado para los clientes" value="1" name="Pordefecto" id="Pordefecto" />
+            Condicion Fiscal por defecto         
+            </p>            
+            <p>
+            <input type="checkbox" class="checkbox" value="1" title="Discriminar impuestos en los reportes" name="Discrimina" id="Discrimina" />
+            Discriminar impuestos en los reportes           
+            </p>
+            
+            <input type="hidden" name="grabar" value="si" />            
+            <input type="submit" class="button" value="Crear" title="Crear Nuevo registro" />
+            </p>
+            </form>
+

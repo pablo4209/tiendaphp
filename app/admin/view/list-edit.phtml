@@ -1,0 +1,78 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validity(function() {                
+                $("#Nombre").maxLength(50).minLength(2).require();
+                $("#Margen").match("number").greaterThan(0).require();   
+                $("#NivelAcceso").greaterThan( 0, "Debes seleccionar una opcion" ).require();      
+            });    
+        });    
+    </script>
+
+	 <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha editado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, Registro no editado.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+        <h2>Editar Lista <?php echo "#".$datos[0]["idLista"]; ?></h2>
+        
+    <form action="" method="post" name="form" id="form">
+            <p>
+            <label><a href="<?php echo BASE_URL;?>?accion=list"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
+            </p>
+
+            <p>
+            <label >Nombre (*)</label>
+            <input name="Nombre" id="Nombre" value="<?php echo $datos[0]["Nombre"];?>" type="text" title="Nombre" class="input medium"  />
+            </p>
+            <p>
+            <label >Descripcion</label>
+            <input name="Descripcion" id="Descripcion" value="<?php echo $datos[0]["Descripcion"];?>" type="text" title="Descripcion" class="input medium"  />
+            </p>
+            <p>
+            <label>Margen por defecto %(*)</label>
+            <input name="Margen" id="Margen" value="<?php echo $datos[0]["Margen"];?>" type="text" title="Margen" class="input short" value="0.00" />%
+            </p>
+            <p>
+            <input type="checkbox" class="checkbox" <?php if($datos[0]["Ivaincl"])echo 'checked="checked"';?> value="1" title="hacer que esta lista trabaje con precios finales" name="Ivaincl" id="Ivaincl" />
+            Iva incluido            
+            </p>          
+            <p>
+            <label>Nivel de visibilidad</label>
+            <?php echo $selNivel;?>
+            </p>
+            <p>
+            <input type="checkbox" class="checkbox" value="1" <?php if($datos[0]["Habilitada"])echo 'checked="checked"';?> title="Habilitada" name="Habilitada" id="Habilitada" />
+            Habilitada            
+            </p>                
+            <p>
+            <input type="checkbox" class="checkbox" <?php if($datos[0]["Pordefecto"])echo 'checked="checked"';?> title="hacer que esta lista sea la principal de sistema" value="1" name="Pordefecto" id="Pordefecto" />
+            Lista por defecto del sistema            
+            </p>            
+            
+            <input type="hidden" name="id" value="<?php echo $datos[0]["idLista"];?>" />            
+            <input type="hidden" name="grabar" value="si" />            
+            <input type="submit" class="button" value="Guardar" title="Guardar Lista" />
+            </p>
+            </form>
+

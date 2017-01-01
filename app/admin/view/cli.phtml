@@ -1,0 +1,76 @@
+
+      <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Este Cliente no pudo ser eliminado.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El Cliente se ha eliminado exitosamente.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+	 
+     <h2>Clientes</h2>
+     <table>
+         <tr>
+    		<td valign="middle" align="left" colspan="10">
+    		Agregar Cliente 
+    		<a href="<?php echo BASE_URL;?>?accion=cli-add" title="Nuevo Cliente"><img src="<?php echo PATH_IMG;?>add_32.png" border="0" width="16" height="16" /></a>
+    		
+    		</td>
+   		 </tr> 
+     </table>
+     <table id="tabla"  class="tablesorter">        
+        <thead>
+        <tr>
+		<th align="left">id</th>
+        <th align="left">Nombre</th>
+        <th align="center">Login</th>
+        <th align="center">Lista</th>
+        
+        <th align="center">Editar</th>
+        <th align="center">Eliminar</th>
+        </tr>
+        </thead> 
+        <tbody>
+        <?php
+                
+        for($i=0;$i<sizeof($datos);$i++)
+        {
+        ?>
+         <tr>
+		<td align="left"><?php echo $datos[$i]["idCliente"];?></td>
+        <td align="left"><?php echo $datos[$i]["Nombre"];?></td>
+        <td align="center"><?php echo $datos[$i]["Login"];?></td>
+        <td align="center"><?php echo $datos[$i]["idLista"];?></td>
+        
+        <td align="center"><a href="<?php echo BASE_URL;?>?accion=cli-edit&id=<?php echo $datos[$i]["idCliente"];?>" title="Editar <?php echo $datos[$i]["Nombre"];?>"><img src="<?php echo PATH_IMG;?>b_edit.png" border="0" width="16" height="16"></a></td>
+        <td align="center"><a href="javascript:void(0);" title="Eliminar <?php echo $datos[$i]["Nombre"];?>" onclick="eliminar('<?php echo BASE_URL;?>?accion=cli-del&id=<?php echo $datos[$i]["idCliente"];?>')" ><img src="<?php echo PATH_IMG;?>b_drop.png" border="0" width="16" height="16"></a></td>
+        </tr>
+        <?php
+        }
+        ?>
+        </tbody>
+     </table>
+     
+     <script type="text/javascript" defer="defer">
+    	$(document).ready(function() 
+        { 
+            $("#tabla").tablesorter({
+                        theme : 'blue',
+                        widgets: ["zebra"],
+                        headers : { 3 : { sorter: false }, 4 : { sorter: false } }
+            });
+        } 
+    	); 
+    </script>    

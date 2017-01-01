@@ -1,0 +1,105 @@
+
+      <?php
+  
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Este registro no pudo ser eliminado.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha eliminado exitosamente.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+        <input type="hidden" name="base_path" id="base_path" value="<?php echo BASE_URL;?>" >
+        <input type="hidden" name="img_path" id="img_path" value="<?php echo PATH_IMG;?>" >
+     <h2>Listado de Reparaciones</h2>  
+     <form id="form" name="form">
+	 <div style="height: 100px;width:30%;float:left;"><p>Desde <input name="txtDesde" id="txtDesde"  type="text" title="Fecha minima" class="input medium" /></p></br>
+								<p>Hasta <input name="txtHasta" id="txtHasta"  type="text" title="Fecha maxima" class="input medium" /></p>								
+	</div>	
+	<div style="height: 200px;width:70%;float:left;"></div>
+	 
+	 
+     Buscar: <input id="txtBuscar" name="txtBuscar" type="text" title="Escribe el texto a buscar" class="input middle" />
+     <input type="button" id="btnBuscar" class="button" value="Buscar" title="Buscar"  /></br>
+     </form>
+     <hr />
+     <table>
+         <tr>
+    		<td valign="middle" align="left" colspan="10">
+    		
+    		<a href="<?php echo BASE_URL;?>?accion=rep-add" title="Nueva Reparacion"><img src="<?php echo PATH_IMG;?>page_blank_add_32.png" border="0" width="32" height="32" /></a>
+    		
+    		</td>
+   		 </tr> 
+     </table>	 
+     <div class="pager">
+        <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/first.png" class="first"/>
+                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/prev.png" class="prev"/>
+                <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/next.png" class="next"/>
+                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/last.png" class="last"/>
+                <select class="pagesize">
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="200">200</option>
+                </select>
+                <select class="gotoPage" title="Select page number"></select>
+     </div>
+     <table id="tabla"  class="tablesorter">        
+        <thead>               
+        <tr>
+              <th>1</th> <!-- tfoot text will be updated at the same time as the thead -->
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+              <th>6</th>
+                <th>7</th>
+                <th>8</th>
+              <th>Editar</th>                            
+            </tr>
+        </thead>
+        <tfoot>               
+        <tr>
+              <th>1</th> <!-- tfoot text will be updated at the same time as the thead -->
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+              <th>6</th>
+                <th>7</th>
+                <th>8</th>
+              <th>Editar</th>                            
+            </tr>
+            <tr>
+                <td colspan="9">
+                    <div class="pager">
+                                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/first.png" class="first"/>
+                                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/prev.png" class="prev"/>
+                                <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+                                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/next.png" class="next"/>
+                                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/last.png" class="last"/>
+                                <select class="pagesize">
+                                  <option value="50">50</option>
+                                  <option value="100">100</option>
+                                  <option value="200">200</option>
+                                </select>
+                                <select class="gotoPage" title="Select page number"></select>
+                     </div>
+                </td> 
+            </tr>
+        </tfoot>
+        <tbody>        
+        </tbody>        
+     </table>

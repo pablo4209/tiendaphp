@@ -1,0 +1,77 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validity(function() {                
+                $("#Nombre").maxLength(50).minLength(2).require();
+                $("#Margen").match("number").greaterThan(0).require();   
+                $("#NivelAcceso").greaterThan( 0, "Debes seleccionar una opcion" ).require();      
+            });    
+        });    
+    </script>
+
+	 <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha creado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, Registro no creado.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+        <h2>Agregar Lista</h2>
+        
+    <form action="" method="post" name="form" id="form">
+            <p>
+            <label><a href="<?php echo BASE_URL;?>?accion=list"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
+            </p>
+
+            <p>
+            <label >Nombre (*)</label>
+            <input name="Nombre" id="Nombre" type="text" title="Nombre" class="input medium"  />
+            </p>
+            <p>
+            <label >Descripcion</label>
+            <input name="Descripcion" id="Descripcion" type="text" title="Descripcion" class="input medium"  />
+            </p>
+            <p>
+            <label>Margen por defecto %(*)</label>
+            <input name="Margen" id="Margen" type="text" title="Margen" class="input short" value="0.00" />%
+            </p>
+            <p>
+            <input type="checkbox" class="checkbox" value="1" checked="checked" title="hacer que esta lista trabaje con precios finales" name="Ivaincl" id="Ivaincl" />
+            Iva incluido            
+            </p>          
+            <p>
+            <label>Nivel de visibilidad</label>
+            <?php echo $selNivel;?>
+            </p>
+            <p>
+            <input type="checkbox" class="checkbox" value="1" checked="checked" title="Habilitada" name="Habilitada" id="Habilitada" />
+            Habilitada            
+            </p>                
+            <p>
+            <input type="checkbox" class="checkbox" title="hacer que esta lista sea la principal de sistema" value="1" name="Pordefecto" id="Pordefecto" />
+            Lista por defecto del sistema            
+            </p>            
+                        
+            <input type="hidden" name="grabar" value="si" />            
+            <input type="submit" class="button" value="Crear" title="Crear Nueva Lista" />
+            </p>
+            </form>
+

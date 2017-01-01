@@ -1,0 +1,121 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validity(function() {
+
+                $("#nom").minLength(3).require("El Nombre es obligatorio");
+                $("#email").match("email").require();
+                $("#nick").minLength(3).require();
+                $("#tel").match("number");
+                $("#tel2").match("number");
+                $("#dni").match("number");
+                $("#pass").minLength(4).require();
+            });
+        });
+    </script>
+
+	 <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha creado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, Usuario no Creado.</div>
+    			<?php
+    		break;
+
+    	}
+    }
+	?>
+        <h2>Agregar Usuarios</h2>
+
+    <form action="" method="post" name="form" id="form">
+            <p>
+            <label><a href="<?php echo BASE_URL;?>?accion=user"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
+            </p>
+
+            <p>
+            <label>Nombre (*)</label>
+            <input name="nom" id="nom" type="text" class="input medium"  />
+            </p>
+            <p>
+            <label>E-Mail (*)</label>
+            <input name="email" id="email" type="text" class="input large"  />
+            </p>
+            <p>
+            <label>Login/Nick (*)</label>
+            <input name="login" id="login" type="text" class="input medium"  />
+            </p>
+            <p>
+            <label>Password (*)</label>
+            <input name="pass" id="pass" type="password" class="input medium"  />
+            </p>
+            <p><label>Domicilio</label>
+            <input name="dom" type="text" class="input large" />
+            </p>
+            <p><label>Localidad</label>
+            <input name="loc" type="text" class="input medium" id="textfield2"/>
+            </p>
+            <p><label>Codigo Postal</label>
+            <input name="cp" type="text" class="input medium" id="textfield2"/>
+            </p>
+            <p><label>Provincia</label>
+            <input name="prov" type="text" class="input medium" id="textfield2"/>
+            </p>
+            <p><label>Dni</label>
+            <input name="dni" type="text" class="input medium" />
+            </p>
+            <p><label>Telefono</label>
+            <input name="tel" id="tel" type="text" class="input medium" />
+            </p>
+            <p><label>Telefono 2</label>
+            <input name="tel2" id="tel2" type="text" class="input medium" />
+            </p>
+            <p><label>Fecha de Nacimiento (dd/mm/aa)</label>
+            <?php echo Conectar::crear_selects_fecha(); ?>
+            </p>
+            <p><label>Sexo</label>
+            <select name="sexo" class="select input">
+                <option value="M" selected="selected">Masculino</option>
+                <option value="F">Femenino</option>
+            </select>
+            </p>
+            </p>
+            <p>
+             <label>Nivel de Acceso</label>
+            <select name="NivelAcceso" class="select input">
+                <option value="1" selected="selected">Vendedor</option>
+                <option value="2">Administrador</option>
+                <option value="2">Root</option>
+            </select>
+            </p>
+            <p>
+            <label>Estado</label>
+            <select name="estado" class="select input">
+                <option value="1" selected="selected">Activo</option>
+                <option value="0">Inactivo</option>
+            </select>
+            <p>
+            <label>Observaciones</label>
+            <textarea name="observaciones" cols="50" rows="6" class="styled_textarea wysiwyg"></textarea>
+            </p>
+            <p>
+            <label>Aviso Emergente</label>
+            <textarea name="avisoemergente" maxlength="200" cols="50" rows="4" class="styled_textarea wysiwyg"></textarea>
+            </p>
+            <input type="hidden" name="grabar" value="si" />
+            <input type="submit" class="button" value="Crear" title="Crear Nuevo Usuario" />
+            </p>
+            </form>

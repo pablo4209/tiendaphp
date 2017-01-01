@@ -1,0 +1,78 @@
+	 
+        <h2>Listas de Precios</h2>
+              <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">El registro no pudo ser eliminado.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se eliminó exitosamente.</div>
+    			<?php
+    		break;
+    		case '3':
+    			?>
+    			<div class="fail large png_bg">El registro tiene dependencias, no puede ser eliminado.</div>
+    			<?php
+    		break;
+    	}
+    }
+	?>
+	<table>
+    <tr>
+		<td valign="middle" align="left" colspan="10">
+		Agregar registro
+		<a href="<?php echo BASE_URL;?>?accion=list-add" title="Nuevo registro"><img src="<?php echo PATH_IMG;?>add_32.png" border="0" width="16" height="16" /></a>
+		
+		</td>
+	</tr>
+    </table>  
+    <table id="tabla" class="tablesorter">
+        <thead>          	
+        <tr  style="font-weight: bold;">
+        <th align="center">ID</th>
+        <th align="center">Nombre</th>
+        <th align="center">Margen</th>     
+        <th align="center">Activa</th> 
+        
+        <th align="center">Editar</th>
+        <th align="center">Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        for($i=0;$i<sizeof($datos);$i++)
+        {
+        ?>
+         <tr>
+        <td align="center"><?php echo $datos[$i]["idLista"];?></td>
+        <td align="left"><?php echo $datos[$i]["Nombre"];?></td>
+        <td align="center"><?php echo $datos[$i]["Margen"];?></td>
+        <td align="center"><?php echo ($datos[$i]["Habilitada"]==1)? "SI":"NO";?></td>
+        
+        <td align="center"><a href="<?php echo BASE_URL;?>?accion=list-edit&id=<?php echo $datos[$i]["idLista"];?>" title="Editar <?php echo $datos[$i]["Nombre"];?>"><img src="<?php echo PATH_IMG;?>b_edit.png" border="0" width="16" height="16"></a></td>
+        <td align="center"><a href="javascript:void(0);" title="Eliminar <?php echo $datos[$i]["Nombre"];?>" onclick="eliminar('<?php echo BASE_URL;?>?accion=list-del&id=<?php echo $datos[$i]["idLista"];?>')" ><img src="<?php echo PATH_IMG;?>b_drop.png" border="0" width="16" height="16"></a></td>
+        </tr>
+        <?php
+        }
+        ?>
+        </tbody>
+     </table>
+     
+     <script type="text/javascript" defer="defer">
+    	$(document).ready(function() 
+        { 
+            $("#tabla").tablesorter({
+                        theme : 'blue',
+                        widgets: ["zebra"],
+                        headers : { 4 : { sorter: false }, 5 : { sorter: false } }
+            });
+        } 
+    	); 
+    </script>     

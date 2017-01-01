@@ -1,0 +1,80 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validity(function() {                
+                $("#Nombre").maxLength(50).minLength(2).require();
+                $("#Descripcion").maxLength(100);               
+                $("#Iniciales").maxLength(3);
+                $("#Color").match("number");
+            });    
+        });    
+    </script>
+
+	 <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha editado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, Registro no editado.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+        <h2>Editar Categoria</h2>
+        
+    <form action="" method="post" name="form" id="form">
+            <p>
+            <label>            
+            <a href="<?php echo BASE_URL;?>?accion=cat&p=<?php echo $datos[0]["idPadre"]; ?>"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
+            </p>
+
+            <p>
+            <label>Categoria Padre (*)</label>
+            <?php echo $selCategorias; ?>
+            </p>
+            <p>
+            <label>Nombre (*)</label>
+            <input name="Nombre" id="Nombre" type="text" title="Nombre" class="input medium" value="<?php echo $datos[0]["Nombre"];?>"  />
+            </p>
+            <p>
+            <label>Descripcion</label>
+            <input name="Descripcion" id="Descripcion" type="text" title="Nombre" class="input large" value="<?php echo $datos[0]["Descripcion"];?>" />
+            </p>            
+            <p>
+            <label>Ruta de Imagenes</label>
+            <input name="ImgPath" id="ImgPath" type="text" title="ImgPath" class="input short" value="<?php echo $datos[0]["ImgPath"];?>" />
+            </p>
+            <p>
+            <label>Iniciales (por defecto usadas en codigos de productos)</label>
+            <input name="Iniciales" id="Iniciales" type="text" title="Iniciales" class="input short" value="<?php echo $datos[0]["Iniciales"];?>" />
+            </p>
+            <p>
+            <label>Color de Categoria</label>
+            <input name="Color" id="Color" type="text" title="Color" class="input short" value="<?php echo $datos[0]["Color"];?>" />
+            </p>           
+            <p>
+            <input type="checkbox" class="checkbox" value="1" <?php if($datos[0]["Publicar"]==1) echo 'checked="checked"';?> title="Publicar" name="Publicar" id="Publicar" />
+            Publicar            
+            </p>                    
+ 
+            <input type="hidden" name="id" value="<?php echo $datos[0]["idCategoria"]?>"/>
+            <input type="hidden" name="grabar" value="si" />            
+            <input type="submit" class="button" value="Guardar" title="Guardar cambios" />
+            </p>
+            </form>
+

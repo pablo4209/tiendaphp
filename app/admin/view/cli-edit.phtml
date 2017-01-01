@@ -1,0 +1,144 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validity(function() {
+                
+                $("#Nombre").minLength(3).require();
+                $("#Email").match("email").require();
+                $("#Nick").minLength(3).require();
+                $("#Tel").match("number");
+                $("#Tel2").match("number");
+                $("#Cuit").match(/^\d{2}[-]\d{8}[-]\d{1}$/, "Formato invalido, tiene que ser xx-xxxxxxxx-x");
+                $("#Dni").match("number");
+                $("#Pass").minLength(4).require();
+                $("#idCondfiscal").greaterThan( 0, "Debes seleccionar una opcion" ).require();
+                $("#idLista").greaterThan( 0, "Debes seleccionar una lista" ).require();
+            });    
+        });    
+    </script>
+
+	 <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha creado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, registro no Creado.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+        <h2>Editar Cliente</h2>
+        
+    <form action="" method="post" name="form" id="form">
+            <p>
+            <label><a href="<?php echo BASE_URL;?>?accion=cli"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
+            </p>
+
+            <p>
+            <label>Nombre (*)</label>
+            <input name="Nombre" id="Nombre" type="text" value="<?php echo $datos[0]["Nombre"];?>" class="input medium"  />
+            </p>
+            <p>
+            <label>Razon Social</label>
+            <input name="Razonsocial" id="Razonsocial" type="text" value="<?php echo $datos[0]["Razonsocial"];?>"  class="input medium"  />
+            </p>
+            <p>
+            <label>E-Mail (*)</label>
+            <input name="Email" id="Email" type="text" value="<?php echo $datos[0]["Email"];?>"  class="input large"  />
+            </p>
+            <p>
+            <label>Login/Nick (*)</label>
+            <input name="Login" id="Nick" type="text" value="<?php echo $datos[0]["Login"];?>"  class="input medium"  />
+            <input type="button" value="comprobar disponibilidad"  class="button" id="disponible" />
+            </p>
+            <p>
+            <label>Password (*)</label>
+            <input name="Pass" id="Pass" type="password"  value="<?php echo $datos[0]["Pass"];?>" class="input medium"  />
+            </p>
+            <p><label>Domicilio</label>
+            <input name="Dom" type="text" value="<?php echo $datos[0]["Dom"];?>"  class="input large" />
+            </p>
+            <p><label>Domicilio de entrega</label>
+            <input name="Domentrega" type="text" value="<?php echo $datos[0]["Domentrega"];?>"  class="input large" />
+            </p>
+            <p><label>Localidad</label>
+            <input name="Loc" type="text" class="input medium" value="<?php echo $datos[0]["Loc"];?>"  id="textfield2"/>
+            </p>
+            <p><label>Codigo Postal</label>
+            <input name="Cp" type="text"  value="<?php echo $datos[0]["Cp"];?>" class="input medium" />
+            </p>
+            <p><label>Provincia</label>
+            <input name="Prov" type="text"  value="<?php echo $datos[0]["Prov"];?>" class="input medium" id="textfield2"/>
+            </p>            
+            <p><label>Telefono</label>
+            <input name="Tel" id="Tel" type="text"  value="<?php echo $datos[0]["Tel"];?>" class="input medium" />
+            </p>
+            <p><label>Telefono 2</label>
+            <input name="Tel2" id="Tel2" type="text"  value="<?php echo $datos[0]["Tel2"];?>" class="input medium" />
+            </p>
+            <p><label>Fecha de Nacimiento (dd/mm/aa)</label>            
+            <?php                 
+                $fe= strtotime($datos[0]["FechaNacimiento"]); //convertir la fecha a formato unix para func date()                
+                echo Conectar::crear_selects_fecha(date("d",$fe), date("m",$fe), date("Y",$fe)); 
+            ?>
+            </p>
+            <p><label>Sexo</label>
+            <select name="Sexo" class="select input">
+                <option value="M" <?php if($datos[0]["Sexo"]=="M") echo "selected"?>>Masculino</option>
+                <option value="F" <?php if($datos[0]["Sexo"]=="F") echo "selected"?>>Femenino</option>
+            </select>
+            </p>
+            <p><label>Dni</label>
+            <input name="Dni" id="Dni" type="text" value="<?php echo $datos[0]["Dni"];?>"  class="input medium" />
+            </p>
+            <p><label>Numero de Cuit (xx-xxxxxxxx-x)</label>
+            <input name="Cuit" id="Cuit" type="text"  value="<?php echo $datos[0]["Cuit"];?>" class="input medium" />
+            </p>            
+            <p><label>Condicion fiscal</label>            
+                <?php echo $selCF;?>
+            </p>                                    
+            <p><label>Lista de Precios (*)</label>                        
+                <?php echo $selLista;?>
+            </p>
+            
+            <p>
+            <input type="checkbox" class="checkbox" title="Estado" <?php if($datos[0]["Estado"])echo 'checked="checked"';?> value="1" name="Estado" id="Estado" />
+            Activo            
+            </p>
+            <p>
+            <input type="checkbox" class="checkbox" title="permitir que este cliente acepte promociones" <?php if($datos[0]["Promociones"])echo 'checked="checked"';?> value="1" value="1" name="Promociones" id="Promociones" />
+            Permitir que acepte promociones            
+            </p>
+            <p>            
+            <label>Observaciones</label>
+            <textarea name="Observaciones" cols="50" rows="6" class="styled_textarea wysiwyg"><?php echo $datos[0]["Observaciones"];?></textarea>
+            </p>
+            <p>
+            <label>Aviso Emergente</label>
+            <textarea name="AvisoEmergente" maxlength="200" cols="50" rows="4" class="styled_textarea wysiwyg"><?php echo $datos[0]["AvisoEmergente"];?></textarea>
+            </p>            
+            
+            <p><label>Foto</label>
+            <input name="Foto" id="Foto" type="text" value="<?php echo $datos[0]["Foto"];?>" class="input medium" />
+            </p> 
+            <input type="hidden" name="id" value="<?php echo $_GET["id"]?>" />
+            <input type="hidden" name="grabar" value="si" />            
+            <input type="submit" class="button" value="Guardar" title="Guardar Cliente" />
+            </p>
+            </form>
+

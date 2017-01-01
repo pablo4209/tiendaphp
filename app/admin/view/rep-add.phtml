@@ -1,0 +1,127 @@
+	 <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha creado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, Registro no creado.</div>
+    			<?php
+    		break;			
+			case '4':
+    			?>
+    			<div class="fail large png_bg">Error, el Codigo ya existe, el registro no fue creado.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+
+<h2>Ingreso de Reparacion</h2>
+<div style="float:left;width:70%;min-height: 120px;">
+    <p>Tipo Documento:<?php echo $selTipodoc; ?>
+        <input id='letra' name='letra' type="text" disabled="disabled" value="" class="input" size="2" >
+        <input id='puntoVenta' name='puntoVenta' type="text" disabled="disabled" value="" class="input" size="5" >
+        <input id='idDoc' name='idDoc' type="text" disabled="disabled" value="" class="input" size="8" >
+    </p>
+    <p>Cliente: <input id='cliNom' name='cliNom' type="text" title="razon social de cliente" class="input large" ><a href="#" id="cli_masdatos">>> mas datos</a>
+        <input id='idCliente' name='idCliente' type="hidden" >        
+    </p>
+    <p>Cuit:<input id='cliCuit' name='cliCuit' type="text" title="Cuit" class="input medium" ></p>
+    <div id="cli_contmasdatos" style="background-color: #FFFBCC">
+        <p>Domicilio:<input id='cliDom' name='cliDom' type="text" title="Direccion fiscal" class="input large" ></p>
+        <p>Localidad:<input id='cliLoc' name='cliLoc' type="text" title="Localidad" class="input medium" ></p>
+        <p>Codigo Postal:<input id='cliCp' name='cliCp' type="text" title="Codigo Postal" class="input short" ></p>
+        <p>Provincia:<input id='cliProv' name='cliProv' type="text" title="Provincia" class="input short" ></p>
+        <p>Telefono:<input id='cliTel' name='cliTel' type="text" title="Telefono" class="input medium" ></p>
+        <p>Email:<input id='cliMail' name='cliMail' type="text" title="Email" class="input medium" ></p>
+    </div>
+    <p>Condicion Fiscal:<?php echo $selcondfiscal; ?></p>    
+</div><!-- end div -->
+<div style="float:left;width:30%;min-height: 120px;">
+    <p>Fecha: <input id='fecha' name='fecha' type="text" title="Selecciona fecha de emision" class="input short" ></p>
+    <p>Moneda:<?php echo $selMon; ?></p>
+    <p>Deposito:<?php echo $seldep; ?></p>    
+    <p>Lista de precios:<?php echo $sellista; ?></p>    
+</div><!-- end div -->
+<div id="contenedor"></div>
+<div style="width:100%;height:150px;float: left;">
+<table class="TablaInterna" width="100%"> 
+    <thead>
+        <tr>
+            <th width="10%">Codigo</th>
+            <th width="8%">Cantidad</th>
+            <th width="40%">Descripcion</th>
+            <th width="8%">Descuento</th>
+            <th width="8%">Precio</th>
+            <th width="8%">Total</th>
+            <th width="10%">Serie</th>
+            <th width="10%">Accion</th>
+        </tr>
+        <tr>
+            <th><input type="text" placeholder="Codigo o barcode" value="" name="txtCodigo" id="txtCodigo" class="input full ingreso_item" ></th>
+            <th><input type="text" placeholder="Cantidad" value="1" name="txtCantidad" id="txtCantidad" class="input full ingreso_item" ></th>
+            <th width="30%"><div class="ui-widget">
+            <form id="frmBuscar">
+                <input type="text" placeholder="descripcion o texto a buscar" value="" name="txtNombre" id="txtNombre" class="input full ingreso_item" >
+                <input type="hidden" id="func" name="func" value="cod" >
+            </form></div></th>
+            <th><input type="text" placeholder="Descuento" value="0.00" name="txtDescuento" id="txtDescuento" class="input full ingreso_item" ></th>
+            <th><input type="text" placeholder="Precio" value="0.00" name="txtPrecio" id="txtPrecio" class="input full ingreso_item" ></th>
+            <th><input type="text" placeholder="Total" value="0.00" name="txtTotal" id="txtTotal" class="input full ingreso_item" ></th>
+            <th><input type="text" placeholder="Serie" value="" name="txtSerie" id="txtSerie" class="input full ingreso_item"></th>
+            <th><input type="button" value="+" name="btnAdd" title="Agregar item" id="btnAdd" class="button">
+                <input type="button" value="x" name="btnClr" title="Limpiar ingreso" id="btnClr" class="button">
+            </th>
+        </tr>   
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>      
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td><input id='serie' name='serie' type="text" title="Ingresar numero de serie" class="input full" ></td>
+            <td><a href="#" class="del_item"><img src="<?php echo PATH_IMG ?>b_drop.png" title="Eliminar item"/></a>
+                <a href="#" class="edit_item"><img src="<?php echo PATH_IMG ?>b_edit.png" title="Editar item"/></a>
+            </td>
+        </tr> 
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>Items:</td>      
+            <td><input type="text" title="cantidad de items" value="0" name="txtItems" id="txtItems" class="input" size="2" disabled="disabled"></td>
+            <td>Unidades:<input type="text" title="cantidad de unidades" value="0" name="txtUnidades" id="txtUnidades" class="input" size="2" disabled="disabled"></td>
+            <td></td>            
+            <td>Subtotal</td>
+            <td><input type="text" title="cantidad de unidades" value="0.00" name="txtSubTotal" id="txtSubTotal" class="input full"  disabled="disabled"></td> 
+        </tr>  
+        <tr>
+            <td colspan="4"></td>                              
+            <td>Saldo</td>
+            <td><input type="text" title="cantidad de unidades" value="0.00" name="txtSaldo" id="txtSaldo" class="input full"  disabled="disabled"></td> 
+        </tr> 
+        <tr>
+            <td colspan="4"></td>                              
+            <td>Total</td>
+            <td>0</td> 
+        </tr> 
+    </tfoot>
+</table>
+<input type="hidden" name="base_path" id="base_path" value="<?php echo BASE_URL;?>" >    
+<input type="hidden" name="path_js" id="path_js" value="<?php echo PATH_JS;?>" >    
+</div>

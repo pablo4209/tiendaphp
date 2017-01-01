@@ -1,0 +1,80 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validity(function() {
+                
+                $("#Nombre").maxLength(50).minLength(2).require();
+                $("#Cambio").match("number").greaterThan(0).require();
+                $("#Simbolo").maxLength(10).require();                
+            });    
+        });    
+    </script>
+
+	 <?php
+    if(isset($_GET["st"]))
+    {
+    	switch ($_GET["st"])
+    	{
+    		case '1':
+    			?>
+    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
+    			<?php
+    		break;
+            
+    		case '2':
+    			?>
+    			<div class="success large png_bg">El registro se ha editado exitosamente.</div>
+    			<?php
+    		break;
+            case '3':
+    			?>
+    			<div class="fail large png_bg">Error, Registro no editado.</div>
+    			<?php
+    		break;
+            case '4':
+    			?>
+    			<div class="fail large png_bg">Error, Registro no Encontrado.</div>
+    			<?php
+    		break;
+    		
+    	}
+    }
+	?>
+        <h2>Editar Moneda</h2>
+        
+    <form action="" method="post" name="form" id="form">
+            <p>
+            <label><a href="<?php echo BASE_URL;?>?accion=mon"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
+            </p>
+
+            <p>
+            <label >Nombre (*)</label>
+            <input name="Nombre" id="Nombre" type="text" title="Nombre" class="input medium" value="<?php echo $datos[0]["Nombre"];?>" />
+            </p>
+            <p>
+            <label>Cambio (equivalente a 1 unidad de la moneda principal) (*)</label>
+            <input name="Cambio" id="Cambio" type="text" title="Cambio" class="input large" value="<?php echo $datos[0]["Cambio"];?>" />
+            </p>
+            <p>
+            <label>Simbolo(*)</label>
+            <input name="Simbolo" id="Simbolo" type="text" title="simbolo" value="<?php echo $datos[0]["Simbolo"];?>" class="input medium"  />
+            </p>           
+            <p>
+            <input type="checkbox" class="checkbox" value="1" <?php if($datos[0]["Habilitada"])echo 'checked="checked"';?> title="habilitada" name="Habilitada" id="Habilitada" />
+            Habilitada            
+            </p>                       
+            
+            <p>
+            <input type="checkbox" class="checkbox" <?php if($datos[0]["Principal"])echo 'checked="checked"';?> title="hacer que esta moneda sea la principal de sistema" value="1" name="Principal" id="Principal" />
+            Moneda Principal            
+            </p>            
+            <p>
+            <input type="checkbox" class="checkbox" <?php if($datos[0]["Web"])echo 'checked="checked"';?> value="1" title="hacer que esta moneda sea la principal de la frontend web" name="Web" id="Web" />
+            Moneda Principal en la Web            
+            </p>            
+            <input type="hidden" name="id" value="<?php echo $_GET["id"];?>" />
+            <input type="hidden" name="grabar" value="si" />            
+            <input type="submit" class="button" value="Guardar" title="Guardar" />
+            </p>
+            </form>
+
