@@ -7,9 +7,9 @@
 
  //constantes de conexion
 define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'bdconv');
+define('DB_NAME', 'bd');
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', 'root');
 define('DB_CHAR', 'utf8');
 
 class Conectar
