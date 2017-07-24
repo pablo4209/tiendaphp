@@ -15,9 +15,12 @@ if($_POST) {
     case 'lostpass':
       require( AJAX . 'goLostpass.php');
       break;
+    case 'cart':
+      require( AJAX . 'cart.php');
+      break;
     default:
       header('location: ?accion=home');
-      break;
+      break;  
   }
 } else {
   header('location: ?accion=home');

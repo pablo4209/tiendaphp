@@ -19,7 +19,7 @@ $selcondfiscal = $condf->crearSelect(1);
 
 
 $vista = new View();
-$vista->incluir( INC_CONTENT_CSS . INC_JQUERY . INC_JQUERYUI . INC_VALIDITY . '<script type="text/javascript" src="' . PATH_JS . 'doc-mod.js" language="javascript"></script>' );
+$vista->incluir( INC_CONTENT_CSS. INC_JQUERYUI . INC_VALIDITY . '<script type="text/javascript" src="' . PATH_JS . 'doc-mod.js" language="javascript"></script>' );
 $vista->renderHeader("doc");
 require_once( VIEW_PATH . 'doc-add.phtml' );
 $vista->renderFooter();

@@ -1,0 +1,79 @@
+
+
+
+body{
+	font-family: Roboto Regular !important;
+}
+body a:hover{
+	text-decoration:none;
+}
+
+
+.marketing-codigo{ font-size:0.7em;}
+.marketing a{ font-size: 1.2em; font-family: Roboto Condensed Regular; color:#727272; }
+.marketing a:hover{ color:#333;text-decoration:none; }
+.row.marketing:hover{ background-color:#ddd; }
+
+.centrar-bloque{
+	margin:0 auto;
+	float:none;
+}
+
+.img-catalogo
+{
+	max-height:200px !important;
+	max-width:100%;
+	with:auto !important;
+	/*border:1px solid black;*/
+	margin:0 auto;
+	float:none;
+	margin-bottom:5px;
+}
+.precio-catalogo{		
+	position:absolute;
+	font-size: 20px;
+	margin-top: 5px;
+	margin-bottom: 5px;	
+	margin: 0; 
+	/*opacity: 0.8; 
+	filter:alpha(opacity=20); */
+	padding: 5px 10px;
+	top:175px;
+	right:0;
+}
+.content-margen{
+	margin:25px;
+}
+
+.content-dialog{
+	margin-top:50px;
+}
+
+.width100{
+	box-sizing: content-box;
+	width: 100%;
+	float: right !important;
+}
+
+.class-footer{
+	margin-top:50px;
+	padding-top: 30px;
+	padding-bottom: 20px;
+	background: #202020;
+	color:white;
+}
+
+.fixed-panel { /*agregar scroll a un panel*/
+  min-height: 30px;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.input-small{
+	max-width: 120px !important;
+	min-width: 50px;
+}
+.input-medium{
+	max-width: 220px !important;
+	min-width: 70px;
+}

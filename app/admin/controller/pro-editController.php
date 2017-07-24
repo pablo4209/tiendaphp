@@ -26,7 +26,7 @@ if(isset($_POST["grabar"]) && $_POST["grabar"] !="" )
 	{		
 		
 		//guardar la imagen nueva en la carpeta correspondiente		
-		$pathorigen = PATH_LAYOUT_RELAT.DIR_JS."upimg/tmp/"; //carpeta tmp donde esta la imagen actualmente
+		$pathorigen = PATH_JS."upload/temp/"; //carpeta tmp donde esta la imagen actualmente
 		if(file_exists($pathorigen.$_POST["Imagen"]))	//existe la imagen?
 		{
 			if(isset($_POST["idCategoria"]) && $_POST["idCategoria"]!="") 
@@ -39,7 +39,7 @@ if(isset($_POST["grabar"]) && $_POST["grabar"] !="" )
 				}else
 					$dircat="GEN";	
 			}	
-			$destino = PATH_PUBLIC_RELAT.DIR_IMG.$dircat."/";
+			$destino = PATH_IMG.$dircat."/";
 			//comprobamos si existe un directorio de la categoria para subir el archivo    
 			if(!is_dir($destino)){  	
 				mkdir($destino, 0777); //si no es así, lo creamos			
@@ -50,8 +50,7 @@ if(isset($_POST["grabar"]) && $_POST["grabar"] !="" )
 			//borrar imagen vieja					
 			array_map( "unlink", glob( $destino.$p[0]["Imagen"])); 
 		}
-	} else // si no se modifico se carga el valor anterior, sino borraria el nombre de la actual
-		{$_POST["Imagen"] = $p[0]["Imagen"];}
+	} 
 	
 		
 	if($pro->edit()) //true si success
@@ -94,10 +93,10 @@ if(isset($_POST["grabar"]) && $_POST["grabar"] !="" )
 			$pc->edit($_POST["idProducto"], $_POST["idCategoria"], 1); // se setea la categoria principal					
 		}		
 		
-		header("Location:".BASE_URL."?accion=pro-edit&id=".$_POST["idProducto"]."&st=2");exit; 	
+		header("Location:".BASE_URL."?accion=pro-edit&id=".$_POST["idProducto"]."&st=".MSG_SUCCESS);exit; 	
 	}else
 	{
-		header("Location:".BASE_URL."?accion=pro-edit&id=".$_POST["idProducto"]."&st=3");exit;
+		header("Location:".BASE_URL."?accion=pro-edit&id=".$_POST["idProducto"]."&st=".MSG_DANGER);exit;
 	}
 	   
 }
@@ -118,10 +117,11 @@ else
 				$idcatp = $pcat[0]["idCategoria"];	
 			}else $idcatp = 0;
 			
+
 			$cat= new Categorias();
 			$selCat = $cat->getSelCategorias(0,$idcatp,"Seleccionar Categoria");
 			$selCat2 = $cat->getSelCategorias(0,0 ,"Seleccionar Categoria",0 , "idCategoria2"); //sin seleccionar ninguno
-
+			$ruta  = $cat->getTree($idcatp, 0, "cat", "p");
 			$catprinc = $cat->getCategoriaId($idcatp); //obtener la carpeta donde estan las imagenes
 			
 			
@@ -152,7 +152,7 @@ else
 	
 }
 	$vista = new View();
-	$vista->incluir( INC_CONTENT_CSS . INC_JQUERY . INC_JQUERYUI . INC_VALIDITY . INC_PRO_JS );
+	$vista->incluir( INC_CONTENT_CSS . INC_JQUERYUI . INC_VALIDITY . INC_PRO_JS );
 	$vista->renderHeader("pro");
 	require_once( VIEW_PATH . 'pro-edit.phtml' );
 	$vista->renderFooter();

@@ -1,37 +1,18 @@
-
-   
-      <?php
+<?php
     if(isset($_GET["st"]))
     {
-    	switch ($_GET["st"])
-    	{
-    		case '1':
-    			?>
-    			<div class="fail large png_bg">Este registro no pudo ser eliminado.</div>
-    			<?php
-    		break;
-            
-    		case '2':
-    			?>
-    			<div class="success large png_bg">El registro se ha eliminado exitosamente.</div>
-    			<?php
-    		break;
-            case '3':
-    			?>
-    			<div class="fail large png_bg">Este registro tiene dependencias, No puede ser eliminado.</div>
-    			<?php
-    		break;
-    		
-    	}
+    	mensaje($_GET['st']);
     }
 	?>
-	 <?php echo $ruta;?>    
+    
+	<?php echo $ruta;?>    
+    
      <h2>Categorias</h2>     
      <table>
         <tr>
 		<td valign="middle" align="left" colspan="10">
-		Agregar Categoria        
-		<a href="<?php echo BASE_URL;?>?accion=cat-add&p=<?php echo $idCat;?>" title="Nuevo Cliente"><img src="<?php echo PATH_IMG;?>add_32.png" border="0" width="16" height="16" /></a>
+		<a href="<?php echo BASE_URL;?>?accion=cat&p=<?php echo $idpadre;?>" title="Agregar nueva subcategoria" class="btn btn-success"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver</a>
+		<a href="<?php echo BASE_URL;?>?accion=cat-add&p=<?php echo $idCat;?>" title="Agregar nueva subcategoria" class="btn btn-danger"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Categoria</a>
 		
 		</td>
 		</tr> 
@@ -51,7 +32,7 @@
         </thead> 
         <tbody> 
         <?php  
-          
+         
         for($i=0;$i<sizeof($datos);$i++)
         {
         ?>

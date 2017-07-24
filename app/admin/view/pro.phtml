@@ -3,7 +3,8 @@
   
     if(isset($_GET["st"]))
     {
-    	switch ($_GET["st"])
+
+      switch ($_GET["st"])
     	{
     		case '1':
     			?>
@@ -21,68 +22,75 @@
     }
 	?>
 	 
-     <h2>Listado de Productos</h2>
-     <p>Categoria: <?php echo $selCat; ?>
-     Buscar: <input name="Buscar" id="txtBuscar" name="txtBuscar" type="text" title="Escribe el texto a buscar" class="input middle" />
-     <input type="button" id="btnBuscar" class="button" value="Buscar" title="Buscar"  />
-     </p>
+     <h2>Listado de Productos</h2>     
+     
      <hr />
-     <table>
-         <tr>
-    		<td valign="middle" align="left" colspan="10">
-    		
-    		<a href="<?php echo BASE_URL;?>?accion=pro-add" title="Nuevo Producto">Agregar Producto<img src="<?php echo PATH_IMG;?>add_32.png" border="0" width="16" height="16" /></a>
-    		
-    		</td>
-   		 </tr> 
-     </table>
-     <div class="pager">
-        <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/first.png" class="first"/>
-                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/prev.png" class="prev"/>
-                <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/next.png" class="next"/>
-                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/last.png" class="last"/>
-                <select class="pagesize">
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                  <option value="200">200</option>
-                </select>
-     </div>
-     <table id="tabla"  class="tablesorter">        
-        <thead>               
-        <tr>
-              <th>1</th> <!-- tfoot text will be updated at the same time as the thead -->
-              <th>2</th>
-              <th>3</th>
-              <th>4</th>
-              <th>5</th>
-              <th>6</th>
-              <th>Editar</th>                            
-            </tr>
-        </thead> 
-        <tbody>
+     <div class="row" style="min-height: 100px;">
+        <div class="col-xs-12 col-md-6">                    
+              <?php echo $selCat; ?>           
+        </div><!-- /.col-lg-6 -->
+        <div class="col-xs-12 col-md-6">
+          <div class="input-group">
+            <input type="text" class="form-control" id="txtBuscar" name="txtBuscar"  placeholder="Search for...">
+            <span class="input-group-btn">
+              <button class="btn btn-primary" id="btnBuscar" name="btnBuscar" type="button">Buscar</button>
+            </span>            
+          </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
         
-        </tbody>        
-     </table>
-     <div class="pager">
-        <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/first.png" class="first"/>
-                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/prev.png" class="prev"/>
-                <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/next.png" class="next"/>
-                <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/last.png" class="last"/>
-                <select class="pagesize">
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                  <option value="200">200</option>
-                </select>
-     </div>
+      </div><!-- /.row -->
+     
+     <div class="row">
+        <div class="col-xs-12 col-md-12" > 
+           <table>
+               <tr>
+          		<td valign="middle" align="left" colspan="10">
+          		
+          		<a href="<?php echo BASE_URL;?>?accion=pro-add" id="pro-add" class="btn btn-primary" title="Nuevo Producto"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar producto</a>
+          		
+          		</td>
+         		 </tr> 
+           </table>
+           <div class="table-responsive">
+               <table id="tabla"  class="tablesorter">        
+                  <thead>               
+                  <tr>
+                        <th>1</th> <!-- tfoot text will be updated at the same time as the thead -->
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>Editar</th>                            
+                      </tr>
+                  </thead> 
+                  <tbody>
+                  
+                  </tbody>        
+               </table>
+             </div>
+           <div class="pager">
+              <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/first.png" class="first"/>
+                      <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/prev.png" class="prev"/>
+                      <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+                      <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/next.png" class="next"/>
+                      <img src="<?php echo PATH_JS ?>tablesorter/addons/pager/icons/last.png" class="last"/>
+                      <select class="pagesize">
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                      </select>
+           </div>
+         </div> <!-- COL -->
+       </div> <!-- ROW -->
      
      <script type="text/javascript" defer="defer">
     	$(document).ready(function() 
         { 
             
             $("#idCategoria").change(function() {               
-                      $("table").trigger("update");                                                      
+                      $("table").trigger("update");   
+                      $("#pro-add").attr("href","<?php echo BASE_URL;?>?accion=pro-add&cat="+$(this).val());
               });
             $("#btnBuscar").click(function() {                       
                       $("table").trigger("update");                                                      
@@ -95,7 +103,7 @@
             })        
             .tablesorterPager({        
               container: $(".pager"),
-              ajaxUrl : '<?php echo BASE_URL;?>?accion=pro-ajax&page={page}&size={size}&{sortList:column}',        
+              ajaxUrl : 'ajax.php/?mode=pro-list&page={page}&size={size}&{sortList:column}',        
               // modify the url after all processing has been applied
               customAjaxUrl: function(table, url) {
                   // manipulate the url string as you desire
@@ -140,7 +148,7 @@
                       }                      
                     }
                     if(len){
-                        row.push('<a href="<?php echo BASE_URL;?>?accion=pro-edit&id='+idprod+'" title="Editar Producto"><img src="<?php echo PATH_IMG;?>b_edit.png" border="0" width="16" height="16"></a>'); //interceptar valor idProducto para que no lo muestre y crear vinculo
+                        row.push('<a href="<?php echo BASE_URL;?>?accion=pro-edit&id='+idprod+'" title="Editar Producto" class="btn btn-success"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>'); //interceptar valor idProducto para que no lo muestre y crear vinculo
                         
                     }
                     rows.push(row); // add new row array to rows array

@@ -9,9 +9,10 @@ function goLostpass() {
         if(connect.responseText == 1) {
           result = '<div class="alert alert-dismissible alert-success">';
           result += '<h4>Se ha enviado un correo!</h4>';
-          result += '<p><strong>Revisa tu correo y has clic en el enlace</strong></p>';
+          result += '<p><strong>El sistema te genero una nueva contraseña,<br>Revisa tu correo y has clic en el enlace.</strong></p>';
           result += '</div>';
           __('_AJAX_LOSTPASS_').innerHTML = result;
+
           location.reload();
         } else {
           __('_AJAX_LOSTPASS_').innerHTML = connect.responseText;

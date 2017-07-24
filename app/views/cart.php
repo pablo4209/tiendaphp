@@ -2,105 +2,97 @@
 	<div class="clearfix" style="margin-bottom:20px;"></div>
 	<div class="container">
 		<div class="row">
+			<h3><span class="glyphicon glyphicon-shopping-cart"></span> Productos en el carro</h3>
 			<div class="col-md-12 col-xs-12">
-				<div class="panel panel-info">
-				  <div class="panel-heading">
-					<div class="panel-title">
-						<div class="row">
-							<div class="col-md-6">
-								<h5><span class="glyphicon glyphicon-shopping-cart"></span> Cart</h5>
-							</div>
-							<div class="col-md-6">
-								<button class="btn btn-primary btn-sm pull-right"><span class="glyphicon glyphicon-share-alt"></span> Continue Shoping</button>
-							</div>
-						</div>
-					</div>
-				  </div>
-				  <div class="panel-body">
-					<div class="row">
-						<div class="col-md-2 col-xs-12">
-							<img class="img-responsive" src="assets/images/150x70.png">
-						</div>
-						<div class="col-md-4 col-xs-12">
-							<h4><strong>Product name</strong></h4>
-							<h4><small>span span span span span span span</small></h4>
-						</div>
-						<div class="col-md-6 col-xs-12">
-							<div class="col-md-6 text-right">
-								<h4><strong>$ 10</strong> x</h4>
-							</div>
-							<div class="col-md-4 col-xs-9">
-								 <input type="text" class="form-control input-sm">
-							</div>
-							<div class="col-md-2 col-xs-2">
-								<button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
-							</div>
-						</div>
-					</div>
-					<hr>
-					<div class="row">
-						<div class="col-md-2 col-xs-12">
-							<img class="img-responsive" src="assets/images/150x70.png">
-						</div>
-						<div class="col-md-4 col-xs-12">
-							<h4><strong>Product name</strong></h4>
-							<h4><small>span span span span span span span</small></h4>
-						</div>
-						<div class="col-md-6 col-xs-12">
-							<div class="col-md-6 text-right">
-								<h4><strong>$ 10</strong> x</h4>
-							</div>
-							<div class="col-md-4 col-xs-9">
-								 <input type="text" class="form-control input-sm">
-							</div>
-							<div class="col-md-2 col-xs-2">
-								<button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
-							</div>
-						</div>
-					</div>
-					<hr>
-					<div class="row">
-						<div class="col-md-2 col-xs-12">
-							<img class="img-responsive" src="assets/images/150x70.png">
-						</div>
-						<div class="col-md-4 col-xs-12">
-							<h4><strong>Product name</strong></h4>
-							<h4><small>span span span span span span span</small></h4>
-						</div>
-						<div class="col-md-6 col-xs-12">
-							<div class="col-md-6 text-right">
-								<h4><strong>$ 10</strong> x</h4>
-							</div>
-							<div class="col-md-4 col-xs-9">
-								 <input type="text" class="form-control input-sm">
-							</div>
-							<div class="col-md-2 col-xs-2">
-								<button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
-							</div>
-						</div>
-					</div>
-					<hr>
-					<div class="row">
-						<div class="col-md-9 col-xs-12 text-right">
-							<h5>Added items?</h5>
-						</div>
-						<div class="col-md-3 col-xs-12">
-							<button class="btn btn-default btn-sm btn-block">Update cart</button>
-						</div>
-					</div>
-				  </div>
-				  <div class="panel-footer">
-					<div class="row">
-						<div class="col-md-9 col-xs-12 text-right">
-							<h4><strong>Total $30</strong></h4>
-						</div>
-						<div class="col-md-3 col-xs-12">
-							<button class="btn btn-success btn-lg btn-block">Checkout</button>
-						</div>
-					</div>
-				  </div>
-				</div>
+				<div id="_AJAX_CART_"></div>
+				<div class="panel panel-info" id="cartProductos">						  						  
+				  
+				</div><!-- PANEL -->
+				<a href="?accion=catalogo" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> Continuar comprando</a>	
 			</div>
 		</div>
 	</div>
 	<!-- End Content -->
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+			getProductos();
+
+			
+
+			$("body").delegate("#cartRefresh","click", function(){
+				getProductos();
+			})
+
+			$("body").delegate(".remove","click", function(){				
+				var idProducto = $(this).attr("idp");
+				
+				$.ajax({
+					url	:  'ajax.php/?mode=cart',
+					method	: 'POST',
+					data	: {remove:1, id: idProducto},
+					success	: function(data){
+						$('#_AJAX_CART_').html(data).fadeIn(500).fadeOut(4000);
+						getProductos();	
+						actualizarCartNav();
+					}
+				});
+			})
+
+			var timer=0;
+			// en este evento se actualiza la fila y se pone la funcion con ajax a la espera de 1.5 segundos de
+			// pulsada la ultima tecla para actualizar el registro
+			$("body").delegate(".cantidad", "keyup paste", function(){
+				
+				var idp = $(this).attr("idp");
+				calcularPrecio(idp);
+				clearTimeout(timer);
+				timer = setTimeout( function() { modificarCantidad( idp ) } , 1500 );
+			});						
+			
+			function modificarCantidad(idProducto){
+				var cantidad = $("#cantidad-"+idProducto).val();
+				var idItem = $("#cantidad-"+idProducto).attr("idItem");
+				
+				$.ajax({
+					url	:  'ajax.php/?mode=cart',
+					method	: 'POST',
+					data	: {editItem:1, id: idItem, cant: cantidad },
+					success	: function(data){
+						$('#_AJAX_CART_').html(data).fadeIn(500).fadeOut(4000);
+						getProductos();	
+						actualizarCartNav();
+					}, 
+					complete : function(){ habilitarBotones(); },
+					beforeSend : function(){ deshabilitarBotones(); }
+				});
+			}
+
+
+			function calcularPrecio(id){
+				//actualizar precio*cantidad de la fila
+				$("#total-"+id).val( parseFloat($("#cantidad-"+id).val() * $("#precio-"+id).val(), 2) );
+				
+				//actualizar el total del cart
+				var total=0; 
+				$(".total").each(function(index, value){
+					total = parseFloat(total) + parseFloat($(this).val());					
+				});
+				$("#totalCart").val( parseFloat(total, 2) );
+			}
+
+			function getProductos(){
+				$.ajax({
+					url	:  'ajax.php/?mode=cart',
+					method	: 'POST',
+					data	: {	cartProductos:1 },
+					success	: function(data){	
+						
+						$("#cartProductos").html(data);	       	
+
+					}
+				});
+			}
+		});
+	</script>
+	<script src="<?php echo JS ?>cart.js"></script>

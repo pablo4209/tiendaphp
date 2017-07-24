@@ -14,7 +14,7 @@ class  User extends Conectar
 
     public function logueo()
     {
-        $sql="select idUsuario, Login, NivelAcceso, Estado from tbusuarios
+        $sql="select idUsuario, Login, Nombre, NivelAcceso, Estado from tbusuarios
             where
             Login= ?
             and
@@ -31,19 +31,24 @@ class  User extends Conectar
                 {
                     if($reg["Estado"]==1)
                     {
-                        $_SESSION["user_id"]=$reg["idUsuario"];
-                        $_SESSION["user_login"]=$reg["Login"];
-                        $_SESSION["NivelAcceso"]=$reg["NivelAcceso"];
-                        header("Location: ".BASE_URL."?accion=home");
+                        if($reg["NivelAcceso"]>5){
+							$_SESSION["admin_id"]=$reg["idUsuario"];
+							$_SESSION["admin_login"]=$reg["Login"];
+							$_SESSION["admin_nombre"]=$reg["Nombre"];
+							$_SESSION["NivelAcceso"]=$reg["NivelAcceso"];														
+							header("Location: ".BASE_URL."?accion=home");
+						}else{							
+							header("Location: ".BASE_URL."?accion=index&st=5"); //no posee permisos de administrador
+						}
                     }
                     else
                     {
-                        header("Location: ".BASE_URL."?accion=index&st=4");exit;
+                        header("Location: ".BASE_URL."?accion=index&st=4"); //usuario inactivo
                     }
                 }
             }else
             {
-                header("Location: ".BASE_URL."?accion=index&st=1");exit;
+                header("Location: ".BASE_URL."?accion=index&st=1"); //error de login
             }
             $this->dbh=null;
         }
@@ -112,14 +117,7 @@ class  User extends Conectar
     }
 
 
-    public function registrar(){
 
-    }
-
-    public function recuperar(){
-
-
-    }
 
     public function get_usuarios()
     {
@@ -133,7 +131,7 @@ class  User extends Conectar
               FechaNacimiento, Sexo, FechaAlta, HoraAlta, FechaMod, HoraMod, Estado, Observaciones,
               AvisoEmergente from tbusuarios where idUsuario=? LIMIT 1";
 
-        return parent::getRowId($sql, $id);
+        return parent::getRowId($sql, array($id));
     }
 
 
@@ -197,6 +195,57 @@ class  User extends Conectar
 
     }
 
+    public function editFront()
+    {
+        if(empty($_POST["nom"]) or empty($_POST["correo"]) or empty($_POST["login"]) or Conectar::valida_correo($_POST["correo"])==false)
+        {
+            header("Location:".BASE_URL."index.php?accion=user-edit&st=1");exit;
+        }
+
+        $sql="UPDATE tbusuarios
+              SET
+              Nombre=?, Login=?, Email=?, Dom=?, Loc=?, Cp=?, Prov=?, Dni=?, Tel=?, Tel2=?,
+              FechaNacimiento=?, Sexo=?, FechaMod=NOW(), HoraMod=NOW()
+              WHERE
+              idUsuario=?";
+
+        //concatenar la fecha en formato mysql
+        $f = "";// $_POST['anio']."-".$_POST['mes']."-".$_POST['dia'];
+        $dom = (isset($_POST["dom"]))? $_POST["dom"]: "";
+        $loc = (isset($_POST["loc"]))? $_POST["loc"]: "";
+        $cp = (isset($_POST["cp"]))? $_POST["cp"]: "";
+        $prov = (isset($_POST["prov"]))? $_POST["prov"]: "";
+        $dni = (isset($_POST["dni"]))? $_POST["dni"]: "";
+        $tel = (isset($_POST["tel"]))? $_POST["tel"]: "";
+        $tel2 = (isset($_POST["tel2"]))? $_POST["tel2"]: "";
+        $sexo = (isset($_POST["sexo"]))? $_POST["sexo"]: "";
+
+        $stmt=$this->dbh->prepare($sql);
+
+        $stmt->bindValue(1,$_POST["nom"],PDO::PARAM_STR);
+        $stmt->bindValue(2,$_POST["login"],PDO::PARAM_STR);
+        $stmt->bindValue(3,$_POST["correo"],PDO::PARAM_STR);
+        $stmt->bindValue(4,$dom,PDO::PARAM_STR);
+        $stmt->bindValue(5,$loc,PDO::PARAM_STR);
+        $stmt->bindValue(6,$cp,PDO::PARAM_STR);
+        $stmt->bindValue(7,$prov,PDO::PARAM_STR);
+        $stmt->bindValue(8,$dni,PDO::PARAM_STR);
+        $stmt->bindValue(9,$tel,PDO::PARAM_STR);
+        $stmt->bindValue(10,$tel2,PDO::PARAM_STR);
+        $stmt->bindValue(11,$f,PDO::PARAM_STR);
+        $stmt->bindValue(12,$sexo,PDO::PARAM_STR);
+        $stmt->bindValue(13,$_POST["id"],PDO::PARAM_INT);
+
+        if($stmt->execute())
+        {
+            header("Location:".BASE_URL."?accion=user-edit&id=".$_POST["id"]."&st=2");
+        }else
+        {
+           header("Location:".BASE_URL."?accion=user-edit&id=".$_POST["id"]."&st=3");
+        }
+
+        $this->dbh=null;
+    }
 
     public function edit()
     {
@@ -215,7 +264,7 @@ class  User extends Conectar
 
         //concatenar la fecha en formato mysql
         $f = $_POST['anio']."-".$_POST['mes']."-".$_POST['dia'];
-        $pass=self::Encrypt($_POST["pass"]);
+        $pass=(isset($_POST["pass"]))? self::Encrypt($_POST["pass"]):"";
         $estado=(isset($_POST["estado"]))? $_POST["estado"]:0;
         $nivel = (isset($_POST["NivelAcceso"]))? $_POST["NivelAcceso"]:0;
 

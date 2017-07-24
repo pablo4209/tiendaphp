@@ -17,7 +17,6 @@ class Conectar
     protected $dbh;
     protected $p;
 
-
     function __construct()
     {       try
             {
@@ -27,10 +26,10 @@ class Conectar
                                    DB_PASS,
                                    array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . DB_CHAR)
 								   );
-
+                
             }
             catch (PDOException $e) {
-                print "Error!<br/>Mensaje:  ". $e->getMessage() . "<br/>";
+                print "Error!<br/>Mensaje:  ". $e->getMessage() . "<br/>";                
                 die();
             }
 
@@ -52,12 +51,18 @@ class Conectar
     //La funcion devuelve un Array de dos dimensiones, como fetch_assocc, recibe como parametro la consulta select lista para ejecutarse
     protected function getRows($sql)
     {
-        self::ClearArray();
-        foreach($this->dbh->query($sql) as $row) //query retorna una fila asociada con los nombres de los campos
-        {                                         //retorna false y hay error
-            $this->p[]=$row;
+      try{
+          self::ClearArray();
+          foreach($this->dbh->query($sql) as $row) //query retorna una fila asociada con los nombres de los campos
+          {                                         //retorna false y hay error
+              $this->p[]=$row;
+          }        
+          return $this->p;
+
+        }catch(PDOException $e) {
+                print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";         
+                die();
         }
-        return $this->p;
     }
 
     public function close(){
@@ -75,14 +80,12 @@ class Conectar
                 {
                     $this->p[]=$row;
                 }
+                $stmt->closeCursor();
                 return $this->p;
             }else
-            {
-                $this->dbh=null;
+            {                
                 return false;
             }
-
-
 
     }
 
@@ -92,6 +95,7 @@ class Conectar
     // para acceder echo $dato[0]["id"];
     public function getRowId($sql, $id)
     {
+        try{
             self::ClearArray();
             $stmt=$this->dbh->prepare($sql);
             $stmt->execute( $id );
@@ -100,10 +104,57 @@ class Conectar
             {
                 $this->p[]=$row;
             }
+            $stmt->closeCursor();
             return $this->p;
+
+        }catch(PDOException $e) {
+                print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";         
+                die();
+        }
     }
 
+    /*
+    *   ejecutar consulta preparada y retorna true o false
+    */
+    protected function exePrepare($consulta){
+        try{
+            $r = $consulta->execute();
+            $consulta->closeCursor();
+            if($r)
+                return true;
+            else
+                return false;
+        }catch(PDOException $e) {
+                print '<div style="padding-top:100px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";         
+                die();
+        }
+    }
 
+    //
+    //recibe una consulta preparada, la ejecutada y retorna un array assocc con los resultados obtenidos
+    //
+    protected function exePrepare_FetchAssoc($consulta){
+
+      try{
+          self::ClearArray();
+          if( $consulta->execute() )
+            {
+                while($row = $consulta->fetch(PDO::FETCH_ASSOC)) //resultado asociado solo a nombres de campos
+                {
+                    $this->p[]=$row;
+                }
+                $consulta->closeCursor();              
+                return $this->p;
+            }else
+            {
+                return false;
+            }
+        }catch(PDOException $e) {
+                print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";         
+                die();
+        }
+
+    }
 
 	//***********************************************************
 	//recibe una cadena que incluye numeros y le incrementa una unidad
@@ -302,7 +353,7 @@ return $fecha;
         if($datos)
         {
             //dias
-            $f.= '<select name="'.$id.'" id="'.$id.'" class="select input">
+            $f.= '<select name="'.$id.'" id="'.$id.'" class="form-control">
                     <option value="0" ';
             if ($sel=="") $f.='selected="selected"';
             $f.= '>Seleccionar</option>';

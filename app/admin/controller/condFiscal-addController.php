@@ -18,7 +18,7 @@ if(isset($_POST["grabar"]) and $_POST["grabar"]=="si")
 
 
 $vista = new View();
-$vista->incluir( INC_JQUERY . INC_VALIDITY );
+$vista->incluir( INC_VALIDITY );
 $vista->renderHeader("cli");
 require_once( VIEW_PATH . 'condFiscal-add.phtml' );
 $vista->renderFooter();

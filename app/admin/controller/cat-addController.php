@@ -17,11 +17,12 @@ if(isset($_POST["grabar"]) and $_POST["grabar"] == "si")
     exit;
 }
 
-//$ruta  = $cat->getRuta($idCat);
+
 $selCategorias = $cat->getSelCategorias(0,$padre);
+$ruta  = $cat->getTree($padre, 0, "cat", "p");
 
 $vista = new View();
-$vista->incluir( INC_JQUERY . INC_VALIDITY);
+$vista->incluir( INC_VALIDITY);
 $vista->renderHeader("pro");
 require_once( VIEW_PATH . 'cat-add.phtml' );
 $vista->renderFooter();

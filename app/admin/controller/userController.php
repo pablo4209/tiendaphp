@@ -6,7 +6,7 @@ $datos=$u->get_usuarios();
 
 
 $vista = new View();
-$vista->incluir( INC_JQUERY . INC_TABLESORTER );
+$vista->incluir( INC_TABLESORTER );
 $vista->renderHeader("conf");
 require_once( VIEW_PATH . 'user.phtml' );
 $vista->renderFooter();

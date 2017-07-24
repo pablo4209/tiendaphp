@@ -24,8 +24,8 @@ $selLista =$lista->crearSelect($datos[0]["idLista"]);
 
 $vista = new View();
 
-$inc = INC_JQUERY . INC_VALIDITY ;
-$vista->incluir($inc);
+
+$vista->incluir(INC_VALIDITY);
 
 $vista->renderHeader("cli");
 require_once( VIEW_PATH . 'cli-edit.phtml' );

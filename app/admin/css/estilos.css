@@ -1,0 +1,8 @@
+@charset "utf-8";
+
+.input-small{
+	max-width: 120px !important;
+}
+.input-medium{
+	max-width: 220px !important;
+}

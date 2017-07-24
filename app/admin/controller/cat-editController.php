@@ -19,11 +19,11 @@ if(isset($_POST["grabar"]) and $_POST["grabar"] == "si")
 
 $datos = $cat->getCategoriaId($id);
 
-//$ruta  = $cat->getRuta($idCat);
+$ruta  = $cat->getTree($id, 0, "cat", "p");
 $selCategorias = $cat->getSelCategorias(0,$datos[0]["idPadre"]);
 
 $vista = new View();
-$vista->incluir( INC_JQUERY . INC_VALIDITY);
+$vista->incluir( INC_VALIDITY);
 $vista->renderHeader("pro");
 require_once( VIEW_PATH . 'cat-edit.phtml' );
 $vista->renderFooter();

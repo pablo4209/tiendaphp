@@ -23,8 +23,8 @@ $selLista =$lista->crearSelect(1);
 
 $vista = new View();
 
-$inc = $inc = INC_JQUERY . INC_VALIDITY ;
-$vista->incluir($inc);
+
+$vista->incluir(INC_VALIDITY);
 
 $vista->renderHeader("cli");
 require_once( VIEW_PATH . 'cli-add.phtml' );

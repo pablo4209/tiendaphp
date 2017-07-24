@@ -12,69 +12,51 @@
 
 	 <?php
     if(isset($_GET["st"]))
-    {
-    	switch ($_GET["st"])
-    	{
-    		case '1':
-    			?>
-    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
-    			<?php
-    		break;
-            
-    		case '2':
-    			?>
-    			<div class="success large png_bg">El registro se ha creado exitosamente.</div>
-    			<?php
-    		break;
-            case '3':
-    			?>
-    			<div class="fail large png_bg">Error, Registro no creado.</div>
-    			<?php
-    		break;
-    		
-    	}
+    {    	
+        mensaje($_GET["st"]);
     }
-	?>
-        <h2>Agregar Categoria</h2>
+	
+    echo $ruta;?>    
+        
+        <h3>Agregar Categoria</h3>
         
     <form action="" method="post" name="form" id="form">
-            <p>
-            <label>            
-            <a href="<?php echo BASE_URL;?>?accion=cat&p=<?php echo $padre; ?>"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
-            </p>
+            <div class="form-group">            
+            <a href="<?php echo BASE_URL;?>?accion=cat&p=<?php echo $padre;?>" title="Regresar" class="btn btn-success"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver</a>
+            </div>
 
-            <p>
+            <div class="form-group">
             <label>Categoria Padre (*)</label>
             <?php echo $selCategorias; ?>
-            </p>
-            <p>
+            </div>
+            <div class="form-group">
             <label>Nombre (*)</label>
-            <input name="Nombre" id="Nombre" type="text" title="Nombre" class="input medium"  />
-            </p>
-            <p>
+            <input name="Nombre" id="Nombre" type="text" title="Nombre" class="input-medium form-control"  />
+            </div>
+            <div class="form-group">
             <label>Descripcion</label>
-            <input name="Descripcion" id="Descripcion" type="text" title="Nombre" class="input large"  />
-            </p>            
-            <p>
+            <input name="Descripcion" id="Descripcion" type="text" title="Nombre" class="form-control"  />
+            </div>            
+            <div class="form-group">
             <label>Ruta de Imagenes</label>
-            <input name="ImgPath" id="ImgPath" type="text" title="ImgPath" class="input short"  />
-            </p>
-            <p>
+            <input name="ImgPath" id="ImgPath" type="text" title="ImgPath" class="input-small form-control"  />
+            </div>
+            <div class="form-group">
             <label>Iniciales (por defecto usadas en codigos de productos)</label>
-            <input name="Iniciales" id="Iniciales" type="text" title="Iniciales" class="input short"  />
-            </p>
-            <p>
+            <input name="Iniciales" id="Iniciales" type="text" title="Iniciales" class="form-control input-small"  />
+            </div>
+            <div class="form-group">
             <label>Color de Categoria</label>
-            <input name="Color" id="Color" type="text" title="Color" class="input short"  />
-            </p>           
-            <p>
-            <input type="checkbox" class="checkbox" value="1" checked="checked" title="Publicar" name="Publicar" id="Publicar" />
-            Publicar            
-            </p>                    
+            <input name="Color" id="Color" type="text" title="Color" class="form-control input-small"  />
+            </div>           
+            <div class="checkbox"><label>
+            <input type="checkbox" value="1" checked="checked" title="Publicar" name="Publicar" id="Publicar" />
+            Publicar</label>
+            </div>                    
  
             <input type="hidden" name="p" value="<?php echo $padre;?>"/>
             <input type="hidden" name="grabar" value="si" />            
-            <input type="submit" class="button" value="Crear" title="Crear Nueva Categoria" />
-            </p>
+            <input type="submit" class="btn btn-primary" value="Agregar Categoria" title="Crear Nueva Categoria" />
+            </div>
             </form>
 

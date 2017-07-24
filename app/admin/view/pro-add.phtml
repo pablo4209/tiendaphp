@@ -12,180 +12,196 @@
             });    
         });    
     </script>
-
-	 <?php
-    if(isset($_GET["st"]))
-    {
-    	switch ($_GET["st"])
-    	{
-    		case '1':
-    			?>
-    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
-    			<?php
-    		break;
-            
-    		case '2':
-    			?>
-    			<div class="success large png_bg">El registro se ha creado exitosamente.</div>
-    			<?php
-    		break;
-            case '3':
-    			?>
-    			<div class="fail large png_bg">Error, Registro no creado.</div>
-    			<?php
-    		break;			
-			case '4':
-    			?>
-    			<div class="fail large png_bg">Error, el Codigo ya existe, el registro no fue creado.</div>
-    			<?php
-    		break;
-    		
-    	}
+<div class="container-fluid"><!-- CONTAINER -->
+	<?php
+	if(isset($_GET['st'])){
+    	if($_GET['st'] == MSG_INFO) {
+    		mensaje( MSG_INFO, "El Registro ya existe, no se completo la operacion.");
+    	}else
+    		mensaje( $_GET['st']);
     }
+	echo $ruta;
 	?>
-	<div style="height:40px;width:50%;float:left">
-	<p style="float:left;"><a href="<?php echo BASE_URL;?>?accion=pro"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24" title="Pagina Anterior"></a></p></div>
-	<div style="height:40px;width:50%;float:right"><p style="float:right;">		
-		<a href="#" name="imgGuardar" id="imgGuardar"><img src="<?php echo PATH_IMG;?>save_32.png" border="0" width="24" height="24"  title="Guardar"></a></p>
-	</div>
-    <h2>Nuevo Producto</h2>
-        
-    <form action="" method="post" name="form" id="form">
-            <div class="pro_columna1">	
-			<div class="pro_titulo">				
-				<table align="left" width="100%" >
-					<tr>
-						<td width="20%"><strong>Tipo de producto (*)</strong></td>
-						<td width="80%"><?php echo $seltipo; ?></td>						
-					</tr>
-					<tr>
-						<td><strong>Categoria (*)</strong></td>
-						<td><?php echo $selCat; ?></td>					
-					</tr>
-					<tr>
-						<td><strong >Codigo (*)</strong></td>
-						<td><input name="Codigo" id="Codigo" type="text" title="Codigo de producto" class="input short"  /><input type="button" class="button" value="Buscar Codigo" id="buscarCodigo" title="Buscar codigo libre" />   		
-							<img src="<?php echo PATH_IMG;?>accept.png" border="0"  id="aceptado">
-							<img src="<?php echo PATH_IMG;?>loading.gif" border="0" width="24" height="24" id="cargando">
-						</td>
-					</tr>
-					<tr>
-						<td><strong >Nombre (*)</strong></td>
-						<td><input name="Nombre" id="Nombre" type="text" title="Nombre" class="input large"  />
-							<input name="SEO" id="SEO" type="hidden"  class="input medium"  /></td>
-					</tr>
-					<tr>
-						<td><strong >Barcode :</strong></td>
-						<td><input name="CodBar" id="CodBar" type="text" title="codigo de barras" class="input short"  /></td>
-					</tr>
-					<tr>
-						<td><strong >Barcode2 :</strong></td>
-						<td><input name="CodBar2" id="CodBar2" type="text" title="codigo de barras" class="input short"  /></td>
-					</tr>
-				</table>
-			</div><!-- end pro_titulo -->
-										
-	
-												
-				
-					<div class="pro_precios">    
-						<p><strong>Modificar Precios</strong></p>
-						<table width="60%" class="TablaInterna">
-						  <tr>
-							<td align="right">Moneda:</td>
-							<td><?php echo $selMon; ?></td>
-						  </tr>
-						  <tr>
-							<td width="50%" align="right">Costo:</td>
-							<td width="50%"><input name="Costo" id="Costo" type="text" value="0.00" title="moneda principal seleccionada por defecto" class="input short"  /></td>
-						  </tr>
-						  <tr>
-							<td align="right">Cantidad por defecto:</td>
-							<td><input name="UnidxDef" id="UnidxDef" type="text" value="1" title="cantidad de unidades por defecto" class="input short"  /></td>
-						  </tr>
-						  <tr>
-							<td align="right">Iva (*):</td>
-							<td><?php echo $seliva; ?></td>
-						  </tr>
-						  <tr>
-							<td align="right">Max descuento:</td>
-							<td><input name="MaxDescuento" type="text" id="MaxDescuento" value="0.00" size="8" maxlength="8" /></td>
-						  </tr>
-						</table>
-					<br />						
-					
-					<p><strong>Listas de Precios</strong> (en Moneda Principal)</p>	
-					<table width="80%"  class="TablaInterna">
-						<tr>
-							  <td width="15%">Lista</td>
-							  <td width="15%">Costo C/Iva</td>
-							  <td width="15%">Margen</td>
-							  <td width="15%">Venta S/Iva</td>
-							  <td width="15%">Venta C/Iva</td>
-						</tr>
-							<?php 
-							$resultados = sizeof($listas);
-							for($i=0;$i<$resultados;$i++) { ?>
-							  <tr>
-								<td><?php echo $listas[$i]['Nombre']; ?></td>
-								<td><input name="<?php echo "costo[".$listas[$i]['idLista'].']';?>" id="<?php echo "costo".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtCosto" disabled />								</td>
-								<td><input name="<?php echo "margen[".$listas[$i]['idLista'].']';?>" id="<?php echo "margen".$listas[$i]['idLista'];?>" type="text" value="<?php echo $listas[$i]['Margen']; ?>" size="8" maxlength="8" class="txtMargen" /></td>
-								<td>  
-								  <input name="<?php echo "precio[".$listas[$i]['idLista'].']';?>" id="<?php echo "precio".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtPrecio" /></td>
-								<td><input name="<?php echo "preciofinal[".$listas[$i]['idLista'].']';?>" id="<?php echo "preciofinal".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtPrecioFinal" />
-								</td>
-							</tr>
-							  <?php } ?>
-					  </table>
-					  </div><!-- div pro_precios -->
-						<div class="pro_descripcion">						
-							<table width="100%" >							
+	<div class="row">
+	<p style="float:left;"><a href="<?php echo BASE_URL;?>?accion=pro"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24" title="Pagina Anterior"></a></p>
+	</div>	
+    
+	<form action="" method="post" name="form" id="form">    
+    <div class="row">
+    	<div class="col-md-6"><h2>Nuevo Producto</h2></div>
+		<div class="col-md-6 text-right">
+			<button type="submit" class="btn btn-primary" name="BtnGuardar" id="BtnGuardar" title="Crear Nuevo Producto" /><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Guardar</button>
+		</div>
+    	<hr>	
+   	</div>   	
+
+    	<div class="row"><!-- ROW1 -->
+    		<div class="col-xs-12 col-md-6"><!-- COL1 TITULO-->
+				<div class="panel panel-primary">
+				  	<div class="panel-heading">
+				    	<h3 class="panel-title">Descripcion de producto</h3>
+				  	</div>
+					<div class="panel-body">
+				  		<div class="table-responsive">
+				  			<table align="left" width="100%" class="table table-bordered"><!-- Nombre Producto -->
 								<tr>
-									<td><strong>Garantia (dias)</strong></td>
-									<td><input name="Garantia" id="Garantia" value="0" type="text" title="Garantia" class="input short" /></td>
+									<td><strong >Nombre (*)</strong></td>
+									<td><input name="Nombre" id="Nombre" type="text" title="Nombre" class="form-control"  />
+										<input name="SEO" id="SEO" type="hidden"  class="input medium"  /></td>
 								</tr>
-								<tr valign="top">
-									<td nowrap="nowrap" valign="top"><strong>Descripcion</strong></td>
-									<td><textarea name="Descripcion" id="Descripcion"   title="Descripcion" cols="50" rows="6" class="styled_textarea wysiwyg" /></textarea></td>
+								<tr>
+									<td><strong >Codigo (*)</strong></td>
+									<td><div class="input-group">									      
+									      <span class="input-group-btn">
+									        <button type="button" class="btn btn-success" id="buscarCodigo" title="Buscar codigo libre" /><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>  
+									      </span>
+									      <input name="Codigo" id="Codigo" type="text" title="Codigo de producto" class="form-control input-small"  />
+									    </div><!-- /input-group -->											
+										<img src="<?php echo PATH_IMG;?>accept.png" border="0"  id="aceptado">
+										<img src="<?php echo PATH_IMG;?>loading.gif" border="0" width="24" height="24" id="cargando">
+									</td>
 								</tr>
-								<tr valign="top">
-									<td><strong>Nota</strong></td>
-									<td><textarea name="Nota" id="Nota"  title="Nota" cols="50" rows="6" class="styled_textarea wysiwyg" /></textarea></td>
+								<tr>
+									<td width="20%"><strong>Tipo de producto (*)</strong></td>
+									<td width="80%"><?php echo $seltipo; ?></td>						
 								</tr>
-							</table>												
-						</div><!-- end pro_descripcion-->
-					</div><!-- end pro_columna -->
-					<div class="pro_columna2">
-						<div class="pro_imagen">				
-							<img src="<?php echo PATH_IMG;?>NoDisponible.jpg" border="0" id="imgImagen" width="155" height="200" >
-							<input name="modelpath" id="modelpath" type="hidden" value="<?php echo MODEL_PATH;?>" />
-							<input name="apppath" id="apppath" type="hidden" value="<?php echo APP_PATH;?>" />
-							<input name="pathimg" id="pathimg" type="hidden" value="<?php echo PATH_IMG;?>" />				
-							<input name="pathjs" id="pathjs" type="hidden" value="<?php echo PATH_JS;?>" />
-							<input name="Imagen" id="Imagen" type="hidden" title="Imagen" class="input medium"  />
-							<input type="button" class="button" value="Agregar Imagen" id="btnImagen" title="buscar una imagen" />            
-							<input type="button" class="button" value="Borrar" id="clrImagen" title="Borrar imagen" />   		         
-						</div><!-- end pro_imagen -->
-						
-						<div class="pro_control">						
-							<p><input type="checkbox" class="checkbox" checked="checked"  title="Nota Emergente" name="NotaEmerg" id="NotaEmerg" />Nota Emergente   </p>
-							<p><input type="checkbox" class="checkbox" checked="checked"  title="Publicar" name="Publicar" id="Publicar" />Publicar  </p> 
-							<p><input type="checkbox" class="checkbox"   title="Destacado" name="Destacado" id="Destacado" />Destacado </p> 			
-							<p><input type="checkbox" class="checkbox" title="se marca un producto para ser utilizado en algun filtro" value="0" name="Marcado" id="Marcado" />
-							Marcado </p>            
-							<p><input type="checkbox" class="checkbox" title="Usado" name="Usado" id="Usado" /> Usado</p>
-							<p><input type="checkbox" class="checkbox" title="para que figure en listados de productos reparables"  name="Reparable" id="Reparable" />
-							Reparable </p>
-							<p><input type="checkbox" class="checkbox" checked="checked" title="Vender sin stock"  name="VenderSinStock" id="VenderSinStock" />
-							Vender sin stock </p>
-							<p><input type="checkbox" class="checkbox" checked="checked" title="habilitar promociones"  name="Promociones" id="Promociones" />
-							Promociones </p>
-							<p><input type="checkbox" class="checkbox" checked="checked" title="Habilitado"  name="Habilitado" id="Habilitado" />
-							Habilitar</p>						
-						</div><!-- end pro_control -->	
-						<div class="pro_stock">						
-							  <p><strong>Modificar Stock</strong></p>
-							  <table width="100%"  class="TablaInterna">
+								<tr>
+									<td><strong>Categoria (*)</strong></td>
+									<td><?php echo $selCat; ?></td>					
+								</tr>																
+								<tr>
+									<td><strong >Barcode :</strong></td>
+									<td><input name="CodBar" id="CodBar" type="text" title="codigo de barras" class="form-control input-medium"  /></td>
+								</tr>
+								<tr>
+									<td><strong >Barcode2 :</strong></td>
+									<td><input name="CodBar2" id="CodBar2" type="text" title="codigo de barras" class="form-control input-medium"  /></td>
+								</tr>
+							</table>	
+				  		</div>
+			  		</div>
+		  		</div>    				
+    		</div><!-- COL1 TITULO-->
+    		<div class="col-xs-12 col-md-2"><!-- COL2 CHECKBOX -->
+    				<div class="panel panel-primary">					  	
+						<div class="panel-body">
+					  		<div class="checkbox">
+					  				<label><input type="checkbox" class="checkbox" checked="checked"  title="Nota Emergente" name="NotaEmerg" id="NotaEmerg" />Nota Emergente   </label>
+									<label><input type="checkbox" class="checkbox" checked="checked"  title="Publicar" name="Publicar" id="Publicar" />Publicar  </label> 
+									<label><input type="checkbox" class="checkbox"   title="Destacado" name="Destacado" id="Destacado" />Destacado </label> 			
+									<label><input type="checkbox" class="checkbox" title="se marca un producto para ser utilizado en algun filtro" value="0" name="Marcado" id="Marcado" />
+									Marcado </label>            
+									<label><input type="checkbox" class="checkbox" title="Usado" name="Usado" id="Usado" /> Usado</label>
+									<label><input type="checkbox" class="checkbox" title="para que figure en listados de productos reparables"  name="Reparable" id="Reparable" />
+									Reparable </label>
+									<label><input type="checkbox" class="checkbox" checked="checked" title="Vender sin stock"  name="VenderSinStock" id="VenderSinStock" />
+									Vender sin stock </label>
+									<label><input type="checkbox" class="checkbox" checked="checked" title="habilitar promociones"  name="Promociones" id="Promociones" />
+									Promociones </label>
+									<label><input type="checkbox" class="checkbox" checked="checked" title="Habilitado"  name="Habilitado" id="Habilitado" />
+									Habilitar</label>	
+					  		</div>
+				  		</div>
+			  		</div>    			
+    		</div><!-- COL2 CHECKBOX-->
+    		<div class="col-xs-12 col-md-4"><!-- COL3 IMAGEN-->
+    				<div class="panel panel-primary">					  	
+						<div class="panel-body">
+							<div class="row marketing center-block">
+						  		<div class="btn-group-vertical" role="group">						  			
+									<input name="modelpath" id="modelpath" type="hidden" value="<?php echo MODEL_PATH;?>" />
+									<input name="apppath" id="apppath" type="hidden" value="<?php echo APP_PATH;?>" />
+									<input name="pathimg" id="pathimg" type="hidden" value="<?php echo PATH_IMG;?>" />				
+									<input name="pathjs" id="pathjs" type="hidden" value="<?php echo PATH_JS;?>" />
+									<input name="Imagen" id="Imagen" type="hidden" title="Imagen" class="input medium"  />									
+									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#divCargarImg" id="btnImagen" aria-label="Left Align" title="buscar una imagen" />
+										  <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button> 
+									<button type="button" class="btn btn-default btn-lg" id="clrImagen" aria-label="Left Align">
+										  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+						  		</div>
+						  		<img src="<?php echo PATH_IMG;?>255x320.png" border="0" id="imgImagen" style="max-height: 320px;" class="img-thumbnail img-responsive" >
+					  		</div>
+				  		</div>
+			  		</div>				
+    		</div><!-- COL3 IMAGEN-->
+    	</div><!-- ROW1 -->
+    	<div class="row"><!-- ROW2 -->
+    		<div class="col-xs-12 col-md-6"><!-- COL1 -->
+    			<div class="panel panel-primary">
+				  	<div class="panel-heading">
+				    	<h3 class="panel-title">Modificar Precios</h3>
+				  	</div>
+					<div class="panel-body">
+				  		<div class="table-responsive">				  			
+							<table width="60%" class="table table-bordered">
+							  <tr>
+								<td align="right">Moneda:</td>
+								<td><?php echo $selMon; ?></td>
+							  </tr>
+							  <tr>
+								<td width="50%" align="right">Costo:</td>
+								<td width="50%"><input name="Costo" id="Costo" type="text" value="0.00" title="moneda principal seleccionada por defecto" class="input short"  /></td>
+							  </tr>
+							  <tr>
+								<td align="right">Cantidad por defecto:</td>
+								<td><input name="UnidxDef" id="UnidxDef" type="text" value="1" title="cantidad de unidades por defecto" class="input short"  /></td>
+							  </tr>
+							  <tr>
+								<td align="right">Iva (*):</td>
+								<td><?php echo $seliva; ?></td>
+							  </tr>
+							  <tr>
+								<td align="right">Max descuento:</td>
+								<td><input name="MaxDescuento" type="text" id="MaxDescuento" value="0.00" size="8" maxlength="8" /></td>
+							  </tr>
+							</table>
+				  		</div>
+			  		</div>
+		  		</div>
+    		</div><!-- COL1 -->
+    		<div class="col-xs-12 col-md-6"><!-- COL2 -->
+    			<div class="panel panel-primary">
+				  	<div class="panel-heading">
+				    	<h3 class="panel-title"><strong>Listas de Precios</strong> (en Moneda Principal)</h3>
+				  	</div>
+					<div class="panel-body">
+				  		<div class="table-responsive">				  			
+							<table width="80%"  class="table table-bordered">
+								<tr>
+									  <td width="15%">Lista</td>
+									  <td width="15%">Costo C/Iva</td>
+									  <td width="15%">Margen</td>
+									  <td width="15%">Venta S/Iva</td>
+									  <td width="15%">Venta C/Iva</td>
+								</tr>
+									<?php 
+									$resultados = sizeof($listas);
+									for($i=0;$i<$resultados;$i++) { ?>
+									  <tr>
+										<td><?php echo $listas[$i]['Nombre']; ?></td>
+										<td><input name="<?php echo "costo[".$listas[$i]['idLista'].']';?>" id="<?php echo "costo".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtCosto" disabled />								</td>
+										<td><input name="<?php echo "margen[".$listas[$i]['idLista'].']';?>" id="<?php echo "margen".$listas[$i]['idLista'];?>" type="text" value="<?php echo $listas[$i]['Margen']; ?>" size="8" maxlength="8" class="txtMargen" /></td>
+										<td>  
+										  <input name="<?php echo "precio[".$listas[$i]['idLista'].']';?>" id="<?php echo "precio".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtPrecio" /></td>
+										<td><input name="<?php echo "preciofinal[".$listas[$i]['idLista'].']';?>" id="<?php echo "preciofinal".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtPrecioFinal" />
+										</td>
+									</tr>
+									  <?php } ?>
+							  </table>
+				  		</div>
+			  		</div>
+		  		</div>
+    		</div><!-- COL2 -->
+    	</div><!-- ROW2 -->    
+    	<div class="row"><!-- ROW3 -->
+    		<div class="col-md-6"><!-- COL1 -->
+    			<div class="panel panel-primary">
+				  	<div class="panel-heading">
+				    	<h3 class="panel-title">Modificar Stock</h3>
+				  	</div>
+					<div class="panel-body">
+				  		<div class="table-responsive">
+				  			<table width="100%"  class="table table-bordered">
 								<tr>
 								  <td width="40%">Depositos</td>
 								  <td width="20%">Stock</td>
@@ -203,30 +219,73 @@
 									<td><input name="<?php echo "stockmax[".$depositos[$i]['idDeposito'].']';?>" type="text" id="stockmax" value="0" size="5" maxlength="5" /></td>
 								</tr>
 								  <?php } ?>
-							  </table>
-						</div><!-- div producto_stock -->
-						<div class="pro_cat">
-							<p><strong>Agregar otras categorias</strong></p>						
-							<table width="100%"  class="TablaInterna" id="tablacat">							
+							  </table>	
+				  		</div>
+			  		</div>
+		  		</div>
+							  
+    		</div><!-- COL1 -->   
+    		<div class="col-md-6"><!-- COL2 -->
+    			<div class="panel panel-primary">
+				  	<div class="panel-heading">
+				    	<h3 class="panel-title">Agregar otras categorias</h3>
+				  	</div>
+					<div class="panel-body">
+				  		<div class="table-responsive">				  			
+							<table width="100%"  class="table table-bordered" id="tablacat">							
 								<thead>
 								<tr>
-									<td><?php echo $selCat2; ?><input type="button"  value="+" name="addCategoria" id="addCategoria" title="Agregar categoria" /></td>															
-									<td>Accion</td>
+									<td><?php echo $selCat2; ?></td>												
+									<td><button type="button" class="btn btn-primary" name="addCategoria" id="addCategoria" title="Agregar categoria" /><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td>
 								</tr>
 								</thead>
 								<tbody>							
 								</tbody>
 							</table>
-						</div><!-- end pro_cat -->
-									
-					
-						
-					</div><!-- end pro_columna2 -->
-											
-			<input name="pDescuento" type="hidden" id="pDescuento" value="0" size="8" maxlength="8" />			
-			<input name="idMarca" id="idMarca" value="0" type="hidden"  class="input medium"  />
-			<input name="idPadre" id="idPadre" value="0" type="hidden"  class="input medium"  />					
-			<input type="hidden" name="grabar" value="si" />            
-			<div class="pro_submit"><input type="submit" class="button" value="Crear" name="BtnGuardar" id="BtnGuardar" title="Crear Nuevo Producto" /> </div>
-            </form>
-
+				  		</div>
+			  		</div>
+		  		</div>
+    		</div><!-- COL2 -->  		    		
+    	</div><!-- ROW3 -->
+    	<div class="row"><!-- ROW4 -->
+    		<div class="col-md-12"><!-- COL1 -->
+    			<div class="panel panel-primary">
+				  	<div class="panel-heading">
+				    	<h3 class="panel-title">Anotaciones</h3>
+				  	</div>
+					<div class="panel-body">
+				  		<div class="table-responsive">
+				  			<table width="100%" class="table table-bordered" >							
+								<tr>
+									<td><strong>Garantia (dias)</strong></td>
+									<td><input name="Garantia" id="Garantia" value="0" type="text" title="Garantia" class="input short" /></td>
+								</tr>
+								<tr valign="top">
+									<td nowrap="nowrap" valign="top"><strong>Descripcion</strong></td>
+									<td><textarea name="Descripcion" id="Descripcion"   title="Descripcion" cols="50" rows="6" class="styled_textarea wysiwyg" /></textarea></td>
+								</tr>
+								<tr valign="top">
+									<td><strong>Nota</strong></td>
+									<td><textarea name="Nota" id="Nota"  title="Nota" cols="50" rows="6" class="styled_textarea wysiwyg" /></textarea></td>
+								</tr>
+							</table>
+				  		</div>
+			  		</div>
+		  		</div>
+    		</div><!-- COL1 -->    		    		
+    	</div><!-- ROW4 -->
+    	<div class="row"><!-- ROW5 -->
+    		<div class="col-md-12 text-right"><!-- COL1 -->
+    			<div class="form-group">
+	    			<input name="pDescuento" type="hidden" id="pDescuento" value="0" size="8" maxlength="8" />			
+					<input name="idMarca" id="idMarca" value="0" type="hidden"  class="input medium"  />
+					<input name="idPadre" id="idPadre" value="0" type="hidden"  class="input medium"  />				
+					<input type="hidden" name="grabar" value="si" />            
+					<button type="submit" class="btn btn-primary" name="BtnGuardar" id="BtnGuardar" title="Crear Nuevo Producto" /><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Guardar</button>
+				</div>
+    		</div><!-- COL1 -->    		    		
+    	</div><!-- ROW5 -->    											
+			
+    </form>
+</div><!-- CONTAINER -->
+<?php require_once( PATH_JS . "upload/cargar_imagen.php"); 	?>

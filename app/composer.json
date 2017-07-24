@@ -9,6 +9,9 @@
 	"require": {
 		"phpmailer/phpmailer": "^5.2",
 		"paypal/rest-api-sdk-php": "*",
-		"mercadopago/sdk": "0.5.2"
+		"mercadopago/sdk": "0.5.2",		
+		"components/jquery": "^3.1",
+		"components/font-awesome": "^4.7",
+		"twbs/bootstrap": "^3.3"		
 	}
 }

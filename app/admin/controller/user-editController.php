@@ -15,8 +15,7 @@ $datos=$u->get_usuarios_por_id($_GET["id"]);
 
 $vista = new View();
 
-$inc = $inc = INC_JQUERY . INC_VALIDITY ;
-$vista->incluir($inc);
+$vista->incluir(INC_VALIDITY);
 
 $vista->renderHeader("conf");
 require_once( VIEW_PATH . 'user-edit.phtml' );

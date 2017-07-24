@@ -8,9 +8,8 @@ $cat= new Categorias();
 $selCat = $cat->getSelCategorias(0,0,"Seleccionar Categoria");
 
 
-
 $vista = new View();
-$vista->incluir( INC_JQUERY . INC_TABLESORTER . INC_TABLESORTER_PAGER );
+$vista->incluir(  INC_TABLESORTER . INC_TABLESORTER_PAGER );
 $vista->renderHeader("pro");
 require_once( VIEW_PATH . 'pro.phtml' );
 $vista->renderFooter();

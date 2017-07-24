@@ -1,19 +1,19 @@
 <?php
 
-class Producto extends Conectar 
+class Producto extends Conectar
 {
     private $u;
-    
+
     public function __construct()
     {
         parent::__construct();
         $this->u=array();
     }
-    
+
     public function getProductos($where=" order by Nombre asc ", $limit=" ")
     {
-        $sql="SELECT `idProducto` ,  `Codigo` ,  `Nombre` , `CodBar` ,  `CodBar2` ,  `idPadre` ,  `idTipo` , `Publicar` ,  
-              `Destacado` , `Habilitado` 
+        $sql="SELECT `idProducto` ,  `Codigo` ,  `Nombre` , `CodBar` ,  `CodBar2` ,  `idPadre` ,  `idTipo` , `Publicar` ,
+              `Destacado`,`Imagen` , `Habilitado`
               FROM  `tbpro` ". $where . $limit ;
         return parent::getRows($sql);
     }
@@ -21,52 +21,52 @@ class Producto extends Conectar
     {
         parent::ClearArray();
     }
-    
+
 	//recibe parametros para armar una consulta filtrada y retorna listado en json
     public function getProductosAjax($txtbuscar, $limite="" , $campo_cat="",$campo_orden="", $habilitado)
     {
        if($campo_cat == "")
        {
-            $sql="SELECT  `idProducto`, `Codigo` ,  `Nombre` , `idPadre` ,  `idTipo` , `Publicar`             
+            $sql="SELECT  `idProducto`, `Codigo` ,  `Nombre` , `idPadre` ,  `idTipo` , `Publicar`
                   FROM  `tbpro` " . $txtbuscar . $habilitado . $campo_orden . $limite;
        }else
        {
             $sql="SELECT tbpro.idProducto, tbpro.Codigo, tbpro.Nombre, tbpro.idPadre, tbpro.idTipo, tbpro.Publicar
                   FROM tbpro
                   Inner Join tbpro_categorias ON tbpro.idProducto = tbpro_categorias.idProducto " . $txtbuscar . $habilitado . $campo_cat . $campo_orden . $limite;
-       } 
+       }
         return parent::getRowsJson($sql);
     }
-    
+
 	public function buscar_codigo($iniciales)
     {
        if($iniciales != "")
-       {            
+       {
 			$sql="SELECT Max(`Codigo`) as ultimo FROM  `tbpro` WHERE Codigo LIKE '" . trim($iniciales) . "%'";
 			$res = parent::getRows($sql);
 			if(sizeof($res))
-			{					
+			{
 				return parent::sumarUno($res[0]["ultimo"], $iniciales);
 			}else return trim($iniciales)."0001";
-       }else       
+       }else
 			return "GEN0001";
     }
-	
+
     public function add()
     {
-                
+
         if(empty($_POST["Nombre"]) or empty($_POST["Codigo"]) or empty($_POST["idCategoria"]) or empty($_POST["idMoneda"]) or empty($_POST["idIva"]))
         {
-            header("Location:".BASE_URL."?accion=pro-add&st=1");exit;
+            header("Location:".BASE_URL."?accion=pro-add&st=".MSG_WARNING);exit;
         }
-		
-        if(!parent::getRowId("SELECT tbpro.Codigo FROM tbpro WHERE Codigo=?",$_POST["Codigo"])) //si es codigo ya existe no lo crea
+
+        if(!parent::getRowId("SELECT tbpro.Codigo FROM tbpro WHERE Codigo=?",array($_POST["Codigo"]))) //si es codigo ya existe no lo crea
 		{
 			$sql="INSERT INTO tbpro ( `idProducto`, `Codigo`, `Nombre`, `SEO`, `FechaIngreso`, `HoraIngreso`, `idMoneda`, `Costo`, `UnidxDef`,
 				  `MaxDescuento`, `pDescuento`, `Imagen`, `CodBar`, `CodBar2`, `idMarca`, `idPadre`, `idTipo`, `idIva`, `Garantia`, `Descripcion`,
 				  `Nota`, `NotaEmerg`, `Publicar`, `Destacado`, `Marcado`, `Usado`, `Reparable`, `VenderSinStock`, `Promociones`, `Habilitado` )
 				  VALUES ( NULL ,? ,? ,? ,NOW() ,NOW(),? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? )";
-			
+
 			//los checks no tildados no generan variable post!!
 			$NotaEmerg  = (isset($_POST["NotaEmerg"]))? 1:0;
 			$Publicar  = (isset($_POST["Publicar"]))? 1:0;
@@ -75,14 +75,14 @@ class Producto extends Conectar
 			$Usado  = (isset($_POST["Usado"]))? 1:0;
 			$Reparable  = (isset($_POST["Reparable"]))? 1:0;
 			$VenderSinStock  = (isset($_POST["VenderSinStock"]))? 1:0;
-			$Promociones  = (isset($_POST["Promociones"]))? 1:0;		
-			$Habilitado = (isset($_POST["Habilitado"]))? 1:0;    
-			
-			$stmt=$this->dbh->prepare($sql);                
+			$Promociones  = (isset($_POST["Promociones"]))? 1:0;
+			$Habilitado = (isset($_POST["Habilitado"]))? 1:0;
+
+			$stmt=$this->dbh->prepare($sql);
 			$stmt->bindValue(1,$_POST["Codigo"],PDO::PARAM_STR);
 			$stmt->bindValue(2,$_POST["Nombre"],PDO::PARAM_STR);
-			$stmt->bindValue(3,$_POST["SEO"],PDO::PARAM_STR);        
-			$stmt->bindValue(4,$_POST["idMoneda"],PDO::PARAM_INT);        
+			$stmt->bindValue(3,$_POST["SEO"],PDO::PARAM_STR);
+			$stmt->bindValue(4,$_POST["idMoneda"],PDO::PARAM_INT);
 			$stmt->bindValue(5,$_POST["Costo"],PDO::PARAM_INT);
 			$stmt->bindValue(6,$_POST["UnidxDef"],PDO::PARAM_INT);
 			$stmt->bindValue(7,$_POST["MaxDescuento"],PDO::PARAM_INT);
@@ -106,44 +106,44 @@ class Producto extends Conectar
 			$stmt->bindValue(25,$VenderSinStock,PDO::PARAM_INT);
 			$stmt->bindValue(26,$Promociones,PDO::PARAM_INT);
 			$stmt->bindValue(27,$Habilitado,PDO::PARAM_INT);
-					
-			
-			$res = $stmt->execute();   			
-        }else { header("Location:".BASE_URL."?accion=pro-add&st=4");exit; }   //ya existe
-		
+
+
+			$res = $stmt->execute();
+        }else { header("Location:".BASE_URL."?accion=pro-add&st=".MSG_INFO);exit; }   //ya existe
+
         if($res)
-        {            
-			return $this->dbh->lastInsertId();			
+        {
+			return $this->dbh->lastInsertId();
         }else{
             print_r($stmt->errorInfo());
-            header("Location:".BASE_URL."?accion=pro-add&st=3");exit; 
+            header("Location:".BASE_URL."?accion=pro-add&st=".MSG_DANGER);exit;
         }
-        
-                
+
+
     }
-    
+
     public function getProductoId($id)
-    {       
-        $sql="SELECT  `idProducto`, `Codigo`, `Nombre`, `SEO`, `FechaIngreso`, `HoraIngreso`, `FechaMod`, `HoraMod`, `FechaUltVenta`, `HoraUltVenta`,  
-			`idMoneda`, `Costo`, `UnidxDef`, `MaxDescuento`, `pDescuento`, `Vendidas`, `Imagen`, `CodBar`, `CodBar2`, `idMarca`, `idPadre`, `idTipo`,  
-			`idIva`, `Garantia`, `Descripcion`, `Nota`, `NotaEmerg`, `Publicar`, `Destacado`, `Marcado`, `Usado`, `Reparable`, `VenderSinStock`, 
-			`Promociones`, `Habilitado`	FROM `tbpro` where idProducto=?";
-        
-        return parent::getRowId($sql, $id);                                       
+    {
+        $sql="SELECT  `idProducto`, `Codigo`, `Nombre`, `SEO`, `FechaIngreso`, `HoraIngreso`, `FechaMod`, `HoraMod`, `FechaUltVenta`, `HoraUltVenta`,
+			`idMoneda`, `Costo`, `UnidxDef`, `MaxDescuento`, `pDescuento`, `Vendidas`, `Imagen`, `CodBar`, `CodBar2`, `idMarca`, `idPadre`, `idTipo`,
+			`idIva`, `Garantia`, `Descripcion`, `Nota`, `NotaEmerg`, `Publicar`, `Destacado`, `Marcado`, `Usado`, `Reparable`, `VenderSinStock`,
+			`Promociones`, `Habilitado`	FROM `tbpro` where idProducto=? LIMIT 1;";
+
+        return parent::getRowId($sql, array($id));                                       
     }
-    
+
     public function edit()
     {
         if(empty($_POST["Nombre"]) or empty($_POST["Codigo"]) or empty($_POST["idCategoria"]) or empty($_POST["idMoneda"]) or empty($_POST["idIva"]))
         {
-            header("Location:".BASE_URL."?accion=pro-edit&st=1");exit;
+            header("Location:".BASE_URL."?accion=pro-edit&st=".MSG_WARNING);exit;
         }
-        
+
         $sql="UPDATE tbpro
               SET
               `Codigo`=?, `Nombre`=?, `SEO`=?, `FechaMod`=NOW(), `HoraMod`=NOW(), `idMoneda`=?, `Costo`=?, `UnidxDef`=?, `MaxDescuento`=?, `pDescuento`=?,
 			  `Imagen`=?, `CodBar`=?, `CodBar2`=?, `idMarca`=?, `idPadre`=?, `idTipo`=?, `idIva`=?, `Garantia`=?, `Descripcion`=?, `Nota`=?,
-			  `NotaEmerg`=?, `Publicar`=?, `Destacado`=?, `Marcado`=?, `Usado`=?, `Reparable`=?, `VenderSinStock`=?, `Promociones`=?, `Habilitado`=?			  
+			  `NotaEmerg`=?, `Publicar`=?, `Destacado`=?, `Marcado`=?, `Usado`=?, `Reparable`=?, `VenderSinStock`=?, `Promociones`=?, `Habilitado`=?
               WHERE
               `idProducto`=?";
 
@@ -155,16 +155,16 @@ class Producto extends Conectar
 		$Usado  = (isset($_POST["Usado"]))? 1:0;
 		$Reparable  = (isset($_POST["Reparable"]))? 1:0;
 		$VenderSinStock  = (isset($_POST["VenderSinStock"]))? 1:0;
-		$Promociones  = (isset($_POST["Promociones"]))? 1:0;		
-		$Habilitado = (isset($_POST["Habilitado"]))? 1:0;    
-			
-             
+		$Promociones  = (isset($_POST["Promociones"]))? 1:0;
+		$Habilitado = (isset($_POST["Habilitado"]))? 1:0;
+
+
         $stmt=$this->dbh->prepare($sql);
-		
+
 		$stmt->bindValue(1,$_POST["Codigo"],PDO::PARAM_STR);
 		$stmt->bindValue(2,$_POST["Nombre"],PDO::PARAM_STR);
-		$stmt->bindValue(3,$_POST["SEO"],PDO::PARAM_STR);        
-		$stmt->bindValue(4,$_POST["idMoneda"],PDO::PARAM_INT);        
+		$stmt->bindValue(3,$_POST["SEO"],PDO::PARAM_STR);
+		$stmt->bindValue(4,$_POST["idMoneda"],PDO::PARAM_INT);
 		$stmt->bindValue(5,$_POST["Costo"],PDO::PARAM_INT);
 		$stmt->bindValue(6,$_POST["UnidxDef"],PDO::PARAM_INT);
 		$stmt->bindValue(7,$_POST["MaxDescuento"],PDO::PARAM_INT);
@@ -189,38 +189,32 @@ class Producto extends Conectar
 		$stmt->bindValue(26,$Promociones,PDO::PARAM_INT);
 		$stmt->bindValue(27,$Habilitado,PDO::PARAM_INT);
 		$stmt->bindValue(28,$_POST["idProducto"],PDO::PARAM_INT);
-		
-        
-        if($stmt->execute())
-        {
-            return true;
-        }else
-        {
-			return false;
-        }        
-        
+
+
+        return parent::exePrepare($stmt);
+
     }
-    
+
     public function delete()
-    {        
-        //primero es necesario checkear la integridad referencial            
-            
+    {
+        //primero es necesario checkear la integridad referencial
+
             $sql="delete from tbmoneda where idMoneda=?";
-    		
-    		$stmt=$this->dbh->prepare($sql);            
-            
+
+    		$stmt=$this->dbh->prepare($sql);
+
             $id=$_GET["id"];
             $stmt->bindValue(1,$id,PDO::PARAM_INT);
-    		
-    		
+
+
     		if($stmt->execute())
-            {                        
-                header("Location: ".BASE_URL."?accion=mon&st=2");
+            {
+                header("Location: ".BASE_URL."?accion=mon&st=".MSG_SUCCESS);
             }else
             {
-                header("Location: ".BASE_URL."?accion=mon&st=1");
+                header("Location: ".BASE_URL."?accion=mon&st=".MSG_DANGER);
             }
-            
+
     }
 }
 

@@ -1,27 +1,33 @@
 <?php
 session_start();
 
+define('DS', DIRECTORY_SEPARATOR);
+define('ROOT', 'app/admin/');
+define('APP_PATH', 'application/' ); //Root se usa para las inclusiones
+
 //define('BASE_URL', 'http://admin.pablo-intranet.com.ar/'); //ruta base para todo lo que no sea include/require
-define('BASE_URL', 'http://localhost/ecom2017/app/admin/'); //ruta base para todo lo que no sea include/require
+define('BASE_URL', 'http://localhost/tiendaphp/app/admin/'); //ruta base para todo lo que no sea include/require
 define('DEFAULT_CONTROLLER', 'index');
 define('DEFAULT_LAYOUT', 'default');
 define('PATH_PUBLIC_RELAT', 'public/'); // ruta donde se guardan las carpetas para imagenes del contenido por ejemplo
 define('PATH_LAYOUT', BASE_URL . 'view/layout/' . DEFAULT_LAYOUT . '/');
 define('PATH_LAYOUT_RELAT', 'view/layout/' . DEFAULT_LAYOUT . '/');
-define('DIR_IMG', 'img/');
+define('DIR_IMG', 'images/');
 define('DIR_JS',  'js/');
 define('DIR_CSS', 'css/');
-define('PATH_IMG', PATH_LAYOUT . DIR_IMG);  // ubicadas en view/layout...
-define('PATH_JS',  PATH_LAYOUT . DIR_JS);
-define('PATH_CSS', PATH_LAYOUT . DIR_CSS);
+define('PATH_IMG', DIR_IMG);  
+define('PATH_IMG_PUBLIC', DIR_IMG."public/");
+define('PATH_JS',  DIR_JS);
+define('PATH_CSS', DIR_CSS);
+define('AJAX', APP_PATH . 'ajax/');
+define('PATH_FUNCTIONS', APP_PATH . 'functions/');
 
 
+define( 'VIEW_PATH', 'view/');
+define('MODEL_PATH', 'model/');
+define('CONTR_PATH', 'controller/');
 
-define( 'VIEW_PATH', ROOT . 'view' . DS);
-define('MODEL_PATH', ROOT . 'model' . DS);
-define('CONTR_PATH', ROOT . 'controller' . DS);
-
-define('APP_NAME', '.::Service Intranet::.');
+define('APP_NAME', '.::Tienda PHP_ADMIN::.');
 define('APP_SLOGAN', 'desarrollado con php y mvc...');
 define('APP_COMPANY', 'www.pablo-intranet.com.ar');
 
@@ -29,7 +35,6 @@ define('APP_COMPANY', 'www.pablo-intranet.com.ar');
 define('INC_CONTENT_CSS', '<link href="' . PATH_CSS . 'estilosclases.css" rel="stylesheet" type="text/css" />');
 
 define('INC_PRO_JS', '<script type="text/javascript" src="' . PATH_JS . 'pro_js.js" language="javascript"></script>');
-define('INC_JQUERY', '<script type="text/javascript" src="' . PATH_JS . 'jquery.js" language="javascript"></script>');
 //tema tronastic: <link type="text/css" href="' . PATH_JS . 'jqueryui/trontastic/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
 define('INC_JQUERYUI', '<link type="text/css" href="' . PATH_JS . 'jqueryui/redmond/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" />
 						<script type="text/javascript" src="' . PATH_JS . 'jqueryui/jquery-ui-1.9.2.custom.min.js" language="javascript"></script>
@@ -47,6 +52,10 @@ define('INC_TABLESORTER_PAGER', '<link href="' . PATH_JS . 'tablesorter/addons/p
 
 define('INC_TABLESORTER_GROUPING', '<script type="text/javascript" src="' . PATH_JS . 'tablesorter/widgets/widget-grouping.js" language="javascript"></script>');
 
+define('MSG_SUCCESS',1);
+define('MSG_WARNING',2);
+define('MSG_DANGER' ,3);
+define('MSG_INFO' ,4);
 
 // remoto para digitalstoremerlo.com.ar
 //define('DB_NAME', 'pablo_ds');
@@ -54,5 +63,8 @@ define('INC_TABLESORTER_GROUPING', '<script type="text/javascript" src="' . PATH
 //define('DB_PASS', 'H=#47P92^)lw');
 //define('DB_CHAR', 'utf8');
 
-
+//INCLUIDO EN TODO EL SITIO
+require_once( MODEL_PATH .'database.php');
+require_once( APP_PATH.   'view.php');
+require_once( PATH_FUNCTIONS . 'mensajes.php');
 ?>

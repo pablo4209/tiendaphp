@@ -1,22 +1,13 @@
-      </div>
-      <!--  END PRIMARY CONTENT -->
+</div> <!-- End principal content -->
+<div class="clearfix" ></div>
+    <hr class="divider">
 
-      
-       <!--  START SIDEBAR -->
-      <!-- <?php require_once( VIEW_PATH . "sidebar.phtml");?> -->
-	  <!--  end div #sidebar -->
-      <!--  END SIDEBAR -->
-      
-    </div><!--  end div #content_wrapper -->
-<!--  END CONTENT_WRAPPER -->
-
-<!--  START FOOTER -->
-	<div id="footer">
-    <p>
-	<?php require_once( VIEW_PATH . "footer.phtml");?>
-	</p>
-</div>
-<!--  END CEND -->
-</body>
-
+    <footer>
+      <p class="pull-right"><a href="#">Back To Top</a></p>
+      <p>&copy; Copyright  Todos los derechos reservados  | Desarrollado por <a href="#" target="_blank" title="Pablo">Pablo</a></p>
+    </footer>
+    </div>
+    <!-- End Marketing -->
+    
+  </body>
 </html>
