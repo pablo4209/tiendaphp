@@ -75,7 +75,14 @@ class proCategorias extends Conectar
 	    $limit_end = $limit_start + $cant_pagina;
 
 	    if($idCategoria !=0){
-			$sql  = "SELECT a.idProducto, a.Nombre, a.Codigo, Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2)  as Precio, a.Usado, c.Margen, d.Stock, a.Imagen
+			$sql  = "SELECT a.idProducto, 
+							ANY_VALUE(a.Nombre), 
+							ANY_VALUE(a.Codigo), 
+							ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio, 
+							ANY_VALUE(a.Usado), 
+							ANY_VALUE(c.Margen), 
+							ANY_VALUE(d.Stock), 
+							a.Imagen
 					FROM tbpro as a 
 			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
 			                   LEFT JOIN  tbpro_precios as c ON a.idProducto = c.idProducto
@@ -96,7 +103,14 @@ class proCategorias extends Conectar
 	    	 //return parent::getRowId($sql, array($idCategoria, $idCategoria, $limit_start, $limit_end));
 	    }else{
 	    	
-	    	$sql  = "SELECT a.idProducto, a.Nombre, a.Codigo, Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2)  as Precio, a.Usado, c.Margen, d.Stock, a.Imagen
+	    	$sql  = "SELECT a.idProducto, 
+	    					ANY_VALUE(a.Nombre), 
+							ANY_VALUE(a.Codigo), 
+	    					ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio, 
+	    					ANY_VALUE(a.Usado), 
+							ANY_VALUE(c.Margen), 
+							ANY_VALUE(d.Stock), 
+							a.Imagen
 					FROM tbpro as a 
 			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
 			                   LEFT JOIN  tbpro_precios as c ON a.idProducto = c.idProducto

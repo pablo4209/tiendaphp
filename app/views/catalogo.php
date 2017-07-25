@@ -14,12 +14,12 @@ if(isset($_GET['pagina'])){
 require_once( CONN_MODEL_PATH . "proCatModel.php");
 $db = new proCategorias();
   
- $resultados = $db->getProductosCatCount($idCategoria); 
- $pro = $db->getProductosCat($idCategoria, $pagina, PRO_POR_PAGINA); 
+ $resultados = $db->getProductosCatCount( $idCategoria ); 
+ $pro = $db->getProductosCat( $idCategoria , $pagina , PRO_POR_PAGINA ); 
  
  $cant_pag = 0;
  if($resultados > PRO_POR_PAGINA){
-    $cant_pag = ceil($resultados / PRO_POR_PAGINA); 
+    $cant_pag = ceil( $resultados / PRO_POR_PAGINA ); 
  }
 
 ?>
@@ -45,7 +45,7 @@ $db = new proCategorias();
               <div class="panel panel-default">
                  <div class="panel-body">
                           <?php  
-                          if($resultados){
+                          if(is_array($pro)){
                             foreach ($pro as $row){ ?>
                             <div class="col-sm-6 col-md-3 col-xs-12 col-lg-3">
                               

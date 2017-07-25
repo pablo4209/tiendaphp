@@ -77,3 +77,13 @@ body a:hover{
 	max-width: 220px !important;
 	min-width: 70px;
 }
+
+ #input-search{
+    width: 120px; 
+    -webkit-transition:width 0.3s ease-in-out;
+    transition: width 2s;	
+ }
+ #input-search:focus{
+    width: 350px;
+    -webkit-transition:width 0.5s ease-in-out;
+}

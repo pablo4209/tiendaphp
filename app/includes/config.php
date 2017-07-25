@@ -12,7 +12,7 @@
 	define('FUNCTIONS'  ,	ROOT . "bin/functions/");
 	define('VIEW'  ,	ROOT . "views/");
 	define('CONN_MODEL_PATH'  ,	ROOT . "admin/model/");
-	define('BASE_URL' , "http://localhost/TiendaPHP/" );
+	define('BASE_URL' , "http://localhost/tiendaphp/" );
 
 	define('IMG_PROD' ,  ROOT . "admin/images/");
 
@@ -28,7 +28,7 @@
 	require( COMPOSER . "autoload.php" );
 	require_once(  FUNCTIONS . "Encrypt.php" );
 	require_once(  FUNCTIONS . "EmailTemplate.php" );
-	require_once(  FUNCTIONS . "EmailLostpassTemplate.php" );
+	//require_once(  FUNCTIONS . "EmailLostpassTemplate.php" );
 	require_once(  CONN_MODEL_PATH . "database.php" );
 	require_once(  FUNCTIONS . "Categorias.php" );
 	require_once(  FUNCTIONS . "Sesion.php" );

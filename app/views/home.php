@@ -11,10 +11,9 @@
               </div><!-- END COL SIDEBAR -->    
         
                             
-              <div class="col-md-9 col-sm-8 col-xs-12"> <!-- slide -->  
-                    <?php require_once("slide.php"); ?>
-              </div><!-- end slide -->
-              <div class="clearfix" style="margin-bottom:20px;"></div>
+              <?php //require_once("slide.php"); ?>
+              
+              
               <div class="col-md-9 col-sm-8 col-xs-12" style="float:right;"> <!-- CONTENIDO -->
                    
                 <div id="_AJAX_CART_"></div>                 
