@@ -10,9 +10,9 @@ class ProductoTipo extends Conectar
         $this->u=array();
     }
     
-    public function crearSelect($sel="")
+    public function crearSelect( $sel="" )
     {
-        return parent::crearSelectTabla("tbpro_tipo", "idTipo", "Descripcion", $sel);       
+        return parent::crearSelectTabla("tbpro_tipo", "idTipo", "Descripcion", $sel );       
     }
 }
 

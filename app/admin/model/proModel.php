@@ -17,10 +17,36 @@ class Producto extends Conectar
               FROM  `tbpro` ". $where . $limit ;
         return parent::getRows($sql);
     }
-    public function LimpiarArray()
+
+    //recibe cadena de busqueda y retorna conjunto de registros
+    public function getProductosBuscar( $txt="" )
     {
-        parent::ClearArray();
+    	$sql  = "SELECT a.idProducto, 
+	    					ANY_VALUE(a.Nombre), 
+							ANY_VALUE(a.Codigo), 
+	    					ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio, 
+	    					ANY_VALUE(a.Usado), 
+							ANY_VALUE(c.Margen), 
+							ANY_VALUE(d.Stock), 
+							a.Imagen
+					FROM tbpro as a 
+			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
+			                   LEFT JOIN  tbpro_precios as c ON a.idProducto = c.idProducto
+			                   LEFT JOIN  tbpro_stock as d ON a.idProducto = d.idProducto
+			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda
+					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1						
+					AND a.Nombre LIKE ? 
+	    	 		GROUP BY a.idProducto "; 
+	    	 		//LIMIT ?, ?";
+	    	
+	    	$consulta=$this->dbh->prepare($sql);
+	    	$consulta->bindValue(1,'%'.$txt.'%',PDO::PARAM_STR);
+	        //$consulta->bindValue(2,$limit_start,PDO::PARAM_INT);
+	        //$consulta->bindValue(3,$limit_end,PDO::PARAM_INT);
+
+	        return parent::exePrepare_FetchAssoc($consulta);
     }
+  
 
 	//recibe parametros para armar una consulta filtrada y retorna listado en json
     public function getProductosAjax($txtbuscar, $limite="" , $campo_cat="",$campo_orden="", $habilitado)
@@ -215,6 +241,11 @@ class Producto extends Conectar
                 header("Location: ".BASE_URL."?accion=mon&st=".MSG_DANGER);
             }
 
+    }
+
+    public function LimpiarArray()
+    {
+        parent::ClearArray();
     }
 }
 

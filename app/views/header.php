@@ -70,13 +70,13 @@
             
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown" style="padding-right:50px;">
-                    <form class="navbar-form navbar-right" role="search">
-                      <div class="form-group">
-                        <input type="text" class="text-left form-control" placeholder="Buscar" id="input-search" >
-                      </div>
-                      <button type="submit" class="btn btn-default">
-                          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                      </button>
+                    <form class="navbar-form navbar-right" role="search" method="post" action="<?php echo BASE_URL?>?accion=catalogo">
+                        <div class="form-group">
+                          <input type="text" class="text-left form-control" placeholder="Buscar" id="input-search" name="input-search" >
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>
                     </form>
                 </li>
                 <li class="dropdown">

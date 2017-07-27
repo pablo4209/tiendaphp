@@ -118,6 +118,7 @@ class proCategorias extends Conectar
 			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda
 					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1						
 	    	 		GROUP BY a.idProducto LIMIT ?, ?";
+	    	
 	    	$consulta=$this->dbh->prepare($sql);
 	        $consulta->bindValue(1,$limit_start,PDO::PARAM_INT);
 	        $consulta->bindValue(2,$limit_end,PDO::PARAM_INT);

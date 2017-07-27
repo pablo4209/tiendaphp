@@ -31,30 +31,77 @@
 
 <h2>Nuevo Documento</h2>
 <div style="float:left;width:70%;min-height: 120px;">
-    <p>Tipo Documento:<?php echo $selTipodoc; ?>
+
+    <div class="form-inline">
+        <label for="selTipodoc">Tipo</label>    
+        <?php echo $selTipodoc; ?>
+    
         <input id='letra' name='letra' type="text" disabled="disabled" value="" class="input" size="2" >
         <input id='puntoVenta' name='puntoVenta' type="text" disabled="disabled" value="" class="input" size="5" >
         <input id='idDoc' name='idDoc' type="text" disabled="disabled" value="" class="input" size="8" >
-    </p>
-    <p>Cliente: <input id='cliNom' name='cliNom' type="text" title="razon social de cliente" class="input large" ><a href="#" id="cli_masdatos">>> mas datos</a>
-        <input id='idCliente' name='idCliente' type="hidden" >        
-    </p>
-    <p>Cuit:<input id='cliCuit' name='cliCuit' type="text" title="Cuit" class="input medium" ></p>
-    <div id="cli_contmasdatos" style="background-color: #FFFBCC">
-        <p>Domicilio:<input id='cliDom' name='cliDom' type="text" title="Direccion fiscal" class="input large" ></p>
-        <p>Localidad:<input id='cliLoc' name='cliLoc' type="text" title="Localidad" class="input medium" ></p>
-        <p>Codigo Postal:<input id='cliCp' name='cliCp' type="text" title="Codigo Postal" class="input short" ></p>
-        <p>Provincia:<input id='cliProv' name='cliProv' type="text" title="Provincia" class="input short" ></p>
-        <p>Telefono:<input id='cliTel' name='cliTel' type="text" title="Telefono" class="input medium" ></p>
-        <p>Email:<input id='cliMail' name='cliMail' type="text" title="Email" class="input medium" ></p>
     </div>
-    <p>Condicion Fiscal:<?php echo $selcondfiscal; ?></p>    
+    
+    <div class="form-group">
+        <div class="form-group">
+            <label for="cliNom" class="col-sm-2 control-label">Cliente</label> 
+            <div class="col-sm-10">
+                <input id='cliNom' name='cliNom' type="text" title="razon social de cliente" class="input-medium form-control" ><a href="#" id="cli_masdatos">...mas datos</a>
+                <input id='idCliente' name='idCliente' type="hidden" >   
+            </div>
+        </div>
+        
+        <div id="cli_contmasdatos" style="background-color: #FFFBCC" class="form-horizontal" >
+            <div class="form-group">
+                <label for="cliDom" class="col-sm-2 control-label">Domicilio</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="cliDom" name="cliDom" placeholder="Domicilio fiscal">
+                </div>
+            
+                <label for="cliLoc" class="col-sm-2 control-label">Localidad</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control input-medium" id="cliLoc" name="cliLoc" placeholder="Localidad">
+                </div>
+                
+                <label for="cliLoc" class="col-sm-2 control-label">Localidad</label>
+                <div class="col-sm-10"><input id='cliLoc' name='cliLoc' type="text" title="Localidad" class="input-medium form-control" ></div>
+                
+                <label for="cliCp" class="col-sm-2 control-label">Codigo postal</label>
+                <div class="col-sm-10"><input id='cliCp' name='cliCp' type="text" title="Codigo Postal" class="input-small form-control" ></div>
+                
+                <label for="cliProv" class="col-sm-2 control-label">Provincia</label>
+                <div class="col-sm-10"><input id='cliProv' name='cliProv' type="text" title="Provincia" class="input-small form-control" ></div>
+                <label for="cliTel" class="col-sm-2 control-label">Telefono</label>
+                <div class="col-sm-10"><input id='cliTel' name='cliTel' type="text" title="Telefono" class="input-medium form-control" ></div>
+                
+                <label for="cliMail" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10"><input id='cliMail' name='cliMail' type="Email" title="Email" class="input-medium form-control" ></div>            
+
+            </div>       
+        </div>
+
+        <label for="cliCuit" class="col-sm-2 control-label">Cuit</label>
+        <div class="col-sm-10"><input id='cliCuit' name='cliCuit' type="text" title="Cuit" class="input-small form-control" ></div>
+
+        <label for="selcondfiscal" class="col-sm-2 control-label">Condicion fiscal</label>
+        <div class="col-sm-10"><?php echo $selcondfiscal; ?></div>
+    </div>
+
 </div><!-- end div -->
-<div style="float:left;width:30%;min-height: 120px;">
-    <p>Fecha: <input id='fecha' name='fecha' type="text" title="Selecciona fecha de emision" class="input short" ></p>
-    <p>Moneda:<?php echo $selMon; ?></p>
-    <p>Deposito:<?php echo $seldep; ?></p>    
-    <p>Lista de precios:<?php echo $sellista; ?></p>    
+
+<div style="float:left;width:30%;min-height: 120px;" class="form-horizontal">    
+
+    <label for="fecha" class="col-sm-2 control-label">Fecha</label>    
+    <div class="col-sm-10"><input id='fecha' name='fecha' type="text" title="Selecciona fecha de emision" class="input-small form-control" ></div>
+    
+    <label for="selMon" class="col-sm-2 control-label">Moneda</label>
+    <div class="col-sm-10"><?php echo $selMon; ?></div>
+
+    <label for="seldep" class="col-sm-2 control-label">Deposito</label>
+    <div class="col-sm-10"><?php echo $seldep; ?></div>    
+    
+    <label for="sellista" class="col-sm-2 control-label">Lista</label>
+    <div class="col-sm-10"><?php echo $sellista; ?></div>
+
 </div><!-- end div -->
 <div id="contenedor"></div>
 <div style="width:100%;height:150px;float: left;">
@@ -71,17 +118,17 @@
             <th width="10%">Accion</th>
         </tr>
         <tr>
-            <th><input type="text" placeholder="Codigo o barcode" value="" name="txtCodigo" id="txtCodigo" class="input full ingreso_item" ></th>
-            <th><input type="text" placeholder="Cantidad" value="1" name="txtCantidad" id="txtCantidad" class="input full ingreso_item" ></th>
+            <th><input type="text" placeholder="Codigo o barcode" value="" name="txtCodigo" id="txtCodigo" class="input-small ingreso_item form-control" ></th>
+            <th><input type="text" placeholder="Cantidad" value="1" name="txtCantidad" id="txtCantidad" class="input-small form-control ingreso_item" ></th>
             <th width="30%"><div class="ui-widget">
             <form id="frmBuscar">
-                <input type="text" placeholder="descripcion o texto a buscar" value="" name="txtNombre" id="txtNombre" class="input full ingreso_item" >
+                <input type="text" placeholder="descripcion o texto a buscar" value="" name="txtNombre" id="txtNombre" class="input-large form-control  ingreso_item" >
                 <input type="hidden" id="func" name="func" value="cod" >
             </form></div></th>
-            <th><input type="text" placeholder="Descuento" value="0.00" name="txtDescuento" id="txtDescuento" class="input full ingreso_item" ></th>
-            <th><input type="text" placeholder="Precio" value="0.00" name="txtPrecio" id="txtPrecio" class="input full ingreso_item" ></th>
-            <th><input type="text" placeholder="Total" value="0.00" name="txtTotal" id="txtTotal" class="input full ingreso_item" ></th>
-            <th><input type="text" placeholder="Serie" value="" name="txtSerie" id="txtSerie" class="input full ingreso_item"></th>
+            <th><input type="text" placeholder="Descuento" value="0.00" name="txtDescuento" id="txtDescuento" class="input-small form-control ingreso_item" ></th>
+            <th><input type="text" placeholder="Precio" value="0.00" name="txtPrecio" id="txtPrecio" class="input-small form-control ingreso_item" ></th>
+            <th><input type="text" placeholder="Total" value="0.00" name="txtTotal" id="txtTotal" class="input-small form-control ingreso_item" ></th>
+            <th><input type="text" placeholder="Serie" value="" name="txtSerie" id="txtSerie" class="input-medium form-control ingreso_item"></th>
             <th><input type="button" value="+" name="btnAdd" title="Agregar item" id="btnAdd" class="button">
                 <input type="button" value="x" name="btnClr" title="Limpiar ingreso" id="btnClr" class="button">
             </th>

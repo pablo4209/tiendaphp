@@ -1,22 +1,32 @@
 <?php
   
- 
-if(isset($_GET['cat']) && $_GET['cat']!= ""){
-      $idCategoria = $_GET['cat'];
-}else $idCategoria =0;
+if( isset( $_POST['input-search'] ) && $_POST['input-search'] !="" ){
+    
+    require_once( CONN_MODEL_PATH . "proModel.php");
+    $db = new Producto();  
+    
+    $pro = $db->getProductosBuscar( $_POST['input-search'] );   
+    $resultados = count($pro);
 
-$pagina = 0;
-if(isset($_GET['pagina'])){
-  $pagina = $_GET['pagina'];
+}else{
+
+  if( isset($_GET['cat']) && $_GET['cat']!= "" ){
+        $idCategoria = $_GET['cat'];
+  }else $idCategoria =0;
+
+  require_once( CONN_MODEL_PATH . "proCatModel.php");
+  $db = new proCategorias();
+    
+   $resultados = $db->getProductosCatCount( $idCategoria ); 
+   $pro = $db->getProductosCat( $idCategoria , $pagina , PRO_POR_PAGINA );   
+
 }
 
+  $pagina = 0;
+  if( isset($_GET['pagina']) ){
+    $pagina = $_GET['pagina'];
+  }
 
-require_once( CONN_MODEL_PATH . "proCatModel.php");
-$db = new proCategorias();
-  
- $resultados = $db->getProductosCatCount( $idCategoria ); 
- $pro = $db->getProductosCat( $idCategoria , $pagina , PRO_POR_PAGINA ); 
- 
  $cant_pag = 0;
  if($resultados > PRO_POR_PAGINA){
     $cant_pag = ceil( $resultados / PRO_POR_PAGINA ); 
@@ -45,7 +55,8 @@ $db = new proCategorias();
               <div class="panel panel-default">
                  <div class="panel-body">
                           <?php  
-                          if(is_array($pro)){
+                          if($_POST) echo '<div class="alert alert-warning" role="alert">'.$resultados.'   resultado/s para "'.$_POST['input-search'].'"</div>';
+                          if( $resultados ){
                             foreach ($pro as $row){ ?>
                             <div class="col-sm-6 col-md-3 col-xs-12 col-lg-3">
                               
@@ -74,9 +85,8 @@ $db = new proCategorias();
                                     </div><!-- END ROW MARKETING -->
                             </div> <!-- END COL -->                           
                           <?php }
-                          }else { ?> 
-                                    <div class="alert alert-warning" role="alert">...Sin resultados.</div>
-
+                          }else if(!$_POST){ ?> 
+                                    <div class="alert alert-warning" role="alert">...Sin resultados</div>
                           <?php }?>
                 </div><!-- END PANEL BODY -->
               </div><!-- END PANEL -->

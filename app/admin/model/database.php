@@ -338,7 +338,7 @@ return $fecha;
     }
 
     //Genera un select html con nombre e id, si $sel tiene valor lo selecciona, sino imprime seleccionar opcion con val=0
-     protected function crearSelectTabla($tabla, $id, $desc, $sel="", $desc2="", $where = "")
+     protected function crearSelectTabla($tabla, $id, $desc, $sel="", $desc2="", $where = "", $cssClass="form-control input-medium")
     {
         $f=""; //se inicializan para evitar warnings
 		if(empty($tabla) or empty($id) or empty($desc))
@@ -353,7 +353,7 @@ return $fecha;
         if($datos)
         {
             //dias
-            $f.= '<select name="'.$id.'" id="'.$id.'" class="form-control">
+            $f.= '<select name="'.$id.'" id="'.$id.'" class="'.$cssClass.'">
                     <option value="0" ';
             if ($sel=="") $f.='selected="selected"';
             $f.= '>Seleccionar</option>';
