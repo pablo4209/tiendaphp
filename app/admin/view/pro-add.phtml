@@ -1,15 +1,41 @@
-
   <script type="text/javascript">
-        $(function() {
-			$("#form").validity(function() {
-                
-                $("#Nombre").maxLength(250).minLength(2).require();
-				$("#Codigo").maxLength(25).minLength(2).require();
-                $("#idIva").match("number").greaterThan(0).require();
-				$("#idMoneda").match("number").greaterThan(0).require();
-				$("#idCategoria").match("number").greaterThan(0).require();
-                
-            });    
+        $(function() {			
+			$("#form").validate({				
+				rules: {	
+					Nombre: {
+						required: true,
+						maxlength:250,
+						minlength:2						
+					},
+					idCategoria: {
+						required: true,
+						min :1
+					}, 
+					idMoneda: {
+						required : true,
+						min :1,						
+					},
+					Codigo : {
+						required : true,
+						maxlength: 25,
+						minlenght: 4
+					},
+					idIva : {
+						min : 1,
+						required: true,
+						number: true
+					}
+				},
+				messages: {
+					Nombre: "Debes escribir un nombre valido",
+					idCategoria: "Es necesario asignar una categoria",
+					Codigo : "Debes escribir un codigo valido",
+					idIva : "Es requerido seleccionar una opcion de iva",
+					idMoneda: "Es requerido asignar una moneda"
+				}
+
+			});			          
+            
         });    
     </script>
 <div class="container-fluid"><!-- CONTAINER -->
@@ -50,6 +76,20 @@
 										<input name="SEO" id="SEO" type="hidden"  class="input medium"  /></td>
 								</tr>
 								<tr>
+									<td><div class="checkbox">
+											<label><input id="chkSub" name="chkSub" type="checkbox"><strong> SubProducto de </strong></label>	 
+									    </div>
+									</td>
+									<td><div class="input-group">									     
+									      <span class="input-group-btn">
+									        <button type="button" class="btn btn-success ctrlSubPro" id="buscarSub" name="buscarSub" title="Buscar padre" disabled="disabled"/><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>  
+									      </span>
+									      <input name="txtpadre" id="txtpadre" type="text" title="descripcion de producto padre (F9)" class="form-control input-large ctrlSubPro" disabled="disabled" />
+									    </div><!-- /input-group -->		
+										<input name="idPadre" id="idPadre" value="0" type="text"  class="input medium"  />
+									</td>
+								</tr>
+								<tr>
 									<td><strong >Codigo (*)</strong></td>
 									<td><div class="input-group">									      
 									      <span class="input-group-btn">
@@ -57,7 +97,7 @@
 									      </span>
 									      <input name="Codigo" id="Codigo" type="text" title="Codigo de producto" class="form-control input-small"  />
 									    </div><!-- /input-group -->											
-										<img src="<?php echo PATH_IMG;?>accept.png" border="0"  id="aceptado">
+										<img  border="0"  id="aceptado">
 										<img src="<?php echo PATH_IMG;?>loading.gif" border="0" width="24" height="24" id="cargando">
 									</td>
 								</tr>
@@ -103,7 +143,7 @@
 					  		</div>
 				  		</div>
 			  		</div>    			
-    		</div><!-- COL2 CHECKBOX-->
+    		</div> <!-- COL2 CHECKBOX-->
     		<div class="col-xs-12 col-md-4"><!-- COL3 IMAGEN-->
     				<div class="panel panel-primary">					  	
 						<div class="panel-body">
@@ -236,7 +276,7 @@
 								<thead>
 								<tr>
 									<td><?php echo $selCat2; ?></td>												
-									<td><button type="button" class="btn btn-primary" name="addCategoria" id="addCategoria" title="Agregar categoria" /><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td>
+									<td><button type="button" class="btn btn-primary ctrlNoSubPro" name="addCategoria" id="addCategoria" title="Agregar categoria" /><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td>
 								</tr>
 								</thead>
 								<tbody>							
@@ -279,7 +319,7 @@
     			<div class="form-group">
 	    			<input name="pDescuento" type="hidden" id="pDescuento" value="0" size="8" maxlength="8" />			
 					<input name="idMarca" id="idMarca" value="0" type="hidden"  class="input medium"  />
-					<input name="idPadre" id="idPadre" value="0" type="hidden"  class="input medium"  />				
+							
 					<input type="hidden" name="grabar" value="si" />            
 					<button type="submit" class="btn btn-primary" name="BtnGuardar" id="BtnGuardar" title="Crear Nuevo Producto" /><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Guardar</button>
 				</div>

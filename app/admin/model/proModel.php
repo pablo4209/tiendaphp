@@ -10,7 +10,7 @@ class Producto extends Conectar
         $this->u=array();
     }
 
-    public function getProductos($where=" order by Nombre asc ", $limit=" ")
+    public function getProductos($where=" ORDER BY Nombre ASC ", $limit=" ")
     {
         $sql="SELECT `idProducto` ,  `Codigo` ,  `Nombre` , `CodBar` ,  `CodBar2` ,  `idPadre` ,  `idTipo` , `Publicar` ,
               `Destacado`,`Imagen` , `Habilitado`
@@ -18,16 +18,22 @@ class Producto extends Conectar
         return parent::getRows($sql);
     }
 
+    public function getSubProductos($idPadre="-1", $limit=" ")
+    {               
+
+        return self::getProductos( " WHERE idPadre = ".$idPadre." ORDER BY Nombre ASC " , $limit );
+    }
+
     //recibe cadena de busqueda y retorna conjunto de registros
-    public function getProductosBuscar( $txt="" )
+    public function getProductosBuscar( $txt="" , $resultados=50 )
     {
-    	$sql  = "SELECT a.idProducto, 
-	    					ANY_VALUE(a.Nombre), 
-							ANY_VALUE(a.Codigo), 
+    		$sql  = "SELECT a.idProducto, 
+	    					ANY_VALUE(a.Nombre) as Nombre, 
+							ANY_VALUE(a.Codigo) as Codigo, 
 	    					ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio, 
-	    					ANY_VALUE(a.Usado), 
-							ANY_VALUE(c.Margen), 
-							ANY_VALUE(d.Stock), 
+	    					ANY_VALUE(a.Usado) as Usado, 
+							ANY_VALUE(c.Margen) as Margen, 
+							ANY_VALUE(d.Stock) as Stock, 
 							a.Imagen
 					FROM tbpro as a 
 			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
@@ -35,16 +41,16 @@ class Producto extends Conectar
 			                   LEFT JOIN  tbpro_stock as d ON a.idProducto = d.idProducto
 			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda
 					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1						
-					AND a.Nombre LIKE ? 
-	    	 		GROUP BY a.idProducto "; 
-	    	 		//LIMIT ?, ?";
-	    	
-	    	$consulta=$this->dbh->prepare($sql);
-	    	$consulta->bindValue(1,'%'.$txt.'%',PDO::PARAM_STR);
-	        //$consulta->bindValue(2,$limit_start,PDO::PARAM_INT);
-	        //$consulta->bindValue(3,$limit_end,PDO::PARAM_INT);
+					AND a.Nombre LIKE ?
+					GROUP BY a.idProducto "; 
+					//LIMIT 1, ? ";
+	    		    	    	
 
-	        return parent::exePrepare_FetchAssoc($consulta);
+	    	$consulta = $this->dbh->prepare($sql);
+	    	$consulta->bindValue( 1 , "%".$txt."%" , PDO::PARAM_STR );            
+	    	//$consulta->bindValue( 2 , $resultados  , PDO::PARAM_INT );            
+
+			return parent::exePrepare_FetchAssoc($consulta);
     }
   
 

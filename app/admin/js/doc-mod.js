@@ -29,6 +29,7 @@
 
                 e.preventDefault();
             }
+            
         $( "#txtNombre" ).autocomplete({
             source: $("#path_js").val()+"pro-buscar.php",
             minLength: 2,
@@ -55,5 +56,37 @@
         $(".edit_item").click(function(){
             alert("editar item");
         });
+    
+
+        $("body").delegate("#txtCodigo", "keyup", function(e){
+            var keyCode = e.keyCode || e.which; 
+            event.preventDefault();
+
+            if( keyCode == 120 ){  //F9 : buscar
+               
+                dialogoBuscar( $(this).val() );
+            } 
+
+            
+            if( keyCode == 13 )
+            {                              
+
+                    $.ajax({
+                    url : 'ajax.php/?mode=pro-buscar',
+                    method  : 'POST',
+                    data    : { buscarProd:1, txtBuscar: $(this).val() },
+                    success : function(data){                       
+                        
+                            $("#tabla_prod_body").html(data);  
+                            $('#resultados').val( $("#tabla_prod_body tr").length );
+                            dialogoBuscar( $(this).val() );
+
+                        }
+                    });
+            }
+            
+        });
+
+        
         
     }); 

@@ -41,6 +41,8 @@ define('INC_JQUERYUI', '<link type="text/css" href="' . PATH_JS . 'jqueryui/redm
 						<script type="text/javascript" src="' . PATH_JS . 'jqueryui/jquery.ui.datepicker-es.js" language="javascript"></script>');
 define('INC_VALIDITY', '<link href="' . PATH_JS . 'validity/jquery.validity.css" rel="stylesheet" type="text/css" />
                         <script type="text/javascript" src="' . PATH_JS . 'validity/jquery.validity.min.js" language="javascript"></script>');
+define('INC_VALIDATE', '<script type="text/javascript" src="' . PATH_JS . 'validate/jquery.validate.min.js" language="javascript"></script>
+						<script type="text/javascript" src="' . PATH_JS . 'validate/localization/messages_es_AR.min.js" language="javascript"></script>');
 define('INC_TABLESORTER', '<link href="' . PATH_JS . 'tablesorter/css/theme.blue.css" rel="stylesheet" type="text/css" />
                            <script type="text/javascript" src="' . PATH_JS . 'tablesorter/jquery.tablesorter.min.js" language="javascript"></script>
                            <script type="text/javascript" src="' . PATH_JS . 'tablesorter/jquery.tablesorter.widgets.min.js" language="javascript"></script>');

@@ -117,9 +117,13 @@ $dep= new Depositos();
 $depositos = $dep->getDepositos();
 
 $vista = new View();
-$vista->incluir( INC_CONTENT_CSS . INC_JQUERYUI . INC_VALIDITY . INC_PRO_JS );
+$vista->incluir( INC_CONTENT_CSS . 
+				 '<link href="css/tabla_selec.css" rel="stylesheet" type="text/css" />' . 
+				 INC_JQUERYUI . INC_VALIDATE . INC_PRO_JS . INC_TABLESORTER . 
+				 INC_TABLESORTER_PAGER );
 $vista->renderHeader("pro");
 require_once( VIEW_PATH . 'pro-add.phtml' );
+require_once( VIEW_PATH . 'buscar-prod.php' ); //dialogo de busqueda de productos
 $vista->renderFooter();
 
 ?>

@@ -111,6 +111,8 @@ else
 		
 		if(!empty($p))
 		{
+			
+			//CATEGORIAS
 			$pc = new proCategorias();
 			$pcat = $pc->getCategoriaId($id, 1); //segundo parametro principal = 1
 			if(sizeof($pcat)) {
@@ -124,7 +126,7 @@ else
 			$ruta  = $cat->getTree($idcatp, 0, "cat", "p");
 			$catprinc = $cat->getCategoriaId($idcatp); //obtener la carpeta donde estan las imagenes
 			
-			
+			//IMAGEN
 			$imgdir = "ACC";
 			 if(sizeof($catprinc))
 				if($catprinc[0]["ImgPath"] != "")$imgdir = $catprinc[0]["ImgPath"];
@@ -147,6 +149,10 @@ else
 				
 				$proS = new proStock();
 				$proStock = $proS->getStockId($id);
+
+			//SUBPRODUCTOS ASOCIADOS
+			$subpro=new Producto();
+			$sp= $subpro->getSubProductos($id);			
 		}
 	}
 	

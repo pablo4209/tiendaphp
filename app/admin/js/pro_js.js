@@ -6,9 +6,50 @@
 				CalcularPrecios($("#Costo"));
 				funcCategorias("cargarCat");
 			}
+			
+
 		});
 		
+
+		
+		$("body").delegate("#txtpadre", "keyup", function(e){
+	            var keyCode = e.keyCode || e.which; 	            
+	            event.preventDefault();
+	            
+	            if( keyCode == 120 || keyCode == 13 ){  //F9 o ENTER : buscar	                
+	                dialogoBuscar( $(this).val() );
+	            } 
+        });
 			
+		$("body").on( "eventoResultado" , function( ev , id , nombre ){ 
+				
+				$("#txtpadre").attr( "value" , nombre );
+				$("#idPadre").attr( "value" , id ); 
+ 
+		});
+
+		$("body").delegate("#buscarSub", "click", function(e){	            
+	            
+	                dialogoBuscar( $("#txtpadre").val() );	             
+        });
+
+        $("body").delegate("#chkSub", "click", function(e){	            
+	       
+	       	if( $(this).is( ":checked" ) ){
+	       		//habilitar controles
+	       		$(".ctrlNoSubPro,#idCategoria").attr("disabled" , "true" );
+	       		$(".ctrlSubPro").removeAttr("disabled");
+	       	    $("#form").validate({ rules: { idCategoria : { required : false }  } });
+	       		
+	       	}else{
+	       		//deshabilitar controles de subproducto
+	       		$(".ctrlNoSubPro,#idCategoria").removeAttr("disabled");	    
+	       		$(".ctrlSubPro").attr("disabled" , "true" );   		
+	       		$("#form").validate({ rules: { idCategoria : { required : true } } });
+	       	}
+
+	        //dialogoBuscar( $(this).val() );	             
+        });
 		
 		$("#cargando").hide();
 		$("#aceptado").hide();

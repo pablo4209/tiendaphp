@@ -129,12 +129,19 @@
             <th><input type="text" placeholder="Precio" value="0.00" name="txtPrecio" id="txtPrecio" class="input-small form-control ingreso_item" ></th>
             <th><input type="text" placeholder="Total" value="0.00" name="txtTotal" id="txtTotal" class="input-small form-control ingreso_item" ></th>
             <th><input type="text" placeholder="Serie" value="" name="txtSerie" id="txtSerie" class="input-medium form-control ingreso_item"></th>
-            <th><input type="button" value="+" name="btnAdd" title="Agregar item" id="btnAdd" class="button">
-                <input type="button" value="x" name="btnClr" title="Limpiar ingreso" id="btnClr" class="button">
+            <th>
+                <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                    <button type="button" class="btn btn-success" name="btnadd" id="btnadd">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger" name="btndel" id="btndel">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>          
+                </div>
             </th>
         </tr>   
     </thead>
-    <tbody>
+    <tbody id="tabla_items">
         <tr>
             <td>1</td>      
             <td>1</td>
@@ -143,8 +150,15 @@
             <td>1</td>
             <td>1</td>
             <td><input id='serie' name='serie' type="text" title="Ingresar numero de serie" class="input full" ></td>
-            <td><a href="#" class="del_item"><img src="<?php echo PATH_IMG ?>b_drop.png" title="Eliminar item"/></a>
-                <a href="#" class="edit_item"><img src="<?php echo PATH_IMG ?>b_edit.png" title="Editar item"/></a>
+            <td>
+                <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                    <button type="button" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>          
+                </div>
             </td>
         </tr> 
     </tbody>
@@ -171,4 +185,5 @@
 </table>
 <input type="hidden" name="base_path" id="base_path" value="<?php echo BASE_URL;?>" >    
 <input type="hidden" name="path_js" id="path_js" value="<?php echo PATH_JS;?>" >    
+<div id="_AJAX_PROD_"></div>
 </div>

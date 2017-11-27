@@ -1,15 +1,40 @@
 
   <script type="text/javascript">
         $(function() {
-			$("#form").validity(function() {
-                
-                $("#Nombre").maxLength(250).minLength(2).require();
-				$("#Codigo").maxLength(25).minLength(2).require();
-                $("#idIva").match("number").greaterThan(0).require();
-				$("#idMoneda").match("number").greaterThan(0).require();
-				$("#idCategoria").match("number").greaterThan(0).require();
-                
-            });    
+			$("#form").validate({				
+				rules: {	
+					Nombre: {
+						required: true,
+						maxlength:250,
+						minlength:2						
+					},
+					idCategoria: {
+						required: true,
+						min :1
+					}, 
+					idMoneda: {
+						required : true,
+						min 1,						
+					},
+					Codigo : {
+						required : true,
+						maxlength: 25,
+						minlenght: 4
+					},
+					idIva : {
+						min : 1,
+						required: true,
+						number: true
+					}
+				},
+				messages: {
+					Nombre: "Debes escribir un nombre valido",
+					idCategoria: "Es necesario asignar una categoria",
+					Codigo : "Debes escribir un codigo valido",
+					idIva : "Es requerido seleccionar una opcion de iva",
+					idMoneda: "Es requerido asignar una moneda"
+				}
+			});   
         });    
     </script>
 <div class="container-fluid">
@@ -309,6 +334,40 @@
 			</div><!-- COL2 -->
 		</div><!-- ROW3 -->
 		<div class="row"><!-- ROW4 -->
+			<div class="col-md-12"><!-- COL1 -->	
+				<div class="panel panel-primary">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Sub productos asociados</h3>
+						  </div>
+						  <div class="panel-body">
+						  	<div class="table-responsive">
+						  		<input name="idPadre" id="idPadre" value="<?php echo $p[0]["idPadre"]; ?>" type="text"  class="input medium"  />	
+						  		<?php 								
+								$sp_totales = sizeof($sp);
+								echo '<br>Asociados: '.$sp_totales.'<br>';
+								for($i=0;$i<$sp_totales;$i++) { 
+								  	echo $sp[$i]['Codigo'].' '.$sp[$i]['Nombre'].'<br>';					
+								  	}
+								?>							    
+							    <table width="100%" class="table table-bordered" >							
+									<thead>
+									<tr>
+										<th><strong>Descripcion</strong></th>
+										<th><strong>Accion</strong></th>
+									</tr>
+									</thead>
+									<tr>
+										<td><strong>nombre del producto</strong></td>
+										<td>valores a modificar</td>
+									</tr>							
+								</table>
+								
+							</div>
+						  </div>
+				</div>
+			</div><!-- COL1 -->	
+		</div><!-- ROW4 -->
+		<div class="row"><!-- ROW4 -->
 			<div class="col-md-12"><!-- COL1 -->
 				<div class="panel panel-primary">
 						  <div class="panel-heading">
@@ -342,8 +401,7 @@
 				<div class="form-group">
 					<input name="idProducto" id="idProducto" value="<?php echo $p[0]["idProducto"]; ?>" type="hidden"  class="form-control"  />					
 					<input name="pDescuento" type="hidden" id="pDescuento" value="<?php echo $p[0]["pDescuento"]; ?>" size="8" maxlength="8" />			
-					<input name="idMarca" id="idMarca" value="<?php echo $p[0]["idMarca"]; ?>" type="hidden"  class="form-control"  />
-					<input name="idPadre" id="idPadre" value="<?php echo $p[0]["idPadre"]; ?>" type="hidden"  class="input medium"  />					
+					<input name="idMarca" id="idMarca" value="<?php echo $p[0]["idMarca"]; ?>" type="hidden"  class="form-control"  />									
 					<input type="hidden" name="grabar" value="si" />            
 						
 					<input type="button" class="btn btn-default" value="Nuevo Producto Similar" name="BtnSimilar" id="BtnSimilar" title="crear un producto similar a otro de la misma categoria ahorra tiempo y evita errores" />
