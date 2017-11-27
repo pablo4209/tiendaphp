@@ -1,0 +1,8 @@
+table.tablesorter tbody tr:hover td {
+    background-color: #ffa; /*#f4f5f6;*/
+}
+table.tablesorter tbody tr.selected td {
+    /*background-color: #f4f5f6;*/
+  background-color: #d9d9d9;
+  color: #333;
+}
