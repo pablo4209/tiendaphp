@@ -1,5 +1,5 @@
 <?php
-
+//ini_set("display_errors" , "1" );
 
 //el get de los registros esta configurado en la llamada ajax de tablesorter
 require_once( MODEL_PATH . "catModel.php" );
@@ -15,9 +15,11 @@ require_once( MODEL_PATH . "proCatModel.php");
 require_once( MODEL_PATH . "catModel.php");
 
 
+
 if(isset($_POST["grabar"]) && $_POST["grabar"] !="" )
 {	
 	//print_r($_POST);exit;
+	
 	$pro=new Producto();  
 	$p=$pro->getProductoId($_POST["idProducto"]);	
 	
@@ -44,14 +46,15 @@ if(isset($_POST["grabar"]) && $_POST["grabar"] !="" )
 			if(!is_dir($destino)){  	
 				mkdir($destino, 0777); //si no es así, lo creamos			
 			}
-			//mover		
-			rename($pathorigen.$_POST["Imagen"], $destino.$_POST["Imagen"]);					
+			//mover y guardar usando id de nombre
+			rename($pathorigen.$_POST["Imagen"], $destino.$_POST["idProducto"]);					
 			array_map( "unlink", glob( $pathorigen . '*.*' )); //borrar el contenido del directorio temporal		
 			//borrar imagen vieja					
 			array_map( "unlink", glob( $destino.$p[0]["Imagen"])); 
 		}
 	} 
 	
+
 		
 	if($pro->edit()) //true si success
 	{				
@@ -75,11 +78,13 @@ if(isset($_POST["grabar"]) && $_POST["grabar"] !="" )
 			foreach ($_POST['stock'] as $id => $stock){ 					
 					$min = (isset($_POST['stockmin'][$id])) ? $_POST['stockmin'][$id]: 0;
 					$max = (isset($_POST['stockmax'][$id])) ? $_POST['stockmax'][$id]: 0;
-					if(! $ps->edit($_POST["idProducto"], $id, $stock, $min, $max))
+					
+					if(! $ps->edit( $_POST["idProducto"], $id, $stock, $min, $max ) )
 					{
 						$ps->add($_POST["idProducto"], $id, $stock, $min, $max);
 					}
-			}		
+				
+			}	
 		}
 	// HASTA ACA EDIT ESTA REVISADO VER XQ SOLO SE MODIFICA ACA LA CAT PRINCIPAL
 	
@@ -101,9 +106,14 @@ if(isset($_POST["grabar"]) && $_POST["grabar"] !="" )
 	   
 }
 else
-{			
+{	
+	
+	$Titulo = "Producto no econtrado";
+	$Regreso = BASE_URL . '?accion=pro'; //regresa al listado por defecto
+
 	if(isset($_GET["id"]) && $_GET["id"]!="")
 	{
+		
 		$id=$_GET["id"];	
 
 		$pro=new Producto();
@@ -112,9 +122,36 @@ else
 		if(!empty($p))
 		{
 			
+			$Titulo = $p[0]['Nombre']; 
+			$idPadre = $p[0]["idPadre"];
+			$ImponerPrecio = 0;
+
+			//PRODUCTO O SUB?
+			if( $idPadre > 0 ){
+
+				$Regreso .= '-edit&id=' . $idPadre ; //regresa al producto padre
+				$clsPadre = new Producto(); //es un subproducto, cargar datos de padre
+				$pPadre = $clsPadre->getProductoId( $idPadre );
+				if( !empty( $pPadre ) ){				
+					$Titulo = $pPadre[0]['Nombre'].'('.$pPadre[0]['Codigo'].') ->' . $Titulo;
+					$ImponerPrecio = $pPadre[0]['ImponerPrecio'];
+				}
+
+				
+			}else{								
+				$subpro=new Producto();
+				$sp= $subpro->getSubProductos($id);		//SUBPRODUCTOS ASOCIADOS
+			
+
+			}
+
+			
 			//CATEGORIAS
+
+			$idProCat = ( $idPadre > 0 )? $idPadre : $id ; //si es hijo mostrar categorias del padre
+
 			$pc = new proCategorias();
-			$pcat = $pc->getCategoriaId($id, 1); //segundo parametro principal = 1
+			$pcat = $pc->getCategoriaId($idProCat, 1); //segundo parametro principal = 1
 			if(sizeof($pcat)) {
 				$idcatp = $pcat[0]["idCategoria"];	
 			}else $idcatp = 0;
@@ -149,18 +186,23 @@ else
 				
 				$proS = new proStock();
 				$proStock = $proS->getStockId($id);
+			
+			
 
-			//SUBPRODUCTOS ASOCIADOS
-			$subpro=new Producto();
-			$sp= $subpro->getSubProductos($id);			
 		}
 	}
 	
 }
+
+	$Titulo  = '<h2>' . $Titulo . '</h2>' .'<a class="btn btn-success" href="#" role="button">Edicion <span class="badge">X</span></a>';
+	$Titulo .= ( $p[0]["Habilitado"] )? '' : '<a class="btn btn-warning" href="#" role="button">Deshabilitado <span class="badge">X</span></a>' ;
+	
+
 	$vista = new View();
-	$vista->incluir( INC_CONTENT_CSS . INC_JQUERYUI . INC_VALIDITY . INC_PRO_JS );
+	$vista->incluir( INC_CONTENT_CSS . INC_JQUERYUI . INC_VALIDATE . INC_VALIDATE_REGLAS . INC_PRO_JS . INC_TABLESORTER . INC_TABLESORTER_PAGER );
 	$vista->renderHeader("pro");
 	require_once( VIEW_PATH . 'pro-edit.phtml' );
+	//require_once( VIEW_PATH . 'buscar-prod.php' ); //dialogo de busqueda de productos
 	$vista->renderFooter();
 
 ?>

@@ -15,7 +15,7 @@ if(isset($_POST["grabar"]) and $_POST["grabar"]=="si")
 
 $vista = new View();
 
-$vista->incluir(INC_VALIDITY);
+$vista->incluir( INT_JQUERY . INC_VALIDATE . INC_VALIDATE_REGLAS );
 
 $vista->renderHeader("cli");
 require_once( VIEW_PATH . 'mon-add.phtml' );

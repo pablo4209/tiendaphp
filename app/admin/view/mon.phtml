@@ -1,34 +1,13 @@
 	 
         <h2>Monedas</h2>
               <?php
-    if(isset($_GET["st"]))
-    {
-    	switch ($_GET["st"])
-    	{
-    		case '1':
-    			?>
-    			<div class="fail large png_bg">Esta Moneda no pudo ser eliminada.</div>
-    			<?php
-    		break;
-            
-    		case '2':
-    			?>
-    			<div class="success large png_bg">La Moneda se eliminó exitosamente.</div>
-    			<?php
-    		break;
-    		
-    	}
-    }
+    if(isset($_GET['st']))
+        mensaje( $_GET['st'] );    
 	?>
-	<table>
-    <tr>
-		<td valign="middle" align="left" colspan="10">
-		Agregar Moneda
-		<a href="<?php echo BASE_URL;?>?accion=mon-add" title="Nueva Moneda"><img src="<?php echo PATH_IMG;?>add_32.png" border="0" width="16" height="16" /></a>
-		
-		</td>
-	</tr>
-    </table>  
+	<div class="row">
+        <a href="<?php echo BASE_URL;?>?accion=mon-add" id="mon-add" class="btn btn-primary" title="Nueva moneda"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Moneda</a>
+    </div>
+    
     <table id="tabla" class="tablesorter">
         <thead>          	
         <tr  style="font-weight: bold;">

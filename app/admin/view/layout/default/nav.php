@@ -42,7 +42,7 @@
 					<li role="separator" class="divider"></li>
 					<li><a href="<?php echo BASE_URL;?>?accion=dep">Depositos</a></li>
 					<li role="separator" class="divider"></li>
-					<li><a href="#">Proveedores</a></li>
+					<li><a href="<?php echo BASE_URL;?>?accion=prov">Proveedores</a></li>
 				  </ul>
 				</li>
 				<li class="dropdown">

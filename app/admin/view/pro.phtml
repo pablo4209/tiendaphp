@@ -27,7 +27,10 @@
      <hr />
      <div class="row" style="min-height: 100px;">
         <div class="col-xs-12 col-md-6">                    
-              <?php echo $selCat; ?>           
+              <?php echo $selCat; ?>  
+              <div class="checkbox"><label>
+                  <input type="checkbox" class="checkbox"  title="Mostrar productos DesHabilitados" name="Habilitados" id="Habilitados" />Mostrar Deshabilitados
+              </label></div>
         </div><!-- /.col-lg-6 -->
         <div class="col-xs-12 col-md-6">
           <div class="input-group">
@@ -95,6 +98,10 @@
             $("#btnBuscar").click(function() {                       
                       $("table").trigger("update");                                                      
               });  
+            $('#Habilitados').click(function(){
+                
+                $("table").trigger("update");                                                                        
+            });
             
             $("#tabla").tablesorter({                        
                         theme : 'blue',
@@ -110,8 +117,10 @@
                   // url += '&cPage=' + window.location.pathname;
                   // trigger my custom event                  
                   $(table).trigger('changingUrl', url);
+                  
+                  var chkHabilitados = $("#Habilitados").is(":checked") ? 1 : 0;
                   // send the server the current page                  
-                  url = url+"&idcat="+$("#idCategoria").val()+"&txtbuscar="+$("#txtBuscar").val(); 
+                  url = url+"&idcat="+$("#idCategoria").val()+"&txtbuscar="+$("#txtBuscar").val() + "&chkHabilitados=" + chkHabilitados ; 
                   //alert (url);
                   return url;
               },
@@ -133,25 +142,26 @@
                   // this will depend on how the json is set up - see City0.json
                   // rows                  
                   for ( r=0; r < len; r++ ) {
-                    row = []; // new row array
-                    // cells
-                    var x=1, idprod;
-                    for ( c in d[r] ) {                      
-                      if (typeof(c) === "string" ) {
-                        if( x === 1)//como primer elemento en formato json recibe el idproducto
-                        {                            
-                            idprod = d[r][c];                            
-                        }
-						row.push(d[r][c]); // add each table cell data to row array    
-                        
-                        x=x+1;                        
-                      }                      
-                    }
-                    if(len){
-                        row.push('<a href="<?php echo BASE_URL;?>?accion=pro-edit&id='+idprod+'" title="Editar Producto" class="btn btn-success"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>'); //interceptar valor idProducto para que no lo muestre y crear vinculo
-                        
-                    }
-                    rows.push(row); // add new row array to rows array
+                          row = []; // new row array
+                          // cells
+                          var x=1, idprod;
+                          for ( c in d[r] ) {                      
+                              if (typeof(c) === "string" ) 
+                              {
+                                if( x === 1)//como primer elemento en formato json recibe el idproducto
+                                {                            
+                                    idprod = d[r][c];                            
+                                }
+        						            row.push(d[r][c]); // add each table cell data to row array    
+                                
+                                x=x+1;                        
+                              }                      
+                          }
+                          if(len){
+                              row.push('<div class="btn-group"><a href="<?php echo BASE_URL;?>?accion=pro-edit&id='+idprod+'" title="Editar Producto" class="btn btn-success"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a><a href="<?php echo BASE_URL;?>?accion=pro-add&idpadre='+idprod+'" title="Crear SubProducto" class="btn btn-info"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></div>'); //interceptar valor idProducto para que no lo muestre y crear vinculo
+                              
+                          }
+                          rows.push(row); // add new row array to rows array
                   }
                   // in version 2.10, you can optionally return $(rows) a set of table rows within a jQuery object                  
                   return [ total, rows, headers ];

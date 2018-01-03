@@ -1,0 +1,149 @@
+
+  <script type="text/javascript">
+        $(function() {
+            $("#form").validate({               
+                rules: {    
+                    Razonsocial: {
+                        required: true,
+                        maxlength:50,
+                        minlength:2                     
+                    },                     
+                    idMoneda: {
+                        required : true,
+                        min :1,                     
+                    },
+                    idCondFiscal: {
+                        required : true,
+                        min :1,                     
+                    },
+                    Tel:{ number : true },
+                    Tel2:{ number : true },
+                    Cuit:{ number : true },
+                    Cp:{ number : true },
+                    Email : { email : true }
+                },
+                errorElement: "em",
+                errorPlacement: function ( error, element ) {
+                        // Add the `help-block` class to the error element
+                        error.addClass( "help-block" );
+
+                        if ( element.prop( "type" ) === "checkbox" ) {
+                            error.insertAfter( element.parent( "label" ) );
+                        } else {
+                            error.insertAfter( element );
+                        }
+                    },
+                messages: {
+                    Razonsocial: "Debes escribir un nombre valido",                    
+                    idMoneda: "Es requerido asignar una moneda"
+                },
+                highlight: function ( element, errorClass, validClass ) {
+                        $( element ).parents( ".validar" ).addClass( "has-error" ).removeClass( "has-success" );
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $( element ).parents( ".validar" ).addClass( "has-success" ).removeClass( "has-error" );
+                }
+
+            });  
+        });    
+    </script>
+
+	 <?php
+    if(isset($_GET['st'])){
+        if($_GET['st'] == MSG_INFO) {
+            mensaje( MSG_INFO, "El Registro ya existe, no se completo la operacion.");
+        }else
+            mensaje( $_GET['st'] );
+    }
+	?>
+    <div class="row">
+        <a href="<?php echo BASE_URL;?>?accion=prov" title="Regresar a Proveedores"><span class="btn btn-success glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a>    
+    </div>    
+
+    <h2>Nuevo Proveedor</h2>
+    <hr>    
+    <form action="" method="post" name="form" id="form">
+
+        <div class="col-md-6"><!-- columna 1 -->
+            <div class="form-group"><div class="validar">
+                <label for="Razonsocial">Razon Social (*)</label>
+                <input name="Razonsocial" id="Razonsocial" type="text" class="form-control input-large"  />  
+            </div></div>
+            <div class="form-group">
+                <label for="Nombre">Nombre de contacto</label>
+                <input name="Nombre" id="Nombre" type="text" class="form-control input-large"  />             
+            </div> 
+            <div class="form-group"><div class="validar">
+                <label for="idMoneda">Seleccionar moneda</label>
+                <?php echo $selMon; ?>
+            </div></div>
+            <div class="form-group"><div class="validar">
+                <label for="Email">Email</label>
+                <input name="Email" id="Email" type="text" class="input-large form-control validar"  />       
+            </div></div>
+            <div class="form-group"><div class="validar">
+                    <label for="Tel">Telefono</label>
+                    <input name="Tel" id="Tel" type="text" class="input-small form-control" />
+            </div></div>       
+            <div class="form-group"><div class="validar">
+                    <label for="Tel2">Telefono 2</label>
+                    <input name="Tel2" id="Tel2" type="text" class="input-small form-control" />
+            </div></div>
+            <div class="form-group"><div class="validar">
+                <label for="idCondFiscal">Condicion Fiscal</label>
+                <?php echo $selCondFiscal; ?>
+            </div></div>
+            <div class="form-group"><div class="validar">
+                <label for="Cuit">Cuit</label>
+                <input type="text" name="Cuit" id="Cuit" class="form-control input-small">                
+            </div></div>            
+                
+        </div><!-- fin columna 1 -->
+        <div class="col-md-6"><!-- columna 2 -->
+            <div class="form-group">                
+                <label for="Dom">Domicilio</label>
+                <input name="Dom" id="Dom" type="text" class="form-control input-extralarge"  />                           
+            </div>
+            <div class="form-group"><div class="validar">
+                <label for="Cp">Codigo postal</label>
+                <input type="text" name="Cp" id="Cp" class="form-control input-small">                
+            </div></div>
+            <div class="form-group">
+                <label for="Loc">Localidad</label>
+                <input name="Loc" id="Loc" type="text" class="form-control input-medium" />            
+            </div>
+            <div class="form-group">
+                <label for="Prov">Provincia</label>
+                <input name="Prov" id="Prov" type="text" class="input-medium form-control" />
+            </div> 
+            <div class="form-group">
+                <label for="Prov">Pais</label>
+                <input name="Pais" id="Pais" type="text" class="input-medium form-control" />
+            </div> 
+            <div class="form-group">
+                <label for="Prov">Pagina web</label>
+                <input name="Website" id="Website" type="text" class="input-large form-control" />
+            </div> 
+            <div class="form-group">
+                    <label for="Observaciones">Observaciones</label>
+                    <textarea name="Observaciones" rows="6" class="form-control"></textarea>
+            </div>   
+            <div class="form-group">
+                    <label for="AvisoEmergente">Aviso emergente</label>
+                    <textarea name="AvisoEmergente" id="AvisoEmergente" rows="6" class="form-control"></textarea>
+            </div>             
+        </div><!-- fin columna 2 -->
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                        <input type="hidden" name="grabar" value="si" />            
+                        <button type="submit" class="btn btn-primary pull-right" name="BtnGuardar" id="BtnGuardar" title="Crear Nuevo Proveedor" /><span class="glyphicon glyphicon-save" aria-hidden="true">   </span> Guardar   </button>   
+                </div>  
+            </div>
+        </div>
+                             
+            
+            
+    </form>
+

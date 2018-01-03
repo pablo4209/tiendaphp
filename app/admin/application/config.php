@@ -43,6 +43,8 @@ define('INC_VALIDITY', '<link href="' . PATH_JS . 'validity/jquery.validity.css"
                         <script type="text/javascript" src="' . PATH_JS . 'validity/jquery.validity.min.js" language="javascript"></script>');
 define('INC_VALIDATE', '<script type="text/javascript" src="' . PATH_JS . 'validate/jquery.validate.min.js" language="javascript"></script>
 						<script type="text/javascript" src="' . PATH_JS . 'validate/localization/messages_es_AR.min.js" language="javascript"></script>');
+define('INC_VALIDATE_REGLAS', '<script type="text/javascript" src="' . PATH_JS . 'validar.js" language="javascript"></script>
+						<script type="text/javascript" src="' . PATH_JS . 'validate/localization/messages_es_AR.min.js" language="javascript"></script>');
 define('INC_TABLESORTER', '<link href="' . PATH_JS . 'tablesorter/css/theme.blue.css" rel="stylesheet" type="text/css" />
                            <script type="text/javascript" src="' . PATH_JS . 'tablesorter/jquery.tablesorter.min.js" language="javascript"></script>
                            <script type="text/javascript" src="' . PATH_JS . 'tablesorter/jquery.tablesorter.widgets.min.js" language="javascript"></script>');
@@ -59,11 +61,24 @@ define('MSG_WARNING',2);
 define('MSG_DANGER' ,3);
 define('MSG_INFO' ,4);
 
+
+# Activación del DEBUG, solo para desarrollo
+define( 'DEBUG', true );
+
+
 // remoto para digitalstoremerlo.com.ar
 //define('DB_NAME', 'pablo_ds');
 //define('DB_USER', 'pablo_admin31');
 //define('DB_PASS', 'H=#47P92^)lw');
 //define('DB_CHAR', 'utf8');
+
+
+// Notificar todos los errores de PHP (ver el registro de cambios)
+if( DEBUG )
+	error_reporting(E_ALL);
+else
+	error_reporting(0);
+
 
 //INCLUIDO EN TODO EL SITIO
 require_once( MODEL_PATH .'database.php');

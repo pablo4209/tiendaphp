@@ -47,34 +47,30 @@ class proStock extends Conectar
         return parent::getRowId($sql, array($id));                                       
     }
 
-    public function edit($idpro, $iddeposito, $stock=0, $stockmin=0, $stockmax=0)
+    public function edit( $idpro, $iddeposito, $stock=0, $stockmin=0, $stockmax=0 )
     {
-        if(empty($idpro) or empty($iddeposito))
+        if( empty($idpro) or empty($iddeposito) )
         {
-            return false;
+             return false;
         }
 
         $sql="UPDATE tbpro_stock
               SET
-              `idDeposito`=?, `Stock`=?, `FechaMod`=NOW(), `HoraMod`=NOW(), `StockMin`=?, `StockMax`=?
+              `Stock`=?, `FechaMod`=NOW(), `HoraMod`=NOW(), `StockMin`=?, `StockMax`=?
               WHERE
-              `idProducto`=?";
+              `idProducto`=? AND `idDeposito`=? ";
 
-        $stmt=$this->dbh->prepare($sql);
+        $stmt=$this->dbh->prepare( $sql );
+  
+        
+        $stmt->bindValue( 1 , $stock      , PDO::PARAM_INT );
+        $stmt->bindValue( 2 , $stockmin   , PDO::PARAM_INT );
+        $stmt->bindValue( 3 , $stockmax   , PDO::PARAM_INT );
+        $stmt->bindValue( 4 , $idpro      , PDO::PARAM_INT );
+        $stmt->bindValue( 5 , $iddeposito , PDO::PARAM_INT );
 
-        $stmt->bindValue(1,$iddeposito,PDO::PARAM_INT);
-        $stmt->bindValue(2,$stock,PDO::PARAM_INT);
-        $stmt->bindValue(3,$stockmin,PDO::PARAM_INT);
-        $stmt->bindValue(4,$stockmax,PDO::PARAM_INT);
-        $stmt->bindValue(5,$idpro,PDO::PARAM_INT);
+        return parent::exePrepare( $stmt );
 
-        if($stmt->execute())
-        {
-            return true;
-        }else
-        {
-           return false;
-        }
     }
 
     public function delete()

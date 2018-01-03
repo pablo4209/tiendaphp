@@ -76,7 +76,7 @@ class Moneda extends Conectar
     {
         if(empty($_POST["Nombre"]) or empty($_POST["Cambio"]) or empty($_POST["Simbolo"]) or empty($_POST["id"]))
         {
-            header("Location:".BASE_URL."?accion=mon-edit&id=".$_POST["id"]."&st=1");exit;
+            header("Location:".BASE_URL."?accion=mon-edit&id=".$_POST["id"]."&st=" . MSG_WARNING );exit;
         }
 
         $sql="update tbmoneda
@@ -103,10 +103,10 @@ class Moneda extends Conectar
 
         if($stmt->execute())
         {
-            header("Location:".BASE_URL."?accion=mon-edit&id=".$_POST["id"]."&st=2");
+            header("Location:".BASE_URL."?accion=mon-edit&id=".$_POST["id"]."&st=" . MSG_SUCCESS );
         }else
         {
-           header("Location:".BASE_URL."?accion=mon-edit&id=".$_POST["id"]."&st=3");
+           header("Location:".BASE_URL."?accion=mon-edit&id=".$_POST["id"]."&st=" . MSG_DANGER );
         }
 
         $this->dbh=null;

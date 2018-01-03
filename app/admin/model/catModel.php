@@ -234,7 +234,7 @@ class Categorias extends Conectar
     	   if($idPadre==0){
     	   		$sep = "";
     			$instancia  = 0;
-                $respuesta  = '<Select id="'.$nombre.'" name="'.$nombre.'" class="form-control">';
+                $respuesta  = '<Select id="'.$nombre.'" name="'.$nombre.'" min="1" title="Debes seleccionar una categoria." class="form-control required">';
                 $respuesta .='<option value="0" ';
                 if($catSeleccionada == 0) $respuesta .= 'selected="selected"';
                 $respuesta .= ' >' . $primerOpcion. '</option>';

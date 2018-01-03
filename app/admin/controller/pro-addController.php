@@ -100,6 +100,19 @@ $idCat = 0;
 if(isset($_GET['cat']) && $_GET['cat'] != 0){
 	$idCat = $_GET['cat'];
 }
+$idPadre = 0;
+$ImponerPrecio = 0;
+if(isset($_GET['idpadre']) && $_GET['idpadre'] != 0){
+	$idPadre = $_GET['idpadre'];
+
+	$clspro = new Producto();
+	$subp= $clspro->getProductoId( $idPadre );
+	$ImponerPrecio = $subp[0]['ImponerPrecio'];
+	$retorno = BASE_URL . '?accion=pro-edit&id=' . $idPadre ; 
+
+}else
+ 	$retorno = BASE_URL . '?accion=pro' ;
+
 
 $cat= new Categorias();
 $selCat = $cat->getSelCategorias(0,$idCat,"Seleccionar Categoria");
@@ -119,7 +132,7 @@ $depositos = $dep->getDepositos();
 $vista = new View();
 $vista->incluir( INC_CONTENT_CSS . 
 				 '<link href="css/tabla_selec.css" rel="stylesheet" type="text/css" />' . 
-				 INC_JQUERYUI . INC_VALIDATE . INC_PRO_JS . INC_TABLESORTER . 
+				 INC_JQUERYUI . INC_VALIDATE . INC_VALIDATE_REGLAS . INC_PRO_JS . INC_TABLESORTER . 
 				 INC_TABLESORTER_PAGER );
 $vista->renderHeader("pro");
 require_once( VIEW_PATH . 'pro-add.phtml' );
@@ -127,3 +140,4 @@ require_once( VIEW_PATH . 'buscar-prod.php' ); //dialogo de busqueda de producto
 $vista->renderFooter();
 
 ?>
+

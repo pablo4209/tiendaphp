@@ -12,7 +12,7 @@ class CondFiscal extends Conectar
 
     public function crearSelect($sel="")
     {
-        return parent::crearSelectTabla("tbcondicionfiscal", "idCondFiscal", "Nombre", $sel);
+        return parent::crearSelectTabla( "tbcondicionfiscal", "idCondFiscal", "Nombre", $sel );
     }
 
     public function get_condFiscal()

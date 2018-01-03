@@ -39,8 +39,9 @@
                         </div>
                    </div>
                    <div class="modal-footer">
-                     <input type="hidden"  name="resValor" id="resValor" value="" >
-                     <input type="hidden" name="resNombre" id="resNombre" value="">
+                     <input type="text"  name="resValor" id="resValor" value="" >
+                     <input type="text"  name="resCodigo" id="resCodigo" value="" >
+                     <input type="text" name="resNombre" id="resNombre" value="">
                      <button type="button" class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>               
                      <button type="button" class="btn btn-success btn-default pull-right" id="btn-aceptar" ><span class="glyphicon glyphicon-plus"></span> Aceptar</button>      
                    </div>
@@ -74,29 +75,32 @@
 
         $("body").delegate("#txtbuscar", "keyup", function(e){       
             var keyCode = e.keyCode || e.which; 
-            event.preventDefault();
+            e.preventDefault();
             
             var selec = $('#tabla_prod_body').find('.selected');
             
+            //alert(keyCode);
+
             switch(keyCode) {
                 case 37:
-                    alert('izquierda');                    
+                    //alert('izquierda');                    
                     break;
                 case 38:
                     //alert('arriba');
-                    selecFila( selec.prev('tr') );
+                    selecFila( selec.prev() );
                     break;
                 case 39:
-                    alert('derecha');
+                    //alert('derecha');
                     break;
                 case 40:                    
-                    selecFila( selec.next('tr') );
+                    selecFila( selec.next() );
                     break;
                 case 120: //F9:buscar
-                    //alert('abajo');
-                    selecFila( selec.next('tr') );
+                    //alert('abajo');                    
                     break;
-
+                case 13: //F9:buscar
+                    aceptarFila();
+                    break;
                 default:
                     buscarAjax( $(this).val() );
             }
@@ -115,48 +119,70 @@
 
         $("body").delegate("#tabla_prod_body tr", "dblclick", function(){       
 
-            aceptarFila( $(this) );
+            selecFila( $(this) );
+            aceptarFila();
             
         });
 
         $("body").delegate("#btn-aceptar", "click", function(){       
 
-            aceptarFila( $('#tabla_prod_body').find('.selected') ) ;
+            aceptarFila();
             
         });
 
+        $('body').on( "actFila" , function(){         
+        
+            if( $('#tabla_prod_body').find('tr').length ){                                   
+                selecFila( $('#tabla_prod_body').find('.selected') );                                              
+            }else{                                   
+               $("#resValor").attr( "value"  , "" );               
+               $("#resCodigo").attr( "value" , "" );
+               $("#resNombre").attr( "value" , "" );        
+            }
+
+        });
+
       
-        var aceptarFila = function aceptarFila( a )
+        
+    });  
+
+    var aceptarFila = function aceptarFila( )
         {           
-            a.trigger( "eventoResultado" , [ $("#resValor").val() , $("#resNombre").val() ] );         
+            $('#btn-aceptar').trigger( "eventoResultado" , [ $("#resValor").val() , $("#resCodigo").val() , $("#resNombre").val() ] );         
             $('#dialogoProd').modal('hide'); 
         }
 
-        var selecFila = function selecFila( a )
-        {
-            
-          if( a.is('tr') ){
-              $('#tabla_prod_body').find('tr').removeClass('selected');
-              a.addClass('selected'); 
-              $("#resValor").attr( "value" , a.find(".buscarID").val() );               
-              $("#resNombre").attr( "value" , a.find(".colCodigo").text().trim() + ", " + a.find(".colNombre").text().trim() );
-              $('#txtbuscar').focus();
-          }  
-            
-         
-        }
-    });  
+    var selecFila = function selecFila( a )
+    {
+      
+      if( a.is('tr') ){
+
+          $('#tabla_prod_body').find('tr').removeClass('selected');
+          a.addClass('selected'); 
+          $("#resValor").attr( "value"  , a.find(".buscarID").val() );               
+          $("#resCodigo").attr( "value" , a.find(".colCodigo").text().trim() );
+          $("#resNombre").attr( "value" , a.find(".colNombre").text().trim() );              
+      }          
+
+      $('#txtbuscar').focus();
+     
+    }
+
 
     //recibe el texto a buscar
     var dialogoBuscar = function dialogoBuscar( a ){
         
         $('#dialogoProd').modal('show'); 
         $("#txtbuscar").val( a );
+        
         //hay que esperar que finalice la transicion para darle el foco sino no lo toma
         $('#dialogoProd').on('shown.bs.modal', function() {
-          $('#txtbuscar').focus()
+            buscarAjax( $('#txtbuscar').val() );            
+            $('#txtbuscar').focus().select();
         });
     }
+
+    
 
     var buscarAjax = function buscarAjax( txt ){
 
@@ -170,7 +196,9 @@
                         success : function(data){                       
                             
                                 $("#tabla_prod_body").html(data);  
-                                $('#resultados').val( $("#tabla_prod_body tr").length );                           
+                                $('#resultados').val( $("#tabla_prod_body tr").length );
+                                $('#tabla_prod_body').trigger("actFila");                                
+                                
                             }
             });
 

@@ -1,0 +1,61 @@
+	 
+        <h2>Proveedores</h2>
+              <?php
+    if(isset($_GET['st'])){
+        if($_GET['st'] == MSG_INFO) {
+            mensaje( MSG_INFO, "El Registro ya existe, no se completo la operacion.");
+        }else
+            mensaje( $_GET['st']);
+    }
+	?>
+	<table>
+    <tr>
+		<td valign="middle" align="left" colspan="10">
+		
+        <a href="<?php echo BASE_URL;?>?accion=prov-add" id="prov-add" class="btn btn-primary" title="Nuevo Proveedor"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar proveedor</a>
+		
+		</td>
+	</tr>
+    </table>  
+    <table id="tabla" class="tablesorter">
+        <thead>          	
+        <tr  style="font-weight: bold;">
+        <th align="center">ID</th>
+        <th align="center">Nombre</th>        
+        <th align="center">Moneda</th>        
+        
+        <th align="center">Editar</th>
+        <th align="center">Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        for($i=0;$i<sizeof($datos);$i++)
+        {
+        ?>
+         <tr>
+        <td align="center"><?php echo $datos[$i]["idProveedor"];?></td>
+        <td align="left"><?php echo $datos[$i]["Razonsocial"];?></td>
+        <td align="left"><?php echo $datos[$i]["NomMoneda"] . '  (' . $datos[$i]["Cambio"] . ')' ;?></td>
+        
+        
+        <td align="center"><a href="<?php echo BASE_URL;?>?accion=prov-edit&id=<?php echo $datos[$i]["idProveedor"];?>" title="Editar <?php echo $datos[$i]["Nombre"];?>"><img src="<?php echo PATH_IMG;?>b_edit.png" border="0" width="16" height="16"></a></td>
+        <td align="center"><a href="javascript:void(0);" title="Eliminar <?php echo $datos[$i]["Nombre"];?>" onclick="eliminar('<?php echo BASE_URL;?>?accion=prov-del&id=<?php echo $datos[$i]["idProveedor"];?>')" ><img src="<?php echo PATH_IMG;?>b_drop.png" border="0" width="16" height="16"></a></td>
+        </tr>
+        <?php
+        }
+        ?>
+        </tbody>
+     </table>
+     
+     <script type="text/javascript" defer="defer">
+    	$(document).ready(function() 
+        { 
+            $("#tabla").tablesorter({
+                        theme : 'blue',
+                        widgets: ["zebra"],
+                        headers : { 3 : { sorter: false }, 4 : { sorter: false } }
+            });
+        } 
+    	); 
+    </script>     

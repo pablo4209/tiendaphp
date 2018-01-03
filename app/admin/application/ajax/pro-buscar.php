@@ -36,4 +36,49 @@ if( isset( $_POST["buscarProd"] ) && $_POST["buscarProd"] == 1 )
 
 	}
 }
+
+if( isset( $_POST["buscarCodigo"] ) && $_POST["buscarCodigo"] == 1 ){
+    
+    require_once(APP_PATH . 'config.php'); 
+    require_once( MODEL_PATH . "proModel.php"); 
+    
+
+    $pro=new Producto();  
+    $datos=$pro->getProductosCodigo( $_POST["txtBuscar"] );
+
+    $result = count($datos);
+    if( $result )
+    {       
+                        
+        $item = $_POST["items"] + 1 ; //$_POST["items"] + 1 ;
+        $fila =  '<tr>
+                        <td>' . $item . '</td>
+                        <td>' .$datos[0]["Codigo"]. '</td>
+                        <td>1</td>
+                        <td>' .$datos[0]["Nombre"]. '</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>   
+                        <td><input id="serie" item="1" name="serie" type="text" title="Ingresar numero de serie" class="input-large" >
+                        </td> 
+                        <td>    
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">   
+                                    <button type="button" class="btn btn-danger del_item" item="'.$item.'" > 
+                                        <span class="glyphicon glyphicon-trash"></span>             
+                                    </button>           
+                                    <button type="button" class="btn btn-success edit_item" item="'.$item.'" >      
+                                        <span class="glyphicon glyphicon-edit"></span>          
+                                    </button>           
+                                </div>  
+                        </td>       
+                </tr> ';                                
+        
+
+        echo $fila;
+
+    }
+
+    
+}
+
 ?>

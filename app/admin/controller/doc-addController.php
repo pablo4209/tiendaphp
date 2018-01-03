@@ -22,7 +22,7 @@ $vista = new View();
 $vista->incluir( INC_CONTENT_CSS . 
 				 '<link href="css/tabla_selec.css" rel="stylesheet" type="text/css" />' . 
 				 INC_JQUERYUI . 
-				 INC_VALIDITY . 
+				 INC_VALIDATE . INC_VALIDATE_REGLAS . 
 				 '<script type="text/javascript" src="' . PATH_JS . 'doc-mod.js" language="javascript"></script>' . 
 				 INC_TABLESORTER . 
 				 INC_TABLESORTER_PAGER );

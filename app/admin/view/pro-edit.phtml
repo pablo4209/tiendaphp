@@ -1,54 +1,17 @@
 
-  <script type="text/javascript">
-        $(function() {
-			$("#form").validate({				
-				rules: {	
-					Nombre: {
-						required: true,
-						maxlength:250,
-						minlength:2						
-					},
-					idCategoria: {
-						required: true,
-						min :1
-					}, 
-					idMoneda: {
-						required : true,
-						min 1,						
-					},
-					Codigo : {
-						required : true,
-						maxlength: 25,
-						minlenght: 4
-					},
-					idIva : {
-						min : 1,
-						required: true,
-						number: true
-					}
-				},
-				messages: {
-					Nombre: "Debes escribir un nombre valido",
-					idCategoria: "Es necesario asignar una categoria",
-					Codigo : "Debes escribir un codigo valido",
-					idIva : "Es requerido seleccionar una opcion de iva",
-					idMoneda: "Es requerido asignar una moneda"
-				}
-			});   
-        });    
-    </script>
 <div class="container-fluid">
-	<?php
+	<?php 
 	if(isset($_GET['st'])){
     	if($_GET['st'] == MSG_INFO) {
     		mensaje( MSG_INFO, "El Registro no se encontro, no se completo la operacion.");
     	}else
     		mensaje( $_GET['st']);
     }
+
 	echo $ruta;
 	?>
 	<div style="height:40px;width:50%;float:left">
-	<p style="float:left;"><a href="<?php echo BASE_URL;?>?accion=pro"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24" title="Pagina Anterior"></a></p></div>
+	<p style="float:left;"><a href="<?php echo $Regreso; ?>"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24" title="Pagina Anterior"></a></p></div>
 	<div style="height:40px;width:50%;float:right"><p style="float:right;">
 		<a href="#" class="btn btn-danger" name="imgEliminar" id="imgEliminar"><span class="glyphicon glyphicon-remove" aria-hidden="true"></a>
 		<a href="#" class="btn btn-success" name="imgRecargar" id="imgRecargar"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></a>
@@ -56,17 +19,18 @@
 	</div>
 	
 	<form action="" method="post" name="form" id="form">
-	<div class="row">
-    	<div class="col-md-6">
-    		<?php if(!empty($p)){ ?>			
-		    <h2><?php echo $p[0]["Nombre"]." "; ?> <small>(Editar) <?php if(!$p[0]["Habilitado"])echo ' /   (Deshabilitado)';?> </small></h2>
-    	</div>
-		<div class="col-md-6 text-right">
+	<div class="row">		    
+    	
+		<div class="col-md-12 text-right">
 			<input type="button" class="btn btn-default" value="Nuevo Producto Similar" name="BtnSimilar" id="BtnSimilar" title="crear un producto similar a otro de la misma categoria ahorra tiempo y evita errores" />
 			<input type="button" class="btn btn-default" value=".Pdf" name="BtnPdf" id="BtnPdf" title="genera hoja pdf sobre producto" />
 			<button type="submit" class="btn btn-primary" name="BtnGuardar" id="BtnGuardar" title="Guardar cambios" /><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Guardar</button>			
 		</div>
-    	<hr>
+		<hr>
+		<div class="col-md-12">
+			<?php echo $Titulo; ?>
+		</div>
+    	
    	</div>
 	<hr>   
             
@@ -81,17 +45,17 @@
 					  		<table align="left" width="100%" class="table table-bordered">
 								<tr>
 									<td><strong >Nombre (*)</strong></td>
-									<td><input name="Nombre" id="Nombre" type="text" value="<?php echo $p[0]["Nombre"]; ?>" title="Nombre" class="form-control"  />
-										<input name="SEO" id="SEO" type="hidden"  class="form-control"  /></td>
+									<td><div class="validar"><input name="Nombre" id="Nombre" type="text" value="<?php echo $p[0]["Nombre"]; ?>" title="Es necesario asignar un nombre." class="form-control selTxt required" minlength="2" maxlength="250"  />
+										<input name="SEO" id="SEO" type="hidden"  class="form-control"  /></div></td>
 								</tr>
 								<tr>
 									<td><strong >Codigo (*)</strong></td>
 									<td>
-										<div class="input-group">									      
+										<div class="input-group validar">									      
 									      <span class="input-group-btn">
 									        <button type="button" class="btn btn-success" id="buscarCodigo" title="Buscar codigo libre" /><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 									      </span>
-									      <input name="Codigo" id="Codigo" type="text" value="<?php echo $p[0]["Codigo"]; ?>" title="Codigo de producto" class="form-control input-small"  />
+									      <input name="Codigo" id="Codigo" type="text" value="<?php echo $p[0]["Codigo"]; ?>" title="Es necesario asignar un codigo." class="form-control input-small selTxt required" minlength="4" maxlength="25" />
 									    </div><!-- /input-group -->
 
 									  		
@@ -101,11 +65,11 @@
 								</tr>
 								<tr>
 									<td width="20%"><strong>Tipo de producto (*)</strong></td>
-									<td width="80%"><?php echo $seltipo; ?> <?php echo "(id:".$p[0]["idProducto"].")";?></td>						
+									<td width="80%"><div class="validar"><?php echo $seltipo; ?> <?php echo "(id:".$p[0]["idProducto"].")";?></div></td>						
 								</tr>
 								<tr>
 									<td><strong>Categoria (*)</strong></td>
-									<td><?php echo $selCat; ?></td>					
+									<td><div class="validar"><?php echo $selCat; ?></div></td>					
 								</tr>														
 								<tr>
 									<td><strong >Barcode :</strong></td>
@@ -152,6 +116,8 @@
 							    <input type="checkbox" class="checkbox" <?php if($p[0]["Promociones"])echo 'checked="checked"';?> title="habilitar promociones"  name="Promociones" id="Promociones" />
 								Promociones
 							  </label>
+							  <label><input type="checkbox" class="checkbox" <?php if($p[0]["ImponerPrecio"])echo 'checked="checked"';?> title="Imponer precio si es un producto padre"  name="ImponerPrecio" id="ImponerPrecio" />
+									Imponer Precio</label>
 							  <label>
 							    <input type="checkbox" class="checkbox" <?php if($p[0]["Habilitado"])echo 'checked="checked"';?> title="Habilitado"  name="Habilitado" id="Habilitado" />
 								Habilitar
@@ -189,6 +155,7 @@
 				</div>	   									
 	   		</div><!-- COL3 -->
 		</div> <!-- ROW1 -->
+	<?php if( $ImponerPrecio == 0 ){  ?>
 		<div class="row"><!-- ROW2 -->
 			<div class="col-md-6"><!-- COL1 -->
 				<div class="panel panel-primary" >
@@ -200,23 +167,23 @@
 							    	<table width="60%" class="table table-bordered">
 									  <tr>
 										<td align="right">Moneda:</td>
-										<td><?php echo $selMon; ?></td>
+										<td><div class="validar"><?php echo $selMon; ?></div></td>
 									  </tr>
 									  <tr>
 										<td width="50%" align="right">Costo:</td>
-										<td width="50%"><input name="Costo" id="Costo" type="text" value="<?php echo $p[0]["Costo"]; ?>" title="moneda principal seleccionada por defecto" class="form-control"  /></td>
+										<td width="50%"><div class="validar"><input name="Costo" id="Costo" type="text" value="<?php echo $p[0]["Costo"]; ?>" title="Es necesario asignar un costo numerico valido." class="form-control selTxt required number"  /></div></td>
 									  </tr>
 									  <tr>
 										<td align="right">Cantidad por defecto:</td>
-										<td><input name="UnidxDef" id="UnidxDef" type="text" value="<?php echo $p[0]["UnidxDef"]; ?>" title="cantidad de unidades por defecto" class="form-control"  /></td>
+										<td><div class="validar"><input name="UnidxDef" id="UnidxDef" type="text" value="<?php echo $p[0]["UnidxDef"]; ?>" title="Debes indicar cuantas unidades por defecto se calculan por cada producto." greaterThan="0" class="form-control selTxt required number form-control" /></div></td>
 									  </tr>
 									  <tr>
 										<td align="right">Iva (*):</td>
-										<td><?php echo $seliva; ?></td>
+										<td><div class="validar"><?php echo $seliva; ?></div></td>
 									  </tr>
 									  <tr>
 										<td align="right">Max descuento:</td>
-										<td><input name="MaxDescuento" type="text" id="MaxDescuento" value="<?php echo $p[0]["MaxDescuento"]; ?>" size="8" maxlength="8" /></td>
+										<td><div class="validar"><input name="MaxDescuento" type="text" id="MaxDescuento" value="<?php echo $p[0]["MaxDescuento"]; ?>" size="8" maxlength="8" class="selTxt number form-control" /></div></td>
 									  </tr>
 									</table>
 								</div>
@@ -243,7 +210,7 @@
 									for($i=0;$i<$resultados;$i++) { ?>
 									  <tr>
 										<td><?php echo $listas[$i]['Nombre']; ?></td>
-										<td><input name="<?php echo "costo[".$listas[$i]['idLista'].']';?>" id="<?php echo "costo".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtCosto" disabled />								</td>
+										<td><input name="<?php echo "costo[".$listas[$i]['idLista'].']';?>" id="<?php echo "costo".$listas[$i]['idLista'];?>" idLista="<?php echo $listas[$i]['idLista']; ?>" type="text" value="0.00" size="8" maxlength="8" class="txtCosto" disabled />								</td>
 										<td>
 										<?php
 										$proMargen=0;
@@ -253,10 +220,17 @@
 												}
 										}
 										?>
-										<input name="<?php echo "margen[".$listas[$i]['idLista'].']';?>" id="<?php echo "margen".$listas[$i]['idLista'];?>" type="text" value="<?php echo $proMargen; ?>" size="8" maxlength="8" class="txtMargen" /></td>
+										<div class="validar">
+											<input name="<?php echo "margen[".$listas[$i]['idLista'].']';?>" id="<?php echo "margen".$listas[$i]['idLista'];?>" type="text" value="<?php echo $proMargen; ?>" size="8" maxlength="8" class="txtMargen selTxt required number form-control" />
+										</div></td>
 										<td>  
-										  <input name="<?php echo "precio[".$listas[$i]['idLista'].']';?>" id="<?php echo "precio".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtPrecio" /></td>
-										<td><input name="<?php echo "preciofinal[".$listas[$i]['idLista'].']';?>" id="<?php echo "preciofinal".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtPrecioFinal" />
+										  	<div class="validar">
+										  		<input name="<?php echo "precio[".$listas[$i]['idLista'].']';?>" id="<?php echo "precio".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtPrecio selTxt number required form-control" />
+										  	</div>
+									    </td>
+										<td><div class="validar">
+												<input name="<?php echo "preciofinal[".$listas[$i]['idLista'].']';?>" id="<?php echo "preciofinal".$listas[$i]['idLista'];?>" type="text" value="0.00" size="8" maxlength="8" class="txtPrecioFinal selTxt number required form-control" />
+											</div>
 										</td>
 									</tr>
 									  <?php } ?>
@@ -266,6 +240,7 @@
 				</div>				
 			</div><!-- COL2 -->
 		</div><!-- ROW2 -->
+	<?php } ?>
 		<div class="row"><!-- ROW3 -->
 			<div class="col-md-6"><!-- COL1 -->
 				<div class="panel panel-primary">
@@ -298,10 +273,10 @@
 									}
 									?>
 									<td><?php echo $depositos[$i]['idDeposito']; ?> - <?php echo $depositos[$i]['Nombre']; ?></td>
-									<td><input name="<?php echo "stock[".$depositos[$i]['idDeposito'].']';?>" type="text" value="<?php echo $proStock_stock;?>" size="6" maxlength="6" /></td>
+									<td><input name="<?php echo "stock[".$depositos[$i]['idDeposito'].']';?>" type="text" value="<?php echo $proStock_stock;?>" size="6" maxlength="6" class="selTxt" /></td>
 									<td>
-									  <input name="<?php echo "stockmin[".$depositos[$i]['idDeposito'].']';?>" type="text" id="stockmin" value="<?php echo $proStock_min;?>" size="5" maxlength="5" /></td>
-									<td><input name="<?php echo "stockmax[".$depositos[$i]['idDeposito'].']';?>" type="text" id="stockmax" value="<?php echo $proStock_max;?>" size="5" maxlength="5" /></td>
+									  <input name="<?php echo "stockmin[".$depositos[$i]['idDeposito'].']';?>" type="text" id="stockmin" value="<?php echo $proStock_min;?>" size="5" maxlength="5" class="selTxt" /></td>
+									<td><input name="<?php echo "stockmax[".$depositos[$i]['idDeposito'].']';?>" type="text" id="stockmax" value="<?php echo $proStock_max;?>" size="5" maxlength="5" class="selTxt" /></td>
 								</tr>
 								  <?php } ?>
 							  </table>
@@ -333,41 +308,43 @@
 				</div>			
 			</div><!-- COL2 -->
 		</div><!-- ROW3 -->
+	<?php if( $idPadre <= 0  ){ ?>
 		<div class="row"><!-- ROW4 -->
 			<div class="col-md-12"><!-- COL1 -->	
-				<div class="panel panel-primary">
+				<div class="panel panel-info">
 						  <div class="panel-heading">
 						    <h3 class="panel-title">Sub productos asociados</h3>
 						  </div>
 						  <div class="panel-body">
-						  	<div class="table-responsive">
-						  		<input name="idPadre" id="idPadre" value="<?php echo $p[0]["idPadre"]; ?>" type="text"  class="input medium"  />	
+						  	<div class="table-responsive">						  		
 						  		<?php 								
 								$sp_totales = sizeof($sp);
-								echo '<br>Asociados: '.$sp_totales.'<br>';
-								for($i=0;$i<$sp_totales;$i++) { 
-								  	echo $sp[$i]['Codigo'].' '.$sp[$i]['Nombre'].'<br>';					
-								  	}
-								?>							    
-							    <table width="100%" class="table table-bordered" >							
+								echo '<br>Asociados: '.$sp_totales.'<br>'; 	?>							    
+							    <table width="50%" class="table table-bordered" >							
 									<thead>
 									<tr>
-										<th><strong>Descripcion</strong></th>
-										<th><strong>Accion</strong></th>
+										<th width="60%"><strong>Descripcion</strong></th>
+										
+										<th width="40%"><strong>Accion</strong></th>
 									</tr>
-									</thead>
-									<tr>
-										<td><strong>nombre del producto</strong></td>
-										<td>valores a modificar</td>
-									</tr>							
+									</thead>									
+									<?php 
+										for($i=0;$i<$sp_totales;$i++) { 
+								  			echo '<tr><td><a href="'.BASE_URL.'?accion=pro-edit&id='.$sp[$i]['idProducto'].'">'.$sp[$i]['Nombre'].'</a></td>'. 			     
+								  			     '<td>
+								  			     	<a href="'.BASE_URL.'?accion=pro-edit&id='.$sp[$i]['idProducto'].'" title="Editar Producto" class="btn btn-success"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+								  			      </td></tr>' ;			
+								  	}
+									?>		
 								</table>
-								
+								<a href="<?php echo BASE_URL.'?accion=pro-add&idpadre='.$p[0]['idProducto']; ?>" id="sub-pro-add" class="btn btn-success" title="Nuevo SubProducto"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Subproducto</a>
 							</div>
 						  </div>
 				</div>
 			</div><!-- COL1 -->	
 		</div><!-- ROW4 -->
-		<div class="row"><!-- ROW4 -->
+	<?php } ?>
+		<div class="row"><!-- ROW5 -->
 			<div class="col-md-12"><!-- COL1 -->
 				<div class="panel panel-primary">
 						  <div class="panel-heading">
@@ -393,15 +370,17 @@
 						  </div>
 				</div>		
 			</div><!-- COL1 -->			
-		</div><!-- end ROW4 -->
+		</div><!-- end ROW5 -->
 				
 
 			<div class="row">
 				<div class="col-md-12 text-right">				
 				<div class="form-group">
 					<input name="idProducto" id="idProducto" value="<?php echo $p[0]["idProducto"]; ?>" type="hidden"  class="form-control"  />					
+					<input name="idPadre" id="idPadre" value="<?php echo $p[0]["idPadre"]; ?>" type="hidden"  class="input medium"  />	
 					<input name="pDescuento" type="hidden" id="pDescuento" value="<?php echo $p[0]["pDescuento"]; ?>" size="8" maxlength="8" />			
 					<input name="idMarca" id="idMarca" value="<?php echo $p[0]["idMarca"]; ?>" type="hidden"  class="form-control"  />									
+					<input type="hidden" name="ImponerPrecio" id="ImponerPrecio" value="<?php echo $ImponerPrecio; ?>">
 					<input type="hidden" name="grabar" value="si" />            
 						
 					<input type="button" class="btn btn-default" value="Nuevo Producto Similar" name="BtnSimilar" id="BtnSimilar" title="crear un producto similar a otro de la misma categoria ahorra tiempo y evita errores" />
@@ -412,7 +391,7 @@
 			</div>
             </form>
 </div><!-- end CONTAINER -->
-	<?php } //if variable st!=4
+	<?php 
 
 require_once( PATH_JS . "upload/cargar_imagen.php");
 	?>

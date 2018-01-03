@@ -6,3 +6,9 @@
 .input-medium{
 	max-width: 220px !important;
 }
+.input-large{
+	max-width: 400px !important;
+}
+.input-extralarge{
+	max-width: 600px !important;
+}

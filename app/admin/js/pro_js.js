@@ -6,24 +6,33 @@
 				CalcularPrecios($("#Costo"));
 				funcCategorias("cargarCat");
 			}
-			
 
+		    
+		    if( $('#chkSub').is(":checked") && $('#idPadre').val() <= 0 ){		    	
+		    	controlesSubProd( );
+		    }
+		
 		});
 		
-
+		$('.selTxt').focus(function(){
+			this.select();
+		});
 		
 		$("body").delegate("#txtpadre", "keyup", function(e){
 	            var keyCode = e.keyCode || e.which; 	            
-	            event.preventDefault();
+	            e.preventDefault();
+
 	            
 	            if( keyCode == 120 || keyCode == 13 ){  //F9 o ENTER : buscar	                
 	                dialogoBuscar( $(this).val() );
 	            } 
         });
 			
-		$("body").on( "eventoResultado" , function( ev , id , nombre ){ 
+		$("body").on( "eventoResultado" , function( ev , id , codigo , nombre ){ 
 				
-				$("#txtpadre").attr( "value" , nombre );
+
+				$("#Codigo").attr( "value" , codigo + '-' ); 
+				$("#txtpadre").attr( "value" , codigo + ', ' + nombre );
 				$("#idPadre").attr( "value" , id ); 
  
 		});
@@ -33,23 +42,31 @@
 	                dialogoBuscar( $("#txtpadre").val() );	             
         });
 
-        $("body").delegate("#chkSub", "click", function(e){	            
-	       
-	       	if( $(this).is( ":checked" ) ){
-	       		//habilitar controles
+        $("body").on( "click" , "#chkSub" , function(e){	            
+	       	
+	       	controlesSubProd();
+	       	
+	        //dialogoBuscar( $(this).val() );	             
+        });
+
+        var  controlesSubProd = function(){
+
+        	if( $('#chkSub').is( ":checked" ) ){
+	       		//habilitar controles	       			       		
 	       		$(".ctrlNoSubPro,#idCategoria").attr("disabled" , "true" );
 	       		$(".ctrlSubPro").removeAttr("disabled");
 	       	    $("#form").validate({ rules: { idCategoria : { required : false }  } });
+	       	    dialogoBuscar( $("#txtpadre").val() );
 	       		
-	       	}else{
+	       	}else{	       		
 	       		//deshabilitar controles de subproducto
 	       		$(".ctrlNoSubPro,#idCategoria").removeAttr("disabled");	    
 	       		$(".ctrlSubPro").attr("disabled" , "true" );   		
 	       		$("#form").validate({ rules: { idCategoria : { required : true } } });
 	       	}
 
-	        //dialogoBuscar( $(this).val() );	             
-        });
+	        
+        }
 		
 		$("#cargando").hide();
 		$("#aceptado").hide();
@@ -97,8 +114,7 @@
 		});
 		
 		var moverCargando = function(a)
-		{			
-			//a.insertAfter( $("#cargando") );			
+		{				
 			$("#cargando").show();
 		}
 		var buscarImagen = function()
@@ -152,12 +168,12 @@
 		$(".txtPrecio").keyup(function(){ CalcularPrecios($(this)); });
 		$(".txtPrecioFinal").keyup(function(){ CalcularPrecios($(this)); });
 		
-		var strValorMoneda = function(cadena){
+		var strValorMoneda = function( cadena ){
 			if(cadena != ""){
-				var ini = cadena.indexOf("(");				
-				var fin = cadena.indexOf(")");
-				cadena = cadena.slice(ini+1, fin); //recorta				
-				return parseFloat(cadena);
+				var ini = cadena.indexOf("[");				
+				var fin = cadena.indexOf("]");
+				cadena = cadena.slice(ini+1, fin); //recorta								
+				return parseFloat( cadena );
 			}else return 1;						
 		}
 		
@@ -166,13 +182,16 @@
 			//obtiene el el valor del cambio a partir de la leyenda del select
 			var cambio = strValorMoneda($("#idMoneda option:selected").html());
 			var alicuota = strValorMoneda($("#idIva option:selected").html());			
-			var costo = parseFloat($("#Costo").val())*parseFloat(cambio);				
+			var costo = parseFloat( $("#Costo").val() ) * parseFloat(cambio);				
+			
+			//alert( 'el valor de cambio es: ' + cambio );
 			var costofinal = ((costo / 100) * alicuota) + costo;
 			$('input[class=txtCosto]').each( function(){																				
-				var idcosto = $(this).closest('tr').find('input[class=txtCosto]').attr("id");										
-				var idmargen = $(this).closest('tr').find('input[class=txtMargen]').attr("id");						
-				var idprecio = $(this).closest('tr').find('input[class=txtPrecio]').attr("id");							
-				var idpreciofinal = $(this).closest('tr').find('input[class=txtPrecioFinal]').attr("id");							
+				var idcosto = 'costo' + $(this).attr("idLista");						;														
+				var idmargen = 'margen' + $(this).attr("idLista");						
+				var idprecio = 'precio' + $(this).attr("idLista");							
+				var idpreciofinal = 'preciofinal' + $(this).attr("idLista");						;							
+
 
 				if(isNaN(costofinal)){
 					costo = 0;
@@ -180,6 +199,7 @@
 				}else{		
 					var margen;			 
 					var precio;
+
 					switch (a.attr("id")) {							
 						case idprecio:						
 							precio = parseFloat($("#"+idprecio).val());
@@ -193,7 +213,7 @@
 							$("#"+idmargen).val(margen.toFixed(3));												
 						case idmargen: //igual que PrecioCompra														
 						default:
-							//PrecioCompra
+							//PrecioCompra							
 							margen = parseFloat($("#"+idmargen).val());					
 							precio = ((costo / 100) * margen) + costo;					
 							$("#"+idprecio).val(precio.toFixed(3));

@@ -29,7 +29,7 @@ class Conectar
                 
             }
             catch (PDOException $e) {
-                print "Error!<br/>Mensaje:  ". $e->getMessage() . "<br/>";                
+                print '<div class="alert alert-danger" role="alert">Mensaje:  '. $e->getMessage() . '</div>';                
                 die();
             }
 
@@ -57,12 +57,37 @@ class Conectar
           {                                         //retorna false y hay error
               $this->p[]=$row;
           }        
+          
+          self::debugSQL( $sql );
           return $this->p;
 
         }catch(PDOException $e) {
                 print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";         
                 die();
         }
+    }
+
+    protected function debugSQL( $sql ){
+        if( DEBUG ){
+            $_SESSION['infoSQL'] = '<div class="row"><div class="col-md-10"><div class="alert alert-danger" role="alert">'.htmlspecialchars( $sql ).'</div></div></div>';             
+        }else if( isset( $_SESSION['infoSQL'] ) ) 
+                    unset( $_SESSION['infoSQL'] ); 
+    }
+
+    protected function debugParams( $prep ){
+        
+        if(DEBUG){
+            
+            ob_start();
+            $prep->debugDumpParams();
+            $r = ob_get_contents();
+            ob_end_clean();           
+
+            $_SESSION['infoSQL'] = '<div class="row"><div class="col-md-10"><div class="alert alert-danger" role="alert">'.htmlspecialchars( $r ).'</div></div></div>'; 
+
+        }else if( isset( $_SESSION['infoSQL'] ) ) 
+                    unset( $_SESSION['infoSQL'] ); 
+
     }
 
     public function close(){
@@ -76,6 +101,7 @@ class Conectar
         $stmt=$this->dbh->prepare($sql);
             if($stmt->execute(  ) )
             {
+                self::debugSQL( $sql );
                 while($row = $stmt->fetch(PDO::FETCH_ASSOC)) //resultado asociado solo a nombres de campos
                 {
                     $this->p[]=$row;
@@ -99,6 +125,7 @@ class Conectar
             self::ClearArray();
             $stmt=$this->dbh->prepare($sql);
             $stmt->execute( $id );
+            self::debugParams( $stmt );
 
             while($row = $stmt->fetch(PDO::FETCH_ASSOC))
             {
@@ -119,6 +146,7 @@ class Conectar
     protected function exePrepare($consulta){
         try{
             $r = $consulta->execute();
+            self::debugSQL( $consulta );
             $consulta->closeCursor();
             if($r)
                 return true;
@@ -133,12 +161,13 @@ class Conectar
     //
     //recibe una consulta preparada, la ejecutada y retorna un array assocc con los resultados obtenidos
     //
-    protected function exePrepare_FetchAssoc($consulta){
+    protected function exePrepare_FetchAssoc( $consulta ){
 
       try{
           self::ClearArray();
           if( $consulta->execute() )
             {
+                self::debugParams( $consulta );
                 while($row = $consulta->fetch(PDO::FETCH_ASSOC)) //resultado asociado solo a nombres de campos
                 {
                     $this->p[]=$row;
@@ -338,7 +367,7 @@ return $fecha;
     }
 
     //Genera un select html con nombre e id, si $sel tiene valor lo selecciona, sino imprime seleccionar opcion con val=0
-     protected function crearSelectTabla($tabla, $id, $desc, $sel="", $desc2="", $where = "", $cssClass="form-control input-medium")
+     protected function crearSelectTabla($tabla, $id, $desc, $sel="", $desc2="", $where = "", $cssClass="form-control input-medium required")
     {
         $f=""; //se inicializan para evitar warnings
 		if(empty($tabla) or empty($id) or empty($desc))
@@ -353,7 +382,7 @@ return $fecha;
         if($datos)
         {
             //dias
-            $f.= '<select name="'.$id.'" id="'.$id.'" class="'.$cssClass.'">
+            $f.= '<select name="'.$id.'" id="'.$id.'" min="1" title="Debes seleccionar un elemento." class="'.$cssClass.'">
                     <option value="0" ';
             if ($sel=="") $f.='selected="selected"';
             $f.= '>Seleccionar</option>';
@@ -363,7 +392,7 @@ return $fecha;
         		  $f.= '<option value="'.$datos[$i][$id].'" ';
                   if ($datos[$i][$id] == $sel) $f.='selected="selected"';
                   $f.= '>'.$datos[$i][$desc];
-				  if(! empty($desc2)) $f.= ' ('.$datos[$i][$desc2].') ';
+				  if(! empty($desc2)) $f.= ' ['.$datos[$i][$desc2].'] ';
 				  $f.='</option>';
 
         	   }

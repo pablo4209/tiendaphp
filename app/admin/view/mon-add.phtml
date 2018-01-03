@@ -1,75 +1,54 @@
+	<?php 
+    if( isset($_GET['st']) ) mensaje( $_GET['st'] ); 
+    ?>
+    <div class="row">
+                <a href="<?php echo BASE_URL;?>?accion=mon"> <span class="btn btn-success glyphicon glyphicon-arrow-left" aria-hidden="true"></span> </a>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Agregar Moneda</h2>
+            <hr>
+            <form action="" method="post" name="form" id="form">
+                    
 
-  <script type="text/javascript">
-        $(function() {
-            $("#form").validity(function() {
-                
-                $("#Nombre").maxLength(50).minLength(2).require();
-                $("#Cambio").match("number").greaterThan(0).require();
-                $("#Simbolo").maxLength(10).require();                
-            });    
-        });    
-    </script>
-
-	 <?php
-    if(isset($_GET["st"]))
-    {
-    	switch ($_GET["st"])
-    	{
-    		case '1':
-    			?>
-    			<div class="fail large png_bg">Complete todos los campos obligatorios por favor.</div>
-    			<?php
-    		break;
-            
-    		case '2':
-    			?>
-    			<div class="success large png_bg">El registro se ha creado exitosamente.</div>
-    			<?php
-    		break;
-            case '3':
-    			?>
-    			<div class="fail large png_bg">Error, Registro no creado.</div>
-    			<?php
-    		break;
-    		
-    	}
-    }
-	?>
-        <h2>Agregar Moneda</h2>
-        
-    <form action="" method="post" name="form" id="form">
-            <p>
-            <label><a href="<?php echo BASE_URL;?>?accion=mon"><img src="<?php echo PATH_IMG;?>arrow_left_32.png" border="0" width="24" height="24"></a></label>
-            </p>
-
-            <p>
-            <label >Nombre (*)</label>
-            <input name="Nombre" id="Nombre" type="text" title="Nombre" class="input medium"  />
-            </p>
-            <p>
-            <label>Cambio (equivalente a 1 unidad de la moneda principal) (*)</label>
-            <input name="Cambio" id="Cambio" type="text" title="Cambio" class="input large" value="0.00" />
-            </p>
-            <p>
-            <label>Simbolo(*)</label>
-            <input name="Simbolo" id="Simbolo" type="text" title="simbolo" class="input medium"  />
-            </p>           
-            <p>
-            <input type="checkbox" class="checkbox" value="1" checked="checked" title="habilitada" name="Habilitada" id="Habilitada" />
-            Habilitada            
-            </p>                       
-            
-            <p>
-            <input type="checkbox" class="checkbox" title="hacer que esta moneda sea la principal de sistema" value="1" name="Principal" id="Principal" />
-            Moneda Principal            
-            </p>            
-            <p>
-            <input type="checkbox" class="checkbox" value="1" title="hacer que esta moneda sea la principal de la frontend web" name="Web" id="Web" />
-            Moneda Principal en la Web            
-            </p>
-            
-            <input type="hidden" name="grabar" value="si" />            
-            <input type="submit" class="button" value="Crear" title="Crear Nueva Moneda" />
-            </p>
+                    <div class="form-group validar">
+                        <label for="Nombre" >Nombre (*)</label>
+                        <input name="Nombre" id="Nombre" maxlenght="50" minlength="2"  type="text" class="form-control input-medium required"  />
+                    </div>
+                    
+                    <div class="form-group validar">
+                        <label for="Cambio">Cambio (equivalente a 1 unidad de la moneda principal) (*)</label>
+                        <input name="Cambio" id="Cambio" type="text" greaterThan="0" class="form-control input-small required number" value="0.00" />
+                    </div>
+                    <div class="form-group validar">
+                        <label>Simbolo(*)</label>
+                        <input name="Simbolo" id="Simbolo" type="text" class="form-control input-small required"  />
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"  value="1" checked="checked" name="Habilitada" id="Habilitada" />Habilitada
+                        </label>
+                    </div>   
+                    
+                    <div class="checkbox">
+                            <label>  
+                                <input type="checkbox"  title="hacer que esta moneda sea la principal de sistema" value="1" name="Principal" id="Principal" />Moneda Principal 
+                            </label>   
+                    </div>
+                    <div class="checkbox">
+                            <label> 
+                                <input type="checkbox"  value="1" title="hacer que esta moneda sea la principal de la frontend web" name="Web" id="Web" />Moneda Principal en la Web
+                            </label>                    
+                    </div>
+                   
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" name="grabar" value="si" />            
+                            <input type="submit" class="btn btn-default pull-right" value="Crear" title="Crear Nueva Moneda" />
+                        </div>
+                    </div>
+                    
             </form>
-
+        </div>
+    </div>
