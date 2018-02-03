@@ -1,6 +1,7 @@
     $(function(){	
         $(document).ready(function(){
-                $("#cli_contmasdatos").hide();
+                visualizar_paneles();
+
                 $("#fecha").datepicker({
                           showOn: 'both',
                           buttonImage: 'view/layout/default/img/calendar.png',
@@ -9,8 +10,41 @@
                           numberOfMonths: 2,
                           maxDate: "today"
                 }).datepicker("setDate", new Date());
-        });			
+        });		
+
+        $("body").on( "change" , "#idTipoDoc" , function(){
+               
+               visualizar_paneles();
+                        
+        });
          
+
+        var visualizar_paneles = function (){
+
+            $("#cli_contmasdatos").hide();
+            switch( $("#idTipoDoc").val() ) {
+                    case '0':
+                        $("#panel_cli").hide();
+                        $("#panel_control").hide();
+                        $("#panel_tabla").hide();
+                        break;
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                        $("#panel_cli").show();
+                        $("#panel_control").show();
+                        $("#panel_tabla").show();
+                        $("#panel_cli").show();
+                        break;
+                    case '5':
+                    case '6':
+                        $("#cli_contmasdatos").show();
+                        $("#panel_control").show();
+                        $("#panel_tabla").show();
+                        $("#panel_cli").hide();                                          
+            }
+        }
 
         $("body").on( "eventoResultado" , function( ev , id , codigo , nombre ){ 
         

@@ -14,9 +14,7 @@
 		
 		});
 		
-		$('.selTxt').focus(function(){
-			this.select();
-		});
+		
 		
 		$("body").delegate("#txtpadre", "keyup", function(e){
 	            var keyCode = e.keyCode || e.which; 	            
