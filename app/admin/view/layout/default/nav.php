@@ -48,19 +48,17 @@
 				<li class="dropdown">
 				  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuarios <span class="caret"></span></a>
 				  <ul class="dropdown-menu">
-					<li><a href="<?php echo BASE_URL;?>?accion=user">Listado de Usuarios</a></li>
-					<li><a href="<?php echo BASE_URL;?>?accion=user-add">Nuevo Usuario</a></li>
-					<li><a href="#">Something else here</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="#">Separated link</a></li>
+					<li><a href="<?php echo BASE_URL;?>?accion=ent">Listado de Entidades</a></li>
+					<li><a href="<?php echo BASE_URL;?>?accion=ent-add">Nueva entidad</a></li>
+					<li role="separator" class="divider"></li>					
+					<li><a href="#">Tipos de entidades</a></li>
 				  </ul>
 				</li>
 				<li class="dropdown">
 				  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Configuracion <span class="caret"></span></a>
 				  <ul class="dropdown-menu">
 					<li><a href="<?php echo BASE_URL;?>?accion=mon">Moneda</a></li>
-					<li><a href="#">Another action</a></li>
-					<li><a href="#">Something else here</a></li>
+					<li><a href="#">Another action</a></li>					
 					<li role="separator" class="divider"></li>
 					<li><a href="#">Separated link</a></li>
 				  </ul>

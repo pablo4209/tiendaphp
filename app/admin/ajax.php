@@ -18,6 +18,9 @@ if($_GET){
     case 'pro-buscar':            
       require_once( AJAX . 'pro-buscar.php' );
       break;
+    case 'ent-list':            
+      require_once( AJAX . 'ent-list.php' );
+      break;
     default:
       header( 'location: ?accion=home' );
       break;

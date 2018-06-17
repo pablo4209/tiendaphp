@@ -26,7 +26,7 @@ $(function(){
     });
 
     $("#btnEntrar").click(function(){
-        alert("valida!");
+        
         valida_logueo();
 
     });

@@ -61,6 +61,10 @@ define('MSG_WARNING',2);
 define('MSG_DANGER' ,3);
 define('MSG_INFO' ,4);
 
+# los tipo de entidad tienen una tabla en la bd pero se suponen fijos en el programa
+define('ENT_USUARIO'  	, 1);
+define('ENT_PROVEEDOR'	, 2);
+define('ENT_CLIENTE'	, 3);
 
 # Activación del DEBUG, solo para desarrollo
 define( 'DEBUG', true );
@@ -84,4 +88,5 @@ else
 require_once( MODEL_PATH .'database.php');
 require_once( APP_PATH.   'view.php');
 require_once( PATH_FUNCTIONS . 'mensajes.php');
+require_once( PATH_FUNCTIONS . 'getIp.php');
 ?>
