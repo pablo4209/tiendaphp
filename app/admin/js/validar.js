@@ -1,4 +1,20 @@
-$(function(){	
+$(function(){
+
+		//clases propias de validacion
+    jQuery.validator.addClassRules({
+			    val_nombre: {
+			          required: true,
+			          minlength: 2,
+			          maxlength: 150
+			    },
+			    val_numero: {
+			      required: true,
+			      digits: true,
+			      minlength: 1,
+			      maxlength: 5
+			    }
+	  });
+
 
 	jQuery.validator.addMethod("lettersonly", function(value, element) {
 		return this.optional(element) || /^[a-z ]+$/i.test(value);
@@ -15,7 +31,7 @@ $(function(){
 	}, 'Debes ingresar un valor menor.' );
 
 
-	$("#form").validate({                                
+	$("#form,#form_crud").validate({
                 errorElement: "em",
                 errorPlacement: function ( error, element ) {
                         // Add the `help-block` class to the error element
@@ -32,6 +48,9 @@ $(function(){
                 },
                 unhighlight: function (element, errorClass, validClass) {
                     $( element ).parents( ".validar" ).addClass( "has-success" ).removeClass( "has-error" );
+                },
+								submitHandler: function(form) {
+                    $(form).ajaxSubmit();
                 }
 
     });

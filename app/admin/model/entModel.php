@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class Entidad extends Conectar
 {
@@ -12,8 +12,8 @@ class Entidad extends Conectar
 
     public function getRows()
     {
-        $sql = "SELECT `idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`, `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`, `HoraAlta`, `FechaMod`, `HoraMod`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`, `idMoneda`, `Login`, `Pass`, `KeyReg`, `NewPass`, `idNivelAcceso`, `ip`, `FechaLog`, `HoraLog` 
-        	FROM `tbentidad` ";
+        $sql = "SELECT `idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`, `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`, `HoraAlta`, `FechaMod`, `HoraMod`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`, `idMoneda`, `Login`, `Pass`, `KeyReg`, `NewPass`, `idNivelAcceso`, `ip`, `FechaLog`, `HoraLog` "
+								." 	FROM `tbentidad`;";
         return parent::getRows($sql);
     }
 
@@ -21,14 +21,14 @@ class Entidad extends Conectar
     {
         //print_r($_POST);exit;
 
-    	//verifica segun el tipo de entidad que se quiere crear, estan definidos: ENT_USUARIO, ENT_PROVEEDOR, ENT_CLIENTE 
-       
-        if( empty($_POST["idEntidadTipo"]) or  empty($_POST["Nombre"]) or $_POST["idEntidadTipo"] == 0 
-    		OR ($_POST["idEntidadTipo"] == ENT_USUARIO AND !isset($_POST["idNivelAcceso"]) AND empty($_POST["Login"]) AND empty($_POST["Pass"]) )    		
-    	)           									
+    	//verifica segun el tipo de entidad que se quiere crear, estan definidos: ENT_USUARIO, ENT_PROVEEDOR, ENT_CLIENTE
+
+        if( empty($_POST["idEntidadTipo"]) or  empty($_POST["Nombre"]) or $_POST["idEntidadTipo"] == 0
+    		OR ($_POST["idEntidadTipo"] == ENT_USUARIO AND !isset($_POST["idNivelAcceso"]) AND empty($_POST["Login"]) AND empty($_POST["Pass"]) )
+    	)
             									return false;
 
-        $sql = "INSERT INTO `tbentidad` (`idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`, `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`, `HoraAlta`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`, `idMoneda`, `Login`, `Pass`, `KeyReg`, `idNivelAcceso`, `ip` ) 
+        $sql = "INSERT INTO `tbentidad` (`idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`, `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`, `HoraAlta`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`, `idMoneda`, `Login`, `Pass`, `KeyReg`, `idNivelAcceso`, `ip` )
         	   VALUES ( NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
        	$f_nac = ( isset($_POST['anio']) AND isset($_POST['mes']) AND isset($_POST['dia']) )? $_POST['anio']."-".$_POST['mes']."-".$_POST['dia'] : '';
@@ -37,7 +37,7 @@ class Entidad extends Conectar
 		$keyreg = (isset($_POST["keyreg"]))? $_POST["keyreg"] : "";
 		$ip = ( isset( $_POST["ip"] ) )? $_POST["ip"] : "" ;
 
-		
+
         $stmt=$this->dbh->prepare($sql);
 
         $stmt->bindValue(1		,$_POST["idEntidadTipo"]		,PDO::PARAM_INT);
@@ -47,7 +47,7 @@ class Entidad extends Conectar
         $stmt->bindValue(5		,$_POST["Dom"]					,PDO::PARAM_STR);
         $stmt->bindValue(6		,$_POST["Domentrega"]			,PDO::PARAM_STR);
         $stmt->bindValue(7		,$_POST["Loc"]					,PDO::PARAM_STR);
-        $stmt->bindValue(8		,$_POST["Cp"]					,PDO::PARAM_STR);        
+        $stmt->bindValue(8		,$_POST["Cp"]					,PDO::PARAM_STR);
         $stmt->bindValue(9		,$_POST["Prov"]					,PDO::PARAM_STR);
         $stmt->bindValue(10		,$_POST["Cuit"]					,PDO::PARAM_STR);
         $stmt->bindValue(11		,$_POST["Dni"]					,PDO::PARAM_STR);
@@ -55,7 +55,7 @@ class Entidad extends Conectar
         $stmt->bindValue(13		,$_POST["Tel2"]					,PDO::PARAM_STR);
         $stmt->bindValue(14		,$f_nac 						,PDO::PARAM_STR); //fecha formato: '2018-02-06'
         $stmt->bindValue(15		,$_POST["Sexo"]					,PDO::PARAM_STR);
-		$stmt->bindValue(16		,$idCondFiscal 					,PDO::PARAM_INT);        
+		$stmt->bindValue(16		,$idCondFiscal 					,PDO::PARAM_INT);
         $stmt->bindValue(17		,$_POST["Observaciones"]		,PDO::PARAM_STR);
         $stmt->bindValue(18		,$_POST["AvisoEmergente"]		,PDO::PARAM_STR);
         $stmt->bindValue(19		,$_POST["Foto"]					,PDO::PARAM_STR);
@@ -68,21 +68,21 @@ class Entidad extends Conectar
 
         $res = $stmt->execute();
 
-        if($res)        
-            return true;           
+        if($res)
+            return true;
         else
-        {            
+        {
         	print_r($stmt->errorInfo());
-        	return false;            
+        	return false;
         }
-        
+
     }
 
     public function getRowsTipo( $id ){
         $sql = "SELECT `idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`,  `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`,  `HoraAlta`, `FechaMod`, `HoraMod`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`,   `idMoneda`, `Login`, `Pass`, `KeyReg`, `NewPass`, `idNivelAcceso`, `ip`, `FechaLog`, `HoraLog`
             FROM  `tbentidad` WHERE idEntidadTipo = ?";
 
-        return parent::getRowId($sql, array($id));                                          
+        return parent::getRowId($sql, array($id));
     }
 
     public function getId( $id )
@@ -90,48 +90,48 @@ class Entidad extends Conectar
         $sql="SELECT `idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`, `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`, `HoraAlta`, `FechaMod`, `HoraMod`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`, `idMoneda`, `Login`, `Pass`, `KeyReg`, `NewPass`, `idNivelAcceso`, `ip`, `FechaLog`, `HoraLog`
             FROM  `tbentidad` WHERE idEntidad = ?";
 
-        return parent::getRowId($sql, array($id));                                       
+        return parent::getRowId($sql, array($id));
     }
 
     public function edit()
     {
         //print_r($_POST);exit;
-        if( empty($_POST["idEntidadTipo"]) or  empty($_POST["Nombre"]) or $_POST["idEntidadTipo"] == 0 
-    		OR ($_POST["idEntidadTipo"] == ENT_USUARIO AND !isset($_POST["idNivelAcceso"]) AND empty($_POST["Login"]) AND empty($_POST["Pass"]) )    		
-    	)           									
+        if( empty($_POST["idEntidadTipo"]) or  empty($_POST["Nombre"]) or $_POST["idEntidadTipo"] == 0
+    		OR ($_POST["idEntidadTipo"] == ENT_USUARIO AND !isset($_POST["idNivelAcceso"]) AND empty($_POST["Login"]) AND empty($_POST["Pass"]) )
+    	)
             									return false;
 
-        $sql = "UPDATE `tbentidad` SET `idEntidadTipo` = ?, 
-        								`Nombre` = ?, 
-        								`Razonsocial` = ?, 
-        								`Email` = ?, 
-        								`Dom` = ?, 
-        								`Domentrega` = ?, 
-        								`Loc` = ?, 
-        								`Cp` = ?, 
-        								`Prov` = ?, 
-        								`Cuit` = ?, 
-        								`Dni` = ?, 
-        								`Tel` = ?, 
-        								`Tel2` = ?, 
-        								`FechaNacimiento` = ?, 
-        								`Sexo` = ?, 
-        								`idCondFiscal` = ?, 
-        								`FechaMod` = NOW(), 
-        								`HoraMod` = NOW(), 
-        								`Estado` = ?, 
-        								`Observaciones` = ?, 
-        								`AvisoEmergente` = ?, 
-        								`Foto` = ?, 
-        								`Website` = ?, 
-        								`idMoneda` = ?, 
-        								`Login` = ?, 
-        								`Pass` = ?, 
-        								`idNivelAcceso` = ?, 
-        								`ip` = ?, 
-        								`FechaLog` = NOW(), 
-        								`HoraLog` = NOW() 
-        								WHERE 
+        $sql = "UPDATE `tbentidad` SET `idEntidadTipo` = ?,
+        								`Nombre` = ?,
+        								`Razonsocial` = ?,
+        								`Email` = ?,
+        								`Dom` = ?,
+        								`Domentrega` = ?,
+        								`Loc` = ?,
+        								`Cp` = ?,
+        								`Prov` = ?,
+        								`Cuit` = ?,
+        								`Dni` = ?,
+        								`Tel` = ?,
+        								`Tel2` = ?,
+        								`FechaNacimiento` = ?,
+        								`Sexo` = ?,
+        								`idCondFiscal` = ?,
+        								`FechaMod` = NOW(),
+        								`HoraMod` = NOW(),
+        								`Estado` = ?,
+        								`Observaciones` = ?,
+        								`AvisoEmergente` = ?,
+        								`Foto` = ?,
+        								`Website` = ?,
+        								`idMoneda` = ?,
+        								`Login` = ?,
+        								`Pass` = ?,
+        								`idNivelAcceso` = ?,
+        								`ip` = ?,
+        								`FechaLog` = NOW(),
+        								`HoraLog` = NOW()
+        								WHERE
         								`tbentidad`.`idEntidad` = ? " ;
 
 
@@ -163,10 +163,10 @@ class Entidad extends Conectar
         $stmt->bindValue(24		,$_POST["Pass"]					,PDO::PARAM_STR);
         $stmt->bindValue(25		,$_POST["idNivelAcceso"]		,PDO::PARAM_INT);
         $stmt->bindValue(26		,$_POST["idEntidad"]			,PDO::PARAM_int);
-        
+
 
         if( $stmt->execute() )
-        	return true;            
+        	return true;
         else
         	return false;
     }
@@ -180,8 +180,8 @@ class Entidad extends Conectar
       return md5($str);
     }
 
- 	public function logueo()    
-    {    	
+ 	public function logueo()
+    {
     	$sql = "SELECT a.`idEntidad`, a.`idEntidadTipo`, a.`Nombre`, a.`Login`,  a.`Estado`, a.`AvisoEmergente`,
     			a.`Foto` , a.`idNivelAcceso` , b.`Nivel`
              	FROM  `tbentidad` as a
@@ -192,27 +192,27 @@ class Entidad extends Conectar
         $stmt = $this->dbh->prepare( $sql );
 
         if( $stmt->execute( array( $_POST["login"] , $pass ) ) )
-        {           
+        {
            if( $reg = $stmt->fetch() )
-            {            	
+            {
                 if( $reg["Estado"]==1 AND $reg["Nivel"] > 5 )
-                {                      		
+                {
 						$_SESSION["admin_id"]=$reg["idEntidad"];
 						$_SESSION["admin_login"]=$reg["Login"];
 						$_SESSION["admin_nombre"]=$reg["Nombre"];
-						$_SESSION["NivelAcceso"]=$reg["Nivel"];														
-						return true;					
+						$_SESSION["NivelAcceso"]=$reg["Nivel"];
+						return true;
                 }
-                else                
-                    return false;                
-            } else 
+                else
+                    return false;
+            } else
             	return false;
-            
-        }else 
+
+        }else
         	return false;
     }
 
-    
+
 }
 
  ?>

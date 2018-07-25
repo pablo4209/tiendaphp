@@ -15,7 +15,7 @@ define('PATH_LAYOUT_RELAT', 'view/layout/' . DEFAULT_LAYOUT . '/');
 define('DIR_IMG', 'images/');
 define('DIR_JS',  'js/');
 define('DIR_CSS', 'css/');
-define('PATH_IMG', DIR_IMG);  
+define('PATH_IMG', DIR_IMG);
 define('PATH_IMG_PUBLIC', DIR_IMG."public/");
 define('PATH_JS',  DIR_JS);
 define('PATH_CSS', DIR_CSS);
@@ -89,4 +89,5 @@ require_once( MODEL_PATH .'database.php');
 require_once( APP_PATH.   'view.php');
 require_once( PATH_FUNCTIONS . 'mensajes.php');
 require_once( PATH_FUNCTIONS . 'getIp.php');
+require_once( "crud/config.php" );
 ?>

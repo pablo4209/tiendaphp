@@ -26,10 +26,10 @@ class Conectar
                                    DB_PASS,
                                    array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . DB_CHAR)
 								   );
-                
+
             }
             catch (PDOException $e) {
-                print '<div class="alert alert-danger" role="alert">Mensaje:  '. $e->getMessage() . '</div>';                
+                print '<div class="alert alert-danger" role="alert">Mensaje:  '. $e->getMessage() . '</div>';
                 die();
             }
 
@@ -48,6 +48,10 @@ class Conectar
         $this->p = null;
     }
 
+    public function getConn(){
+        return $this->dbh;
+    }
+
     //La funcion devuelve un Array de dos dimensiones, como fetch_assocc, recibe como parametro la consulta select lista para ejecutarse
     protected function getRows($sql)
     {
@@ -56,37 +60,37 @@ class Conectar
           foreach($this->dbh->query($sql) as $row) //query retorna una fila asociada con los nombres de los campos
           {                                         //retorna false y hay error
               $this->p[]=$row;
-          }        
-          
+          }
+
           self::debugSQL( $sql );
           return $this->p;
 
         }catch(PDOException $e) {
-                print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";         
+                print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";
                 die();
         }
     }
 
     protected function debugSQL( $sql ){
         if( DEBUG ){
-            $_SESSION['infoSQL'] = '<div class="row"><div class="col-md-10"><div class="alert alert-danger" role="alert">'.htmlspecialchars( $sql ).'</div></div></div>';             
-        }else if( isset( $_SESSION['infoSQL'] ) ) 
-                    unset( $_SESSION['infoSQL'] ); 
+            $_SESSION['infoSQL'] = '<div class="row"><div class="col-md-10"><div class="alert alert-danger" role="alert">'.htmlspecialchars( $sql ).'</div></div></div>';
+        }else if( isset( $_SESSION['infoSQL'] ) )
+                    unset( $_SESSION['infoSQL'] );
     }
 
     protected function debugParams( $prep ){
-        
+
         if(DEBUG){
-            
+
             ob_start();
             $prep->debugDumpParams();
             $r = ob_get_contents();
-            ob_end_clean();           
+            ob_end_clean();
 
-            $_SESSION['infoSQL'] = '<div class="row"><div class="col-md-10"><div class="alert alert-danger" role="alert">'.htmlspecialchars( $r ).'</div></div></div>'; 
+            $_SESSION['infoSQL'] = '<div class="row"><div class="col-md-10"><div class="alert alert-danger" role="alert">'.htmlspecialchars( $r ).'</div></div></div>';
 
-        }else if( isset( $_SESSION['infoSQL'] ) ) 
-                    unset( $_SESSION['infoSQL'] ); 
+        }else if( isset( $_SESSION['infoSQL'] ) )
+                    unset( $_SESSION['infoSQL'] );
 
     }
 
@@ -109,7 +113,7 @@ class Conectar
                 $stmt->closeCursor();
                 return $this->p;
             }else
-            {                
+            {
                 return false;
             }
 
@@ -124,7 +128,7 @@ class Conectar
         try{
             self::ClearArray();
             $stmt=$this->dbh->prepare($sql);
-            $stmt->execute( $id );
+            $stmt->execute( array($id) );
             self::debugParams( $stmt );
 
             while($row = $stmt->fetch(PDO::FETCH_ASSOC))
@@ -135,7 +139,7 @@ class Conectar
             return $this->p;
 
         }catch(PDOException $e) {
-                print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";         
+                print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";
                 die();
         }
     }
@@ -153,7 +157,7 @@ class Conectar
             else
                 return false;
         }catch(PDOException $e) {
-                print '<div style="padding-top:100px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";         
+                print '<div style="padding-top:100px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";
                 die();
         }
     }
@@ -172,14 +176,14 @@ class Conectar
                 {
                     $this->p[]=$row;
                 }
-                $consulta->closeCursor();              
+                $consulta->closeCursor();
                 return $this->p;
             }else
             {
                 return false;
             }
         }catch(PDOException $e) {
-                print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";         
+                print '<div style="padding-top:50px;">Error!<br/>Mensaje:  '. $e->getMessage() . "<br/></div>";
                 die();
         }
 
@@ -367,7 +371,15 @@ return $fecha;
     }
 
     //Genera un select html con nombre e id, si $sel tiene valor lo selecciona, sino imprime seleccionar opcion con val=0
-     protected function crearSelectTabla($tabla, $id, $desc, $sel="", $desc2="", $where = "", $cssClass="form-control input-medium required")
+    /*  id: el select toma el name e id con este valor, el valor del campo id es el value del select
+        desc: el campo descripcion de la Tabla
+        sel: id seleccionado por defecto
+        desc2: valor de un campo que se quiera poner como acotacion (ej: dolar [3.40] )
+        where: filtro de la $consulta
+        cssClass: tiene las clases de control bootstrap por defecto y lo tilda como requerido para validate, cambiar el valor reemplaza el default
+
+    */
+    protected function crearSelectTabla($tabla, $id, $desc, $sel="", $desc2="", $where = "", $cssClass=" input-medium required")
     {
         $f=""; //se inicializan para evitar warnings
 		if(empty($tabla) or empty($id) or empty($desc))
@@ -375,14 +387,14 @@ return $fecha;
             return "Error al generar Select de Tabla ".$tabla ;
         }
 
-        $sql = "Select * From ".$tabla.$where;
+        $sql = "Select * From ".$tabla." ".$where;
 
-		$datos = self::getRows($sql);
+		    $datos = self::getRows($sql);
 
         if($datos)
         {
             //dias
-            $f.= '<select name="'.$id.'" id="'.$id.'" min="1" title="Debes seleccionar un elemento." class="'.$cssClass.'">
+            $f.= '<select name="'.$id.'" id="'.$id.'" min="1" title="Debes seleccionar un elemento." class="form-control '.$cssClass.'">
                     <option value="0" ';
             if ($sel=="") $f.='selected="selected"';
             $f.= '>Seleccionar</option>';
