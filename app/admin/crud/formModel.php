@@ -25,21 +25,11 @@ class Formulario extends Conectar {
   protected $campos_array;
   protected $campos_sql;
   protected $tabla;
+	protected $where;
   protected $edit_id;  //se carga en contruct con el id del registro a recuperar, por defecto = 0, cuando no se va a recuperar ningun registro
 
-    const C_NOMBRE_CAMPO = 0;   //nombre verdadero que figura en la tabla de la bd
-    const C_TIPO_CAMPO = 1; //usando la clase tipoDato, para saber de que tipo es
-    const C_ALIAS = 2;      //nombre para mostrar en listado o label de los input
-    const C_LISTAR = 3;     //mostrarlo en el listado
-    const C_EDITAR = 4;     //el campo es editable
-    const C_REQUERIDO = 5;  //validacion
-    const C_TYPE = 6;   //campo de texto, para la validacion (ej: "email")
-    const C_MIN = 7;    //minlenght del input (ej: 2)
-    const C_MAX = 8;    //maxlenght del imput
-    const C_PLACE = 9;  //placeholder del input
-    const C_CLASS = 10;  //agregar alguna clase extra, para validar puede ser util
 
-	public function __construct( $tabla , $campos , $edit_id = 0 )
+	public function __construct( $tabla , $campos , $where = "" , $edit_id = 0 )
     {
         parent::__construct();
         $this->u=array();
@@ -52,6 +42,7 @@ class Formulario extends Conectar {
         $this->panel_nombre = "panel_crud";
         $this->campos_array = $campos;
         $this->tabla = $tabla;
+				$this->where = $where;
         $this->edit_id = $edit_id;
         self::listar_campos_sql();
         self::listar_controles();
@@ -60,7 +51,7 @@ class Formulario extends Conectar {
 
     public function listar_valores(){
         if( $this->edit_id ){ //si es >0 hay que recuperar los calores para cada campo
-            $sql = "SELECT * FROM " . $this->tabla . " WHERE " . $this->campos_array[0][self::C_NOMBRE_CAMPO] . "=?";
+            $sql = "SELECT * FROM " . $this->tabla . " WHERE " . $this->campos_array[0][crudArg::C_NOMBRE_CAMPO] . "=?";
 
             $con = new Conectar();
             $dato = $con->getRowId( $sql , $this->edit_id );
@@ -76,7 +67,7 @@ class Formulario extends Conectar {
     private function listar_controles(){
 
         if( $this->edit_id ){ //si es >0 hay que recuperar los valores para cada campo
-            $sql = "SELECT * FROM " . $this->tabla . " WHERE " . $this->campos_array[0][self::C_NOMBRE_CAMPO] . "=?";
+            $sql = "SELECT * FROM " . $this->tabla . " WHERE " . $this->campos_array[0][crudArg::C_NOMBRE_CAMPO] . "=?";
             $con = new Conectar();
             $dato = $con->getRowId( $sql , $this->edit_id );
 				}
@@ -86,30 +77,30 @@ class Formulario extends Conectar {
         $autofoco = '';
         foreach ( $this->campos_array as $id => $row )
                     if( $id >= 0 ){  //mostrar en listado?
-                        $type = $row[self::C_TYPE];
-                        $disabled = ( $row[self::C_EDITAR] && $id != 0 )? '' : ' disabled'; //nunca editar id
+                        $type = $row[crudArg::C_TYPE];
+                        $disabled = ( $row[crudArg::C_EDITAR] && $id != 0 )? '' : ' disabled'; //nunca editar id
                         $cls_editable = '';
-												if($row[self::C_TIPO_CAMPO] == tipoDato::T_HIDDEN ){
+												if($row[crudArg::C_TIPO_CAMPO] == tipoDato::T_HIDDEN ){
 														$type = "hidden"; //no importa lo que tenga C_TYPE
 														$cls_editable = '';
 												}
-												$requerido = ( $row[self::C_REQUERIDO] )? ' required':'' ;
-                        $asterisco = ( $row[self::C_REQUERIDO] )? ' (*)' : '';
-                        $minlength = ( $row[self::C_MIN] !='' )? ' minlength="'.$row[self::C_MIN].'"' : '';
-                        $maxlength = ( $row[self::C_MAX] !='' )? ' maxlength="'.$row[self::C_MAX].'"' : '';
-                        $extraclass = ( $row[self::C_CLASS] !='' )? ' '.$row[self::C_CLASS] : '';
-                        $place = ( $row[self::C_PLACE] != '' )? 'placeholder="'.$row[self::C_PLACE].'"' : '';
-                        $valor = ( isset($dato[0][$row[self::C_NOMBRE_CAMPO]]) )? ' value="' . $dato[0][$row[self::C_NOMBRE_CAMPO]] . '" ' : ' value="nunca entar" ';
+												$requerido = ( $row[crudArg::C_REQUERIDO] )? ' required':'' ;
+                        $asterisco = ( $row[crudArg::C_REQUERIDO] )? ' (*)' : '';
+                        $minlength = ( $row[crudArg::C_MIN] !='' )? ' minlength="'.$row[crudArg::C_MIN].'"' : '';
+                        $maxlength = ( $row[crudArg::C_MAX] !='' )? ' maxlength="'.$row[crudArg::C_MAX].'"' : '';
+                        $extraclass = ( $row[crudArg::C_CLASS] !='' )? ' '.$row[crudArg::C_CLASS] : '';
+                        $place = ( $row[crudArg::C_PLACE] != '' )? 'placeholder="'.$row[crudArg::C_PLACE].'"' : '';
+                        $valor = ( isset($dato[0][$row[crudArg::C_NOMBRE_CAMPO]]) )? ' value="' . $dato[0][$row[crudArg::C_NOMBRE_CAMPO]] . '" ' : ' value="nunca entar" ';
 
 												//en esta parte hay que determinar que tipo de control renderizar
-												switch ($row[self::C_TIPO_CAMPO]) {
+												switch ($row[crudArg::C_TIPO_CAMPO]) {
 													case tipoDato::T_INT:
 													case tipoDato::T_STR:
 																$control = '<div class="form-group validar">
-				                                                <label for="'.$row[self::C_NOMBRE_CAMPO].'" >'
-				                                                             .$row[self::C_ALIAS].$asterisco.'</label>
-				                                                <input id="'.$row[self::C_NOMBRE_CAMPO]
-				                                                 .'" name="'.$row[self::C_NOMBRE_CAMPO] . '"'
+				                                                <label for="'.$row[crudArg::C_NOMBRE_CAMPO].'" >'
+				                                                             .$row[crudArg::C_ALIAS].$asterisco.'</label>
+				                                                <input id="'.$row[crudArg::C_NOMBRE_CAMPO]
+				                                                 .'" name="'.$row[crudArg::C_NOMBRE_CAMPO] . '"'
 				                                                 . $minlength
 				                                                 . $maxlength
 				                                                 .' type="'.$type.'" class="form-control input-medium '
@@ -120,11 +111,11 @@ class Formulario extends Conectar {
 				                                                 . $valor
 				                                                 . $disabled
 				                                                 .' >
-				                                            </div>';      //' .($row[self::C_REQUERIDO])? required':'' . '
+				                                            </div>';      //' .($row[crudArg::C_REQUERIDO])? required':'' . '
 																break;
 													case tipoDato::T_HIDDEN:
-																$control = '<input type="hidden" id="'.$row[self::C_NOMBRE_CAMPO]
-																						.'" name="'.$row[self::C_NOMBRE_CAMPO] . '" '
+																$control = '<input type="hidden" id="'.$row[crudArg::C_NOMBRE_CAMPO]
+																						.'" name="'.$row[crudArg::C_NOMBRE_CAMPO] . '" '
 																						.$valor.'>';
 																break;
 													case tipoDato::T_CHECK:
@@ -134,22 +125,39 @@ class Formulario extends Conectar {
 																							<div class="checkbox">
 																							  <label>
 																									<input type="checkbox"
-																									id="'.$row[self::C_NOMBRE_CAMPO]
-																									.'" name="'.$row[self::C_NOMBRE_CAMPO] . '" '. $check . $valor . $disabled .' >'
-																									.$row[self::C_ALIAS].'
+																									id="'.$row[crudArg::C_NOMBRE_CAMPO]
+																									.'" name="'.$row[crudArg::C_NOMBRE_CAMPO] . '" '. $check . $valor . $disabled .' >'
+																									.$row[crudArg::C_ALIAS].'
 																								</label>
 																							</div>
 																						</div>
 																						';
 																break;
+													case tipoDato::T_SELECT:
+																if( is_array($row[crudArg::C_VALUE]) ){
+
+																			//para los arg opcionales uso isset
+																								//parent::crearSelectTabla($tabla, $id, $desc, $sel="", $desc2="", $where = "", $cssClass=" input-medium required", $toolTip = "Debes seleccionar un elemento." )
+																			$control = parent::crearSelectTabla( 	$row[crudArg::C_VALUE][0] ,		//tabla
+																																						$row[crudArg::C_VALUE][1] , 	//id
+																																						$row[crudArg::C_VALUE][2] ,  	//descripcion
+																																						(isset($row[crudArg::C_VALUE][3]))? $row[crudArg::C_VALUE][3]	:	"" ,  		//item seleccionado
+																																						(isset($row[crudArg::C_VALUE][4]))? $row[crudArg::C_VALUE][4]	: "" ,		//descripcion [alternativa]
+																																						(isset($row[crudArg::C_VALUE][5]))? $row[crudArg::C_VALUE][5] : "" , 	//where
+																																						(isset($row[crudArg::C_VALUE][6]))? $row[crudArg::C_VALUE][6] : " input-medium required" , 	//cssClass =" input-medium required"
+																																						(isset($row[crudArg::C_VALUE][6]))? $row[crudArg::C_VALUE][7] : "Debes seleccionar un elemento."	  //toolTip
+																																				 );
+																}
+																break;
 													default:
 																$control = "";
 																break;
 												}
-												$this->controles .= $control;
+									$this->controles .= $control;
+
+
 
                     }// end if( id>=0)
-
     }
 
     private function listar_campos_sql(){
@@ -157,9 +165,9 @@ class Formulario extends Conectar {
         $cant = count($this->campos_array);
         $listados =0 ;
         for( $i=0 ; $i<$cant ; $i++ )
-            if( $this->campos_array[$i][self::C_LISTAR] ){
+            if( $this->campos_array[$i][crudArg::C_LISTAR] ){
                 $separador = ( $i!=$cant-1 AND $listados )? ", " : " ";
-                $this->campos_sql .= $separador . $this->campos_array[$i][self::C_NOMBRE_CAMPO] ;
+                $this->campos_sql .= $separador . $this->campos_array[$i][crudArg::C_NOMBRE_CAMPO] ;
                 $listados++;
             }
 

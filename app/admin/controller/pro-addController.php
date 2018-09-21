@@ -12,88 +12,88 @@ require_once( MODEL_PATH . "depModel.php");
 
 if(isset($_POST["grabar"]) and $_POST["grabar"] !="" )
 {
-	
+
 	//print_r($_POST);exit;
 
 	require_once( MODEL_PATH . "proPreciosModel.php");
 	require_once( MODEL_PATH . "proStockModel.php");
 	require_once( MODEL_PATH . "proCatModel.php");
 	require_once( MODEL_PATH . "catModel.php");
-	
-    
-	///////////////////tratar la IMAGEN	
-	if(isset($_POST["Imagen"]) && $_POST["Imagen"]!="" ) 
-	{	
+
+
+	///////////////////tratar la IMAGEN
+	if(isset($_POST["Imagen"]) && $_POST["Imagen"]!="" )
+	{
 		$pathorigen = PATH_JS."upload/temp/"; //carpeta tmp donde esta la imagen actualmente
 		if(file_exists($pathorigen.$_POST["Imagen"]))	//existe la imagen?
 		{
-			if(isset($_POST["idCategoria"]) && $_POST["idCategoria"]!="") 
+			if(isset($_POST["idCategoria"]) && $_POST["idCategoria"]!="")
 			{
-				$cm = new Categorias();		
+				$cm = new Categorias();
 				$cat=$cm->getCategoriaId($_POST["idCategoria"]); //buscar directorio destino de la imagen
 				if($cat[0]["ImgPath"] !="")
 				{
 					$dircat = $cat[0]["ImgPath"];
 				}else
-					$dircat="GEN";	
-			}	
-			$destino = DIR_IMG . $dircat . "/";
-			//comprobamos si existe un directorio de la categoria para subir el archivo    
-			if(!is_dir($destino)){  	
-				mkdir($destino, 0777); //si no es as�, lo creamos			
+					$dircat="GEN";
 			}
-			//mover		
-			rename($pathorigen.$_POST["Imagen"], $destino.$_POST["Imagen"]);		
-			array_map( "unlink", glob( $pathorigen . '*.*' )); //borrar el contenido del directorio temporal		
+			$destino = DIR_IMG . $dircat . "/";
+			//comprobamos si existe un directorio de la categoria para subir el archivo
+			if(!is_dir($destino)){
+				mkdir($destino, 0777); //si no es as�, lo creamos
+			}
+			//mover
+			rename($pathorigen.$_POST["Imagen"], $destino.$_POST["Imagen"]);
+			array_map( "unlink", glob( $pathorigen . '*.*' )); //borrar el contenido del directorio temporal
 		}
 	}
-	
-	
+
+
 	$pro=new Producto();
     $ultimo_id = $pro->add();
-	
+
 	if(is_numeric($ultimo_id))
-	{		
-		/////////////////////CREAR LISTAS en tbpro_precios			
+	{
+		/////////////////////CREAR LISTAS en tbpro_precios
 		if(isset($_POST["margen"]))
 		{
-			$pp=new proPrecios();			
-			foreach ($_POST['margen'] as $idlista => $margen){ 
+			$pp=new proPrecios();
+			foreach ($_POST['margen'] as $idlista => $margen){
 					//echo $id. ' '.$lista.'</br>';
 					$pp->add($ultimo_id, $idlista, $margen );
 			}
 		}
-		
-		/////////////////////CREAR STOCK		
+
+		/////////////////////CREAR STOCK
 		if(isset($_POST["stock"]))
 		{
 			$ps = new proStock();
-			foreach ($_POST['stock'] as $id => $stock){ 					
+			foreach ($_POST['stock'] as $id => $stock){
 					$min = (isset($_POST['stockmin'][$id])) ? $_POST['stockmin'][$id]: 0;
 					$max = (isset($_POST['stockmax'][$id])) ? $_POST['stockmax'][$id]: 0;
 					$ps->add($ultimo_id, $id, $stock, $min, $max);
-			}		
+			}
 		}
-		
+
 		/////////////////////Asociar Categorias
 		if(isset($_POST["idCategoria"]))
 		{
 			$pc = new proCategorias();
 			$pc->add($ultimo_id, $_POST["idCategoria"], 1); // set como categoria principal
 			if(isset($_POST["otrasCat"]))
-			{				
+			{
 				foreach ($_POST['otrasCat'] as $otracat){
 					$pc->add($ultimo_id, $otracat, 0); // set como categoria secundaria
-				}				
+				}
 			}
-		}		
-		
-		header("Location:".BASE_URL."?accion=pro-edit&id=".$ultimo_id."&st=".MSG_SUCCESS);exit; 	
+		}
+
+		header("Location:".BASE_URL."?accion=pro-edit&id=".$ultimo_id."&st=".MSG_SUCCESS);exit;
 	}else
 		header("Location:".BASE_URL."?accion=pro-add&st=".MSG_DANGER);
-		
+
 	exit;
-	   
+
 }
 
 $idCat = 0;
@@ -108,7 +108,7 @@ if(isset($_GET['idpadre']) && $_GET['idpadre'] != 0){
 	$clspro = new Producto();
 	$subp= $clspro->getProductoId( $idPadre );
 	$ImponerPrecio = $subp[0]['ImponerPrecio'];
-	$retorno = BASE_URL . '?accion=pro-edit&id=' . $idPadre ; 
+	$retorno = BASE_URL . '?accion=pro-edit&id=' . $idPadre ;
 
 }else
  	$retorno = BASE_URL . '?accion=pro' ;
@@ -116,7 +116,7 @@ if(isset($_GET['idpadre']) && $_GET['idpadre'] != 0){
 
 $cat= new Categorias();
 $selCat = $cat->getSelCategorias(0,$idCat,"Seleccionar Categoria");
-$selCat2 = $cat->getSelCategorias(0,0 ,"Seleccionar Categoria",0 , "idCategoria2");
+$selCat2 = $cat->getSelCategorias(0,0 ,"Seleccionar Categoria",0 , "idCategoria2", false ); // en la ultima opcion envio "false" para q no valide el select
 $ruta = ($idCat>0)? $cat->getTree($idCat): "";
 $mon= new Moneda();
 $selMon = $mon->getSelMonedas(1);
@@ -130,9 +130,9 @@ $dep= new Depositos();
 $depositos = $dep->getDepositos();
 
 $vista = new View();
-$vista->incluir( INC_CONTENT_CSS . 
-				 '<link href="css/tabla_selec.css" rel="stylesheet" type="text/css" />' . 
-				 INC_JQUERYUI . INC_VALIDATE . INC_VALIDATE_REGLAS . INC_PRO_JS . INC_TABLESORTER . 
+$vista->incluir( INC_CONTENT_CSS .
+				 '<link href="css/tabla_selec.css" rel="stylesheet" type="text/css" />' .
+				 INC_JQUERYUI . INC_VALIDATE . INC_VALIDATE_REGLAS . INC_PRO_JS . INC_TABLESORTER .
 				 INC_TABLESORTER_PAGER );
 $vista->renderHeader("pro");
 require_once( VIEW_PATH . 'pro-add.phtml' );
@@ -140,4 +140,3 @@ require_once( VIEW_PATH . 'buscar-prod.php' ); //dialogo de busqueda de producto
 $vista->renderFooter();
 
 ?>
-

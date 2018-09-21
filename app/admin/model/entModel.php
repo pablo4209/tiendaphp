@@ -10,7 +10,7 @@ class Entidad extends Conectar
         $this->u=array();
     }
 
-    public function getRows()
+    public function get()
     {
         $sql = "SELECT `idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`, `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`, `HoraAlta`, `FechaMod`, `HoraMod`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`, `idMoneda`, `Login`, `Pass`, `KeyReg`, `NewPass`, `idNivelAcceso`, `ip`, `FechaLog`, `HoraLog` "
 								." 	FROM `tbentidad`;";
@@ -197,11 +197,11 @@ class Entidad extends Conectar
             {
                 if( $reg["Estado"]==1 AND $reg["Nivel"] > 5 )
                 {
-						$_SESSION["admin_id"]=$reg["idEntidad"];
-						$_SESSION["admin_login"]=$reg["Login"];
-						$_SESSION["admin_nombre"]=$reg["Nombre"];
-						$_SESSION["NivelAcceso"]=$reg["Nivel"];
-						return true;
+										$_SESSION["admin_id"]=$reg["idEntidad"];
+										$_SESSION["admin_login"]=$reg["Login"];
+										$_SESSION["admin_nombre"]=$reg["Nombre"];
+										$_SESSION["NivelAcceso"]=$reg["Nivel"];
+										return true;
                 }
                 else
                     return false;

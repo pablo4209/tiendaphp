@@ -1,12 +1,12 @@
 <?php
 /*
-*	recibe la constante e imprime un div con los mensajes preseados, 
+*	recibe la constante e imprime un div con los mensajes preseados,
 *	aunque se pueden incluir los mensajes personalizados
 *
 */
 
-function mensaje($tipo=MSG_WARNING, $mensaje="", $titulo=""){		
-	
+function mensaje($tipo=MSG_WARNING, $mensaje="", $titulo=""){
+
 
 		$msg="";$tit="";$clase="";
 		switch ($tipo) {
@@ -18,19 +18,19 @@ function mensaje($tipo=MSG_WARNING, $mensaje="", $titulo=""){
 			case MSG_WARNING:
 				$tit = "Atención:";
 				$clase = "warning";
-				$msg = "Revisar datos, no se puede ejecutar la operación.";		
+				$msg = "Revisar datos, no se puede ejecutar la operación.";
 				break;
 			case MSG_DANGER:
 				$tit = "Error...!!:";
 				$clase = "danger";
-				$msg = "No se completo la operación.";		
+				$msg = "No se completo la operación.";
 				break;
 			case MSG_INFO:
 				$tit = "Información:";
-				$clase="info";	
+				$clase="info";
 				break;
 			default:
-				$tit = "Información:";					
+				$tit = "Información:";
 				$clase = "info";
 				$msg = "Mensaje sin identificador adecuado.";
 		}
@@ -48,8 +48,25 @@ function mensaje($tipo=MSG_WARNING, $mensaje="", $titulo=""){
 			    </div>
 			  </div>
 			</div>
-		';	
-	
+		';
+
+}
+
+// recibe un string u objeto y los carga en una variable de session  con el contenido html
+function debugMensaje( $desc="" , $param )
+{
+		if( DEBUG && !empty($param) ){
+				$info = "";
+				if( is_string($param))
+								$info = $param;
+				elseif( is_array($param) )
+								$info = print_r( $param , true );
+
+				$_SESSION['infoDebug'] = '<div class="row"><div class="col-md-10"><div class="alert alert-info" role="alert"><strong>'.$desc.'</strong>'.$info.'</div></div></div>';
+		}else
+				if( isset($_SESSION['infoDebug']))
+										unset($_SESSION['infoDebug']);
+
 }
 
 ?>

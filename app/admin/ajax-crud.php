@@ -1,9 +1,10 @@
 <?php
 
-if($_GET){
+require_once('application/config.php'); //si no cargo esto no tengo las constantes de la tienda
+require_once( 'crud/config.php');
 
-	require_once('application/config.php');
-	require_once( 'crud/config.php' );
+
+if($_GET){
 
 	switch ( $_GET["mode"] ) {
 		case 'crud-add':
@@ -17,6 +18,9 @@ if($_GET){
 			break;
 		case 'crud-del':
 			require_once( CRUD_AJAX . "crud-del.php");
+			break;
+		case 'crud-get':
+			require_once( "crud/application/ajax/crud-get.php");
 			break;
 		default:
 			# code...

@@ -2,16 +2,16 @@
     if(isset($_GET["st"]))
     {
     	mensaje ($_GET["st"]);
-    	
+
     }
 	?>
 
 <h2>Nuevo Documento</h2>
 
 <div class="form-inline" id="panel_tipo">
-        <label for="selTipodoc">Tipo</label>    
+        <label for="selTipodoc">Tipo</label>
         <?php echo $selTipodoc; ?>
-    
+
         <input id='letra' name='letra' type="text" disabled="disabled" value="" class="input" size="2" >
         <input id='puntoVenta' name='puntoVenta' type="text" disabled="disabled" value="" class="input" size="5" >
         <input id='idDoc' name='idDoc' type="text" disabled="disabled" value="" class="input" size="8" >
@@ -19,44 +19,44 @@
 <hr>
 <div  id="panel_control"><!-- div control_panel -->
 
-    <div style="float:left;width:70%;min-height: 120px;">   
-        
+    <div style="float:left;width:70%;min-height: 120px;"><!-- div cliente -->
+
         <div class="form-group" id="panel_cli">
             <div class="form-group">
-                <label for="cliNom" class="col-sm-2 control-label">Cliente</label> 
+                <label for="cliNom" class="col-sm-2 control-label">Cliente</label>
                 <div class="col-sm-10">
                     <input id='cliNom' name='cliNom' type="text" title="razon social de cliente" class="input-medium form-control" ><a href="#" id="cli_masdatos">...mas datos</a>
-                    <input id='idCliente' name='idCliente' type="hidden" >   
+                    <input id='idCliente' name='idCliente' type="hidden" >
                 </div>
             </div>
-            
+
             <div id="cli_contmasdatos" style="background-color: #FFFBCC" class="form-horizontal" >
                 <div class="form-group">
                     <label for="cliDom" class="col-sm-2 control-label">Domicilio</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="cliDom" name="cliDom" placeholder="Domicilio fiscal">
                     </div>
-                
+
                     <label for="cliLoc" class="col-sm-2 control-label">Localidad</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control input-medium" id="cliLoc" name="cliLoc" placeholder="Localidad">
                     </div>
-                    
+
                     <label for="cliLoc" class="col-sm-2 control-label">Localidad</label>
                     <div class="col-sm-10"><input id='cliLoc' name='cliLoc' type="text" title="Localidad" class="input-medium form-control" ></div>
-                    
+
                     <label for="cliCp" class="col-sm-2 control-label">Codigo postal</label>
                     <div class="col-sm-10"><input id='cliCp' name='cliCp' type="text" title="Codigo Postal" class="input-small form-control" ></div>
-                    
+
                     <label for="cliProv" class="col-sm-2 control-label">Provincia</label>
                     <div class="col-sm-10"><input id='cliProv' name='cliProv' type="text" title="Provincia" class="input-small form-control" ></div>
                     <label for="cliTel" class="col-sm-2 control-label">Telefono</label>
                     <div class="col-sm-10"><input id='cliTel' name='cliTel' type="text" title="Telefono" class="input-medium form-control" ></div>
-                    
-                    <label for="cliMail" class="col-sm-2 control-label">Email</label>
-                    <div class="col-sm-10"><input id='cliMail' name='cliMail' type="Email" title="Email" class="input-medium form-control" ></div>            
 
-                </div>       
+                    <label for="cliMail" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10"><input id='cliMail' name='cliMail' type="Email" title="Email" class="input-medium form-control" ></div>
+
+                </div>
             </div>
 
             <label for="cliCuit" class="col-sm-2 control-label">Cuit</label>
@@ -66,37 +66,37 @@
             <div class="col-sm-10"><?php echo $selcondfiscal; ?></div>
         </div>
 
-    </div><!-- end div -->
+    </div><!-- end div cliente -->
 
-        <div style="float:left;width:30%;min-height: 120px;" class="form-horizontal">    
+        <div style="float:left;width:30%;min-height: 120px;" class="form-horizontal"><!-- div fecha -->
 
             <div class="form-group">
-                <label for="fecha" class="col-sm-2 control-label">Fecha</label>    
+                <label for="fecha" class="col-sm-2 control-label">Fecha</label>
                 <div class="col-sm-10"><div class="validar">
                                             <input id='fecha' name='fecha' type="text" title="Fecha es requerida (dd/mm/aaaa)." class="input-small form-control required date" >
                                         </div>
                 </div>
-                
+
                 <label for="selMon" class="col-sm-2 control-label">Moneda</label>
                 <div class="col-sm-10"><?php echo $selMon; ?></div>
 
                 <label for="seldep" class="col-sm-2 control-label">Deposito</label>
-                <div class="col-sm-10"><?php echo $seldep; ?></div>    
-                
+                <div class="col-sm-10"><?php echo $seldep; ?></div>
+
                 <label for="sellista" class="col-sm-2 control-label">Lista</label>
                 <div class="col-sm-10"><?php echo $sellista; ?></div>
             </div>
 
-        </div><!-- end div columana2-->
+        </div><!-- end div fecha columana2-->
 
-</div><!-- end div control_panel -->
+</div><!-- end div control_panel cliente-fecha -->
 
 
 
 <div class="row" id="panel_tabla"><!-- DIV TABLA -->
-    <div class="col-md-12">    
+    <div class="col-md-12">
                     <hr style="padding-bottom: 30px;">
-                    <table class="table table-bordered"> 
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th width="5%">#</th>
@@ -113,8 +113,8 @@
                                 <th></th>
                                 <th><input type="text" placeholder="Codigo o barcode" value="" name="txtCodigo" id="txtCodigo" class="input-small ingreso_item form-control" ></th>
                                 <th><input type="text" placeholder="Cantidad" value="1" name="txtCantidad" id="txtCantidad" class="input-small form-control ingreso_item" ></th>
-                                <th width="30%">                    
-                                    <input type="text" placeholder="descripcion o buscar (F9)" value="" name="txtNombre" id="txtNombre" class="input-large form-control  ingreso_item" autocomplete="off">                
+                                <th width="30%">
+                                    <input type="text" placeholder="descripcion o buscar (F9)" value="" name="txtNombre" id="txtNombre" class="input-large form-control  ingreso_item" autocomplete="off">
                                 </th>
                                 <th><input type="text" placeholder="Descuento" value="0.00" name="txtDescuento" id="txtDescuento" class="input-small form-control ingreso_item" ></th>
                                 <th><input type="text" placeholder="Precio" value="0.00" name="txtPrecio" id="txtPrecio" class="input-small form-control ingreso_item" ></th>
@@ -127,58 +127,38 @@
                                         </button>
                                         <button type="button" class="btn btn-danger" name="btndel" id="btndel">
                                             <span class="glyphicon glyphicon-remove"></span>
-                                        </button>          
+                                        </button>
                                     </div>
                                 </th>
-                            </tr>   
+                            </tr>
                         </thead>
                         <tbody id="tabla_items">
-                            <!-- formato de la fila
-                            <tr>
-                                <td>1</td>      
-                                <td>1</td>      
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td><input id='serie' item="1" name='serie' type="text" title="Ingresar numero de serie" class="input-large" ></td>
-                                <td>
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                        <button type="button" class="btn btn-danger del_item" item="1" >
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                        </button>
-                                        <button type="button" class="btn btn-success edit_item" item="1" >
-                                            <span class="glyphicon glyphicon-edit"></span>
-                                        </button>          
-                                    </div>
-                                </td>
-                            </tr>  -->
+
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td>Items:</td>      
+                                <td>Items:</td>
                                 <td><input type="text" title="cantidad de items" value="0" name="txtItems" id="txtItems" class="input" size="2" disabled="disabled"></td>
                                 <td>Unidades:<input type="text" title="cantidad de unidades" value="0" name="txtUnidades" id="txtUnidades" class="input" size="2" disabled="disabled"></td>
-                                <td></td>            
+                                <td></td>
                                 <td>Subtotal</td>
-                                <td><input type="text" title="cantidad de unidades" value="0.00" name="txtSubTotal" id="txtSubTotal" class="input full"  disabled="disabled"></td> 
-                            </tr>  
+                                <td><input type="text" title="cantidad de unidades" value="0.00" name="txtSubTotal" id="txtSubTotal" class="input full"  disabled="disabled"></td>
+                            </tr>
                             <tr>
-                                <td colspan="4"></td>                              
+                                <td colspan="4"></td>
                                 <td>Saldo</td>
-                                <td><input type="text" title="cantidad de unidades" value="0.00" name="txtSaldo" id="txtSaldo" class="input-extralarge"  disabled="disabled"></td> 
-                            </tr> 
+                                <td><input type="text" title="cantidad de unidades" value="0.00" name="txtSaldo" id="txtSaldo" class="input-extralarge"  disabled="disabled"></td>
+                            </tr>
                             <tr>
-                                <td colspan="4"></td>                              
+                                <td colspan="4"></td>
                                 <td>Total</td>
-                                <td>0</td> 
-                            </tr> 
+                                <td>0</td>
+                            </tr>
                         </tfoot>
                     </table>
-        
-        <input type="hidden" name="base_path" id="base_path" value="<?php echo BASE_URL;?>" >    
-        <input type="hidden" name="path_js" id="path_js" value="<?php echo PATH_JS;?>" >    
+
+        <input type="hidden" name="base_path" id="base_path" value="<?php echo BASE_URL;?>" >
+        <input type="hidden" name="path_js" id="path_js" value="<?php echo PATH_JS;?>" >
         <div id="_AJAX_PROD_"></div>
     </div>
 </div><!-- END DIV TABLA -->

@@ -6,7 +6,7 @@ require_once( MODEL_PATH . "catModel.php" );
 set_time_limit(60);
 $cat= new Categorias();
 $selCat = $cat->getSelCategorias(0,0,"Seleccionar Categoria");
-
+debugMensaje( "Valor POST: " , $_POST );
 
 $vista = new View();
 $vista->incluir(  INC_TABLESORTER . INC_TABLESORTER_PAGER );

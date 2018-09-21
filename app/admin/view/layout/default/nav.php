@@ -1,6 +1,6 @@
-<?php     
+<?php
 	$selMenu = $_layoutParams['selMenu'];
-    //$subMenu = $_GET["accion"];    
+    //$subMenu = $_GET["accion"];
 ?>
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" style="border-radius:0px !important; margin-bottom:0px;">
         <div class="container-fluid">
@@ -23,7 +23,7 @@
 				  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentos <span class="caret"></span></a>
 				  <ul class="dropdown-menu">
 					<li><a href="<?php echo BASE_URL;?>?accion=doc-add">Nuevo</a></li>
-					<li><a href="<?php echo BASE_URL;?>?accion=doc">Listado</a></li>				
+					<li><a href="<?php echo BASE_URL;?>?accion=doc">Listado</a></li>
 					<li role="separator" class="divider"></li>
 					<li><a href="<?php echo BASE_URL;?>?accion=pag-add">Nuevo Pago</a></li>
 					<li><a href="<?php echo BASE_URL;?>?accion=pag">Listado de Pagos</a></li>
@@ -50,15 +50,15 @@
 				  <ul class="dropdown-menu">
 					<li><a href="<?php echo BASE_URL;?>?accion=ent">Listado de Entidades</a></li>
 					<li><a href="<?php echo BASE_URL;?>?accion=ent-add">Nueva entidad</a></li>
-					<li role="separator" class="divider"></li>					
-					<li><a href="#">Tipos de entidades</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="<?php echo BASE_URL;?>?accion=ent-tipos">Tipos de entidades</a></li>
 				  </ul>
 				</li>
 				<li class="dropdown">
 				  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Configuracion <span class="caret"></span></a>
 				  <ul class="dropdown-menu">
 					<li><a href="<?php echo BASE_URL;?>?accion=mon">Moneda</a></li>
-					<li><a href="#">Another action</a></li>					
+					<li><a href="#">Another action</a></li>
 					<li role="separator" class="divider"></li>
 					<li><a href="#">Separated link</a></li>
 				  </ul>

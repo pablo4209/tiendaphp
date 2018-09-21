@@ -11,23 +11,23 @@ class Categorias extends Conectar
     }
 
     public function get_categorias($padre=0, $publicar="todos")
-    {        
-        
+    {
+
 
         if( $padre > 0 ){
-            $filtro = " WHERE a.idPadre=" . $padre;    
+            $filtro = " WHERE a.idPadre=" . $padre;
         }
         else{
             if( $padre == 0){
-                $filtro = " WHERE a.idPadre=0";       
+                $filtro = " WHERE a.idPadre=0";
             }else{
                 if($publicar ==1) $filtro = " WHERE ";
             }
 
         }
 
-        if($publicar == 1) $filtro .= " a.Publicar = 1 ";               
-      
+        if($publicar == 1) $filtro .= " a.Publicar = 1 ";
+
 
         $sql="SELECT a.idCategoria, a.Nombre, a.Descripcion, a.idPadre, a.FechaAlta, a.HoraAlta, a.ImgPath,
               a.Iniciales, a.Color, a.Publicar
@@ -84,7 +84,7 @@ class Categorias extends Conectar
               a.Iniciales, a.Color, a.Publicar
               FROM tbcategorias AS a
               WHERE a.idCategoria = ?";
-		
+
         return parent::getRowId($sql, array($id));
     }
 
@@ -178,7 +178,7 @@ class Categorias extends Conectar
     }
 
 
-    
+
     //
     /// retorna el html del arbol de $idCategoria con vinculos hacia accion=home (esto se puede cambiar para que reciba cualquier accion)
     //
@@ -186,29 +186,29 @@ class Categorias extends Conectar
     {
 
          if ($idCategoria>0)
-         {                
+         {
 
                 $sql = "SELECT * FROM tbcategorias where idCategoria = ? Limit 1";
-                $rs = parent::getRowId($sql, array($idCategoria));  
+                $rs = parent::getRowId($sql, array($idCategoria));
                 $ruta ="";
-                if(sizeof($rs)){                    
+                if(sizeof($rs)){
                     if($instancia==0){
-                        $li = '<li class="active">'.$rs[0]["Nombre"].'</li>';                        
+                        $li = '<li class="active">'.$rs[0]["Nombre"].'</li>';
                     }else{
-                        $li = '<li><a href="'.BASE_URL.'?accion='. $accion .'&'. $varRet .'='.$rs[0]["idCategoria"].'">'.$rs[0]["Nombre"].'</a></li>';                        
+                        $li = '<li><a href="'.BASE_URL.'?accion='. $accion .'&'. $varRet .'='.$rs[0]["idCategoria"].'">'.$rs[0]["Nombre"].'</a></li>';
                     }
                     $ruta = $li . $ruta;
-                    
-                    if($rs[0]["idPadre"]>0) { //la primera vez instancia = 0, no crea vinculo                                           
-                            
+
+                    if($rs[0]["idPadre"]>0) { //la primera vez instancia = 0, no crea vinculo
+
                             //$cat= new Categorias(); //para recursividad hay que instanciar nuevos objetos
-                            $ruta = self::getTree( $rs[0]["idPadre"], $instancia+1, $accion, $varRet ) . $ruta;     
+                            $ruta = self::getTree( $rs[0]["idPadre"], $instancia+1, $accion, $varRet ) . $ruta;
 
                     }
                     if($instancia==0){
                         $ruta = '<div class="row"><ol class="breadcrumb"><li><a href="'.BASE_URL.'?accion='. $accion .'">Home</a></li>' . $ruta;
                         $ruta  .= '</ol></div>';
-                    } 
+                    }
                     return $ruta;
                 }else
                     return "";
@@ -220,31 +220,39 @@ class Categorias extends Conectar
     //$catSeleccionada es la categoria que figura seleccionada en el control
     //$primerOpcion es el titulo de la primer opcion del select
     //$instancia es de uso interno
-    public function getSelCategorias($idPadre, $catSeleccionada=0, $primerOpcion="Categoria Principal", $instancia=0, $nombre="idCategoria")
+    public function getSelCategorias($idPadre, $catSeleccionada=0, $primerOpcion="Categoria Principal", $instancia=0, $nombre="idCategoria", $validar=true )
     {
     	$sep="";
-		$respuesta ="";
+		  $respuesta ="";
     	$sql = "SELECT * FROM tbcategorias WHERE idPadre = ? ORDER BY tbcategorias.Nombre ASC";
     	$rs = parent::getRowId($sql, array($idPadre));
 
     	$totalRows = sizeof($rs);
+
+      if(!$validar){
+          $min="";
+          $classValidar = "";
+      }else {
+          $min=' min="1" ';
+          $classValidar = " required";
+      }
 
        if($totalRows > 0)
        {
     	   if($idPadre==0){
     	   		$sep = "";
     			$instancia  = 0;
-                $respuesta  = '<Select id="'.$nombre.'" name="'.$nombre.'" min="1" title="Debes seleccionar una categoria." class="form-control required">';
+                $respuesta  = '<Select id="'.$nombre.'" name="'.$nombre.'" '.$min.' title="Debes seleccionar una categoria." class="form-control "'.$classValidar.'>';
                 $respuesta .='<option value="0" ';
                 if($catSeleccionada == 0) $respuesta .= 'selected="selected"';
                 $respuesta .= ' >' . $primerOpcion. '</option>';
 
     	   }else {
-    	   		
+
                 //for($i=1;$i<=($instancia+1);$i++)
     	   		//{
     			//	$sep = $sep."&nbsp;&nbsp;&nbsp;";
-    			//}                
+    			//}
     			$instancia = $instancia+1;
                 $sep = ' style="padding-left: ' . ($instancia*30) . 'px;"';
     	   }

@@ -12,7 +12,7 @@ class proStock extends Conectar
 
     public function getStock()
     {
-        $sql="SELECT  `Contador` ,  `idProducto` ,  `idDeposito` ,  `Stock` ,  `FechaMod` ,  `HoraMod` ,  `StockMin` ,  `StockMax`
+        $sql="SELECT  `Contador` ,  `idProducto` ,  `idDeposito` ,  `StockCons` ,  `FechaMod` ,  `HoraMod` ,  `StockMin` ,  `StockMax`
 				FROM `tbpro_stock` ";
         return parent::getRows($sql);
     }
@@ -27,7 +27,7 @@ class proStock extends Conectar
 
         if(empty($idpro) or empty($iddeposito)) return false;
 
-        $sql="INSERT INTO tbpro_stock ( `Contador`, `idProducto`, `idDeposito`, `Stock`, `FechaMod`, `HoraMod`, `StockMin`, `StockMax` )
+        $sql="INSERT INTO tbpro_stock ( `Contador`, `idProducto`, `idDeposito`, `StockCons`, `FechaMod`, `HoraMod`, `StockMin`, `StockMax` )
               VALUES ( NULL ,? ,? ,?, NOW(), NOW(), ?, ? )";
 
         $stmt=$this->dbh->prepare($sql);
@@ -42,9 +42,9 @@ class proStock extends Conectar
 
     public function getStockId($id)
     {
-        $sql="select `Contador`, `idProducto`, `idDeposito`, `Stock`, `FechaMod`, `HoraMod`, `StockMin`, `StockMax` from tbpro_stock where idProducto=?";
+        $sql="select `Contador`, `idProducto`, `idDeposito`, `StockCons`, `FechaMod`, `HoraMod`, `StockMin`, `StockMax` from tbpro_stock where idProducto=?";
 
-        return parent::getRowId($sql, array($id));                                       
+        return parent::getRowId($sql, array($id));
     }
 
     public function edit( $idpro, $iddeposito, $stock=0, $stockmin=0, $stockmax=0 )
@@ -56,13 +56,13 @@ class proStock extends Conectar
 
         $sql="UPDATE tbpro_stock
               SET
-              `Stock`=?, `FechaMod`=NOW(), `HoraMod`=NOW(), `StockMin`=?, `StockMax`=?
+              `StockCons`=?, `FechaMod`=NOW(), `HoraMod`=NOW(), `StockMin`=?, `StockMax`=?
               WHERE
               `idProducto`=? AND `idDeposito`=? ";
 
         $stmt=$this->dbh->prepare( $sql );
-  
-        
+
+
         $stmt->bindValue( 1 , $stock      , PDO::PARAM_INT );
         $stmt->bindValue( 2 , $stockmin   , PDO::PARAM_INT );
         $stmt->bindValue( 3 , $stockmax   , PDO::PARAM_INT );

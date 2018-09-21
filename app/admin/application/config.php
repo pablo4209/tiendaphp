@@ -68,26 +68,29 @@ define('ENT_CLIENTE'	, 3);
 
 # Activación del DEBUG, solo para desarrollo
 define( 'DEBUG', true );
+define( 'LOG_SQL' , false );  //registrar todas las consultas en log
 
-
-// remoto para digitalstoremerlo.com.ar
-//define('DB_NAME', 'pablo_ds');
-//define('DB_USER', 'pablo_admin31');
-//define('DB_PASS', 'H=#47P92^)lw');
-//define('DB_CHAR', 'utf8');
-
+//constantes de conexion
+define('DB_HOST', '127.0.0.1');
+define('DB_NAME', 'bd_entidad');
+define('DB_USER', 'root');
+define('DB_PASS', 'root');
+define('DB_CHAR', 'utf8');
 
 // Notificar todos los errores de PHP (ver el registro de cambios)
-if( DEBUG )
+if( DEBUG ){
 	error_reporting(E_ALL);
-else
+	ini_set(‘display_errors’,’1’);
+}else{
 	error_reporting(0);
-
+	ini_set(‘display_errors’,’0’);
+}
 
 //INCLUIDO EN TODO EL SITIO
 require_once( MODEL_PATH .'database.php');
 require_once( APP_PATH.   'view.php');
 require_once( PATH_FUNCTIONS . 'mensajes.php');
 require_once( PATH_FUNCTIONS . 'getIp.php');
+require_once( PATH_FUNCTIONS . 'log.php');
 require_once( "crud/config.php" );
 ?>

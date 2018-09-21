@@ -12,16 +12,16 @@ class Depositos extends Conectar
 
     public function crearSelect($sel="")
     {
-        return parent::crearSelectTabla("tbdepositos", "idDeposito", "Nombre", $sel, "idDeposito");
+        return parent::crearSelectTabla("tbdep", "idDeposito", "Nombre", $sel, "idDeposito");
     }
 
     public function getDepositos()
     {
-        $sql="SELECT tbdepositos.idDeposito, tbdepositos.Nombre, tbdepositos.idSucursal, tbsucursal.Nombre AS nSucursal
+        $sql="SELECT tbdep.idDeposito, tbdep.Nombre, tbdep.idSucursal, tbsucursal.Nombre AS nSucursal
               FROM
-              tbdepositos
-              Left Join tbsucursal ON tbdepositos.idSucursal = tbsucursal.idSucursal
-              order by tbdepositos.Nombre asc";
+              tbdep
+              Left Join tbsucursal ON tbdep.idSucursal = tbsucursal.idSucursal
+              order by tbdep.Nombre asc";
         return parent::getRows($sql);
     }
 
@@ -34,7 +34,7 @@ class Depositos extends Conectar
             header("Location:".BASE_URL."?accion=dep-add&st=1");exit;
         }
 
-        $sql="INSERT INTO `tbdepositos` (
+        $sql="INSERT INTO `tbdep` (
               `idDeposito`, `Nombre`, `Descripcion`, `Dom`, `Cp`, `Loc`, `Prov`, `Tel`, `Email`,
               `Observaciones`, `FechaAlta`, `HoraAlta`, `idSucursal`)
               VALUES ( NULL ,? ,? ,? ,? ,? ,? ,? ,? ,? ,NOW() ,NOW() ,? )";
@@ -72,9 +72,9 @@ class Depositos extends Conectar
     {
         $sql="SELECT `idDeposito`, `Nombre`, `Descripcion`, `Dom`, `Cp`, `Loc` , `Prov` ,  `Tel` ,  `Email` ,  `Observaciones` ,
               `FechaAlta` ,  `HoraAlta` ,  `idSucursal`
-              FROM  `tbdepositos` WHERE idDeposito = ?";
+              FROM  `tbdep` WHERE idDeposito = ?";
 
-        return parent::getRowId($sql, array($id));                                       
+        return parent::getRowId($sql, array($id));
     }
 
     public function edit()
@@ -85,9 +85,9 @@ class Depositos extends Conectar
             header("Location:".BASE_URL."?accion=dep-edit&id=".$_POST["id"]."&st=1");exit;
         }
 
-        $sql="UPDATE `tbdepositos` SET `Nombre` = ?, `Descripcion` = ?, `Dom` = ?, `Cp` = ?, `Loc` = ?, `Prov` = ?,
+        $sql="UPDATE `tbdep` SET `Nombre` = ?, `Descripcion` = ?, `Dom` = ?, `Cp` = ?, `Loc` = ?, `Prov` = ?,
               `Tel` = ?, `Email` = ?, `Observaciones` = ?, `idSucursal` = ?
-              WHERE  `tbdepositos`.`idDeposito` = ?";
+              WHERE  `tbdep`.`idDeposito` = ?";
 
 
         $stmt=$this->dbh->prepare($sql);
@@ -120,7 +120,7 @@ class Depositos extends Conectar
         //primero es necesario checkear la integridad referencial
 
 
-            $sql="delete from tbdepositos where idDeposito=?";
+            $sql="delete from tbdep where idDeposito=?";
 
     		$stmt=$this->dbh->prepare($sql);
 

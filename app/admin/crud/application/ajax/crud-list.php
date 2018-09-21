@@ -1,5 +1,9 @@
 <?php
-//esto se carga en root junto a ajax-crud.php
+/*
+*		recibe el array de configuracion completo e instancia la clase Crud y asi
+*		listar con getTabla
+*
+*/
 
 if( isset( $_POST["datos"] )  ){
 
@@ -14,7 +18,8 @@ if( isset( $_POST["datos"] )  ){
 		require_once( 'crud/crudModel.php' );
 
 		$crud = new Crud ( $datos[0]["tabla_bd"] ,
-						   $datos[1]
+						   				 $datos[1],
+											 $datos[0]["tabla_where"] 
 					 ); //se pasan datos de tabla al constructor
 
 		//configuraciones de la clase

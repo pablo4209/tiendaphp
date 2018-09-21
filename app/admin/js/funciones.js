@@ -1,32 +1,32 @@
 $(function(){
-    
+
     $('.selTxt').focus(function(){
       this.select();
     });
 
     $("#login").keyup(function(e){
-        var keyCode = e.keyCode || e.which;               
+        var keyCode = e.keyCode || e.which;
         e.preventDefault();
 
         if( keyCode == 13 ){  //ENTER
               $("#pass").focus();
-        } 
+        }
 
-        
+
     });
 
     $("#pass").keyup(function(e){
-        var keyCode = e.keyCode || e.which;               
+        var keyCode = e.keyCode || e.which;
         e.preventDefault();
-        
+
         if( keyCode == 13 ){  //ENTER
               valida_logueo();
-        } 
-        
+        }
+
     });
 
     $("#btnEntrar").click(function(){
-        
+
         valida_logueo();
 
     });
@@ -69,6 +69,6 @@ function valida_logueo()
     {
         document.getElementById("valor").innerHTML="";
     }
-    
+
     form.submit();
 }

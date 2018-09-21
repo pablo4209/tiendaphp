@@ -1,4 +1,12 @@
 <?php
+/*
+    Esta clase asocia categorias a un producto, tabla tpro_categorias:
+        - Cada producto tiene al menos una categoria principal, cuyo campo principal = 1 (solo 1 puede ser principal)
+        - Al agregar categorias principal o secundarias (principal=0) realiza las comprobaciones si ya existe,
+           si es necesario mod secundaria por principal y demás casos.
+
+
+*/
 
 class proCategorias extends Conectar
 {
@@ -26,30 +34,30 @@ class proCategorias extends Conectar
         parent::ClearArray();
     }
 
-    //
-    //cuenta la cantidad de resultados para paginar,
+    //RETORNA LA CANTIDAD DE CATEGORIAS ASOCIADAS A LA RECIBIDA COMO PARAMETRO.
+    //util para paginar,
     //es mejor usar un count antes que consultar la tabla entera y hacer sizeof()
     public function getProductosCatCount($idCategoria=0){
 		if($idCategoria != 0){
 			$sql  = "SELECT a.idProducto
-					FROM tbpro as a 
-			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
-			                   LEFT JOIN  tbpro_precios as c ON a.idProducto = c.idProducto
-			                   LEFT JOIN  tbpro_stock as d ON a.idProducto = d.idProducto
-			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda   
-					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1						
-	    	 		AND (b.idCategoria = ? 
-	    	 		OR b.idCategoria IN (SELECT idCategoria FROM tbcategorias WHERE idPadre = ?))
-	    	 		GROUP BY a.idProducto"; 
-	 		$var = array($idCategoria, $idCategoria);
-		}else{
-			$sql  = "SELECT a.idProducto
-					FROM tbpro as a 
+					FROM tbpro as a
 			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
 			                   LEFT JOIN  tbpro_precios as c ON a.idProducto = c.idProducto
 			                   LEFT JOIN  tbpro_stock as d ON a.idProducto = d.idProducto
 			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda
-					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1						
+					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1
+	    	 		AND (b.idCategoria = ?
+	    	 		OR b.idCategoria IN (SELECT idCategoria FROM tbcategorias WHERE idPadre = ?))
+	    	 		GROUP BY a.idProducto";
+	 		$var = array($idCategoria, $idCategoria);
+		}else{
+			$sql  = "SELECT a.idProducto
+					FROM tbpro as a
+			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
+			                   LEFT JOIN  tbpro_precios as c ON a.idProducto = c.idProducto
+			                   LEFT JOIN  tbpro_stock as d ON a.idProducto = d.idProducto
+			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda
+					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1
 	    	 		GROUP BY a.idProducto";
 	 		$var = array();
 		}
@@ -65,35 +73,36 @@ class proCategorias extends Conectar
 		}
 
     }
+
     //retorna listado de productos = idCategoria, con precio calculado, stock, imagen
     //si $idCategoria =0 retorna sin filtro
     public function getProductosCat($idCategoria=0, $pagina=0, $cant_pagina=10000){
-    	
-    	//Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2)  as Precio			
-	    
+
+    	//Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2)  as Precio
+
 	    $limit_start = $pagina*$cant_pagina;
 	    $limit_end = $limit_start + $cant_pagina;
 
 	    if($idCategoria !=0){
-			$sql  = "SELECT a.idProducto, 
-							ANY_VALUE(a.Nombre), 
-							ANY_VALUE(a.Codigo), 
-							ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio, 
-							ANY_VALUE(a.Usado), 
-							ANY_VALUE(c.Margen), 
-							ANY_VALUE(d.Stock), 
+			$sql  = "SELECT a.idProducto,
+							ANY_VALUE(a.Nombre),
+							ANY_VALUE(a.Codigo),
+							ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio,
+							ANY_VALUE(a.Usado),
+							ANY_VALUE(c.Margen),
+							ANY_VALUE(d.Stock),
 							a.Imagen
-					FROM tbpro as a 
+					FROM tbpro as a
 			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
 			                   LEFT JOIN  tbpro_precios as c ON a.idProducto = c.idProducto
 			                   LEFT JOIN  tbpro_stock as d ON a.idProducto = d.idProducto
-			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda   
-					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1						
-	    	 		AND (b.idCategoria = ? 
+			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda
+					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1
+	    	 		AND (b.idCategoria = ?
 	    	 		OR b.idCategoria IN (SELECT idCategoria FROM tbcategorias WHERE idPadre = ?))
-	    	 		GROUP BY a.idProducto LIMIT ?, ?"; 		
+	    	 		GROUP BY a.idProducto LIMIT ?, ?";
 
- 			$consulta=$this->dbh->prepare($sql);
+ 			    $consulta=$this->dbh->prepare($sql);
 	        $consulta->bindValue(1,$idCategoria,PDO::PARAM_INT);
 	        $consulta->bindValue(2,$idCategoria,PDO::PARAM_INT);
 	        $consulta->bindValue(3,$limit_start,PDO::PARAM_INT);
@@ -102,24 +111,24 @@ class proCategorias extends Conectar
 	        return parent::exePrepare_FetchAssoc($consulta);
 	    	 //return parent::getRowId($sql, array($idCategoria, $idCategoria, $limit_start, $limit_end));
 	    }else{
-	    	
-	    	$sql  = "SELECT a.idProducto, 
-	    					ANY_VALUE(a.Nombre), 
-							ANY_VALUE(a.Codigo), 
-	    					ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio, 
-	    					ANY_VALUE(a.Usado), 
-							ANY_VALUE(c.Margen), 
-							ANY_VALUE(d.Stock), 
+
+	    	$sql  = "SELECT a.idProducto,
+	    					ANY_VALUE(a.Nombre),
+							ANY_VALUE(a.Codigo),
+	    					ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio,
+	    					ANY_VALUE(a.Usado),
+							ANY_VALUE(c.Margen),
+							ANY_VALUE(d.Stock),
 							a.Imagen
-					FROM tbpro as a 
+					FROM tbpro as a
 			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
 			                   LEFT JOIN  tbpro_precios as c ON a.idProducto = c.idProducto
 			                   LEFT JOIN  tbpro_stock as d ON a.idProducto = d.idProducto
 			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda
-					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1						
+					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1
 	    	 		GROUP BY a.idProducto LIMIT ?, ?";
-	    	
-	    	$consulta=$this->dbh->prepare($sql);
+
+	    	  $consulta=$this->dbh->prepare($sql);
 	        $consulta->bindValue(1,$limit_start,PDO::PARAM_INT);
 	        $consulta->bindValue(2,$limit_end,PDO::PARAM_INT);
 
@@ -127,14 +136,14 @@ class proCategorias extends Conectar
 
 	    	//return parent::getRowId($sql , array($limit_start, $limit_end));
 	    }
-	  	
+
 	}
 
 	  //retorna listado de productos  que pertenecen a idCategoria=idPadre, con precio calculado, stock, imagen
     //si $idCategoria =0 retorna sin filtro
     public function getProductosCatPadre($idCategoria=0, $idLista=1, $idDeposito=1){
 
-    	$sql = "CALL  getProductosCatPadre(?, ?, ?)";			    
+    	$sql = "CALL  getProductosCatPadre(?, ?, ?)";
 
 
         $consulta=$this->dbh->prepare($sql);
@@ -143,7 +152,7 @@ class proCategorias extends Conectar
         $consulta->bindValue(3,$idCategoria,PDO::PARAM_INT);
 
         return parent::exePrepare_FetchAssoc($consulta);
-	  	
+
 	}
 
     public function add($idpro, $idcategoria, $principal=0)
@@ -176,7 +185,7 @@ class proCategorias extends Conectar
 		if($principal) $principal = 1;
         $sql="select a.`Contador`, a.`idProducto`, a.`idCategoria`, a.`Principal` from tbpro_categorias as a where  a.idProducto=? AND a.idCategoria = ? AND Principal=?";
 
-		$result = parent::getRowId($sql, array($idproducto, $idcategoria, $principal));                                       
+		$result = parent::getRowId($sql, array($idproducto, $idcategoria, $principal));
 		if(empty($result) OR $result == false)
 				return false;
 		else
@@ -234,8 +243,8 @@ class proCategorias extends Conectar
 							existe este idcat seteado como secundario ?
 								si >> se borra
 								no >> termina        */
-		
-		
+
+
 			$sql="UPDATE tbpro_categorias SET idCategoria = ? WHERE Principal=1 AND idProducto=?";
 			$stmt=$this->dbh->prepare($sql);
 

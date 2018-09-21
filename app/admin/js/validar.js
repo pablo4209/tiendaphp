@@ -51,7 +51,17 @@ $(function(){
                 },
 								submitHandler: function(form) {
                     $(form).ajaxSubmit();
+                },
+                showErrors:  function( errorMap, errorList ){
+                      console.log( "Campos invalidos: "  + this.numberOfInvalids() );
+                      $.each(errorMap, function(key, value) {
+                              console.log(key); // <- name of invalid field
+                              var parent = $('[name="' + key + '"]').parent();
+                              console.log(parent); // <- parent object
+                      });
+                      this.defaultShowErrors(); // <- ENABLE default MESSAGES
                 }
+
 
     });
 
