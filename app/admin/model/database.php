@@ -406,7 +406,7 @@ public static function fecha(){
         }
 
         $sql = "Select * From ".$tabla." ".$where;
-
+        if( DEBUG )write_log("database::crearSelectTabla" , $sql);
 		    $datos = self::getRows($sql);
 
         if($datos)

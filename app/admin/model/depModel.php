@@ -12,7 +12,7 @@ class Depositos extends Conectar
 
     public function crearSelect($sel="")
     {
-        return parent::crearSelectTabla("tbdep", "idDeposito", "Nombre", $sel, "idDeposito");
+        return parent::crearSelectTabla("tbdep, tbentidad", "tbdep.idDeposito", "tbentidad.Nombre", $sel, "tbdep.idDeposito", "WHERE tbentidad.idEntidad = tbdep.idEntidad" );
     }
 
     public function getDepositos()

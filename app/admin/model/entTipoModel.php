@@ -1,4 +1,4 @@
-<?php 
+<?php
 class EntidadTipo extends Conectar
 {
 	private $u;
@@ -14,7 +14,14 @@ class EntidadTipo extends Conectar
         return parent::crearSelectTabla( "tbentidad_tipo", "idEntidadTipo", "Nombre", $sel );
     }
 
+		public function getId( $id )
+    {
+        $sql="SELECT idEntidadTipo, Nombre, asoc_contacto, asoc_nivel, asoc_fiscal, asoc_marcas
+							FROM  `tbentidad_tipo`
+							WHERE idEntidadTipo = ? ";
 
-    
-} 
+        return parent::getRowId( $sql , $id );
+    }
+
+}
 ?>

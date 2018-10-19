@@ -1,3 +1,6 @@
+# Excluye todos los ficheros con extensión .log
+*.log
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

@@ -12,7 +12,7 @@ class Entidad extends Conectar
 
     public function get()
     {
-        $sql = "SELECT `idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`, `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`, `HoraAlta`, `FechaMod`, `HoraMod`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`, `idMoneda`, `Login`, `Pass`, `KeyReg`, `NewPass`, `idNivelAcceso`, `ip`, `FechaLog`, `HoraLog` "
+        $sql = "SELECT `idEntidad`, `idEntidadTipo`, `Nombre`,  `FechaAlta`, `HoraAlta`, `FechaMod`, `HoraMod`, `Estado`, `Observaciones`, `AvisoEmergente`, `idMoneda`, `Login`, `Pass`, `KeyReg`, `NewPass`, `idNivelAcceso`, `ip`, `FechaLog`, `HoraLog` "
 								." 	FROM `tbentidad`;";
         return parent::getRows($sql);
     }
@@ -80,9 +80,9 @@ class Entidad extends Conectar
 
     public function getRowsTipo( $id ){
         $sql = "SELECT `idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`,  `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`,  `HoraAlta`, `FechaMod`, `HoraMod`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`,   `idMoneda`, `Login`, `Pass`, `KeyReg`, `NewPass`, `idNivelAcceso`, `ip`, `FechaLog`, `HoraLog`
-            FROM  `tbentidad` WHERE idEntidadTipo = ?";
+            FROM  `tbentidad` WHERE idEntidadTipo = ? ";
 
-        return parent::getRowId($sql, array($id));
+        return parent::getRowId( $sql , $id );
     }
 
     public function getId( $id )
@@ -90,7 +90,7 @@ class Entidad extends Conectar
         $sql="SELECT `idEntidad`, `idEntidadTipo`, `Nombre`, `Razonsocial`, `Email`, `Dom`, `Domentrega`, `Loc`, `Cp`, `Prov`, `Cuit`, `Dni`, `Tel`, `Tel2`, `FechaNacimiento`, `Sexo`, `idCondFiscal`, `FechaAlta`, `HoraAlta`, `FechaMod`, `HoraMod`, `Estado`, `Observaciones`, `AvisoEmergente`, `Foto`, `Website`, `idMoneda`, `Login`, `Pass`, `KeyReg`, `NewPass`, `idNivelAcceso`, `ip`, `FechaLog`, `HoraLog`
             FROM  `tbentidad` WHERE idEntidad = ?";
 
-        return parent::getRowId($sql, array($id));
+        return parent::getRowId($sql, $id );
     }
 
     public function edit()
@@ -182,8 +182,7 @@ class Entidad extends Conectar
 
  	public function logueo()
     {
-    	$sql = "SELECT a.`idEntidad`, a.`idEntidadTipo`, a.`Nombre`, a.`Login`,  a.`Estado`, a.`AvisoEmergente`,
-    			a.`Foto` , a.`idNivelAcceso` , b.`Nivel`
+    	$sql = "SELECT a.`idEntidad`, a.`idEntidadTipo`, a.`Nombre`, a.`Login`,  a.`Estado`, a.`AvisoEmergente`, a.`idNivelAcceso` , b.`Nivel`
              	FROM  `tbentidad` as a
              	INNER JOIN `tbentidad_nivel` as b ON a.`idNivelAcceso` = b.`idNivelAcceso`
              	WHERE Estado = 1 AND Login = ? AND Pass = ? ";
