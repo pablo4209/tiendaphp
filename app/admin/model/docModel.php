@@ -43,19 +43,6 @@ class Documentos extends Conectar
         return $this->countAjax;
     }
 
-	public function buscar_codigo($iniciales)
-    {
-       if($iniciales != "")
-       {
-			$sql="SELECT Max(`Codigo`) as ultimo FROM  `tbpro` WHERE Codigo LIKE '" . trim($iniciales) . "%'";
-			$res = parent::getRows($sql);
-			if(sizeof($res))
-			{
-				return parent::sumarUno($res[0]["ultimo"], $iniciales);
-			}else return trim($iniciales)."0001";
-       }else
-			return "GEN0001";
-    }
 
     public function add()
     {

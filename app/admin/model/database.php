@@ -10,15 +10,26 @@ class Conectar
 {
     protected $dbh;
     protected $p;
+    private $bdhost;
+    private $bdname;
+    private $bduser;
+    private $bdpass;
+    private $bdchar;
 
     function __construct()
     {       try
             {
-                $this->dbh=new PDO('mysql:host=' . DB_HOST .
-                                   ';dbname=' . DB_NAME,
-                                   DB_USER,
-                                   DB_PASS,
-                                   array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . DB_CHAR)
+                $this->bdhost = DB_HOST;
+                $this->bdname = DB_NAME;
+                $this->bduser = DB_USER;
+                $this->bdpass = DB_PASS;
+                $this->bdchar = DB_CHAR;
+
+                $this->dbh=new PDO('mysql:host=' . $this->bdhost .
+                                   ';dbname=' . $this->bdname,
+                                   $this->bduser,
+                                   $this->bdpass,
+                                   array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . $this->bdchar)
 								                  );
                 if( DEBUG ){
                     $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -51,6 +62,14 @@ class Conectar
 
     public function getConn(){
         return $this->dbh;
+    }
+
+    public function __sleep(){
+        return array( );
+    }
+
+    public function __wakeup(){
+          return $this->dbh;
     }
 
     //La funcion devuelve un Array de dos dimensiones, como fetch_assocc, recibe como parametro la consulta select lista para ejecutarse
@@ -180,9 +199,12 @@ class Conectar
         }
     }
 
-    //
-    //recibe una consulta preparada, la ejecutada y retorna un array assocc con los resultados obtenidos
-    //
+    /**
+     * recibe una consulta preparada, la ejecutada
+     * @param  [string] $consulta [description]
+     * @return [array]           [retorna un array assocc con los resultados obtenidos,
+     *                             ejemplo de acceso a elemento: $row[0]["id"]  ]
+     */
     protected function exePrepare_FetchAssoc( $consulta ){
 
       try{

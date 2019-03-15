@@ -1,4 +1,5 @@
 <?php
+require_once( MODEL_PATH . "controls/cCombo.php");
 
 class Depositos extends Conectar
 {
@@ -12,7 +13,17 @@ class Depositos extends Conectar
 
     public function crearSelect($sel="")
     {
-        return parent::crearSelectTabla("tbdep, tbentidad", "tbdep.idDeposito", "tbentidad.Nombre", $sel, "tbdep.idDeposito", "WHERE tbentidad.idEntidad = tbdep.idEntidad" );
+        //return parent::crearSelectTabla("tbdep, tbentidad", "tbdep.idDeposito", "tbentidad.Nombre", $sel, "tbdep.idDeposito", "WHERE tbentidad.idEntidad = tbdep.idEntidad AND tbentidad.idEntidadTipo = 4" );
+        $idSel = ($sel<>"")? $sel : "";
+        $cls = new cCombo();
+        $cls->set(array("sql"=>"SELECT tbdep.idDeposito as idDeposito, tbentidad.Nombre as Nombre FROM tbdep, tbentidad WHERE tbentidad.idEntidad = tbdep.idEntidad AND tbentidad.idEntidadTipo = 4",
+                        "desc"=>"Nombre",
+                        "campo_value" => "idDeposito",
+                        "combo_id" => "idDeposito",
+                        "idSel" => $idSel
+                        ));
+
+        return $cls->render();
     }
 
     public function getDepositos()

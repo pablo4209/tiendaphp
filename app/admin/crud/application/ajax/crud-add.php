@@ -13,7 +13,7 @@ if( isset($_POST["crud-add"]) AND $_POST["crud-add"] == 1 ){
 	$valores = '';
 	//hay que armar el listado de campos restringiendo crud-add y tabla_bd que no lo son(son los dos primeros del array), tambien uso campo_id para enviar el nombre del id, para aislarlo de la consulta
 	foreach ($_POST as $key => $value)
-		if( $key != 'crud-add' AND $key != 'tabla_bd' AND $key != $_POST["campo_id"] AND $key != "campo_id" ) {
+		if( $key != 'crud-add' AND $key != 'tabla_bd' ) {
 			$separador = ( $listados )? ', ' : ' ';
 			$sql .= $separador . '`'.$key.'`';
 			$valores .=	$separador . ':' . $key ;
@@ -29,16 +29,17 @@ if( isset($_POST["crud-add"]) AND $_POST["crud-add"] == 1 ){
 
 
 	foreach ($_POST as $key => &$value) //bindParam necesita puntero
-		if( $key != 'crud-add' AND $key != 'tabla_bd' AND $key != $_POST["campo_id"] AND $key != "campo_id" )
+		if( $key != 'crud-add' AND $key != 'tabla_bd' )
 			$prepared->bindParam( ':'.$key , $value );
 
-	$res = $prepared->execute();
-
+echo $sql;
+	//$res = $prepared->execute();
+/*
 	if( $res )
 		echo 'Registro agregado con exito';
 	else
 		echo 'Error al agregar registro!';
-
+*/
 }
 
 

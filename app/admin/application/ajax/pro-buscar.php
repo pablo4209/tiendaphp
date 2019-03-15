@@ -40,44 +40,57 @@ if( isset( $_POST["buscarCodigo"] ) && $_POST["buscarCodigo"] == 1 ){
 
     require_once(APP_PATH . 'config.php');
     require_once( MODEL_PATH . "proModel.php");
+		require_once( MODEL_PATH . "docItemsModel.php");
 
-
-    $pro=new Producto();
-    $datos=$pro->getProductosCodigo( $_POST["txtBuscar"] );
-
-		if( is_array($datos) )
+		if(isset($_SESSION["doc_items"]))
 		{
-		    $result = count($datos);
-		    if( $result )
-		    {
+					$items = $_SESSION["doc_items"];
+					$items = unserialize($_SESSION["doc_items"]);
+					$items->add(array( "Codigo"=>$_POST["txtBuscar"] ));
+					//echo  $items->getTable();
+					$_SESSION["doc_items"] = serialize($items);					
+					echo $items->getTBody();
 
-		        $item = $_POST["items"] + 1 ; //$_POST["items"] + 1 ;
-		        $fila =  '<tr>
-		                        <td>' . $item . '</td>
-		                        <td>' .$datos[0]["Codigo"]. '</td>
-		                        <td>1</td>
-		                        <td>' .$datos[0]["Nombre"]. '</td>
-		                        <td></td>
-		                        <td></td>
-		                        <td></td>
-		                        <td><input id="serie" item="1" name="serie" type="text" title="Ingresar numero de serie" class="input-large" >
-		                        </td>
-		                        <td>
-		                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-		                                    <button type="button" class="btn btn-danger del_item" item="'.$item.'" >
-		                                        <span class="glyphicon glyphicon-trash"></span>
-		                                    </button>
-		                                    <button type="button" class="btn btn-success edit_item" item="'.$item.'" >
-		                                        <span class="glyphicon glyphicon-edit"></span>
-		                                    </button>
-		                                </div>
-		                        </td>
-		                </tr> ';
-		        echo $fila;
+		}else {
+					echo "SE HA PERDIDO LA SESION.:(";
+		}
+		/*
+		    $pro=new Producto();
+		    $datos=$pro->getProductosCodigo( $_POST["txtBuscar"] );
 
-		    } //hay resultados?
-		}//es array?
+				if( is_array($datos) )
+				{
+				    $result = count($datos);
+				    if( $result )
+				    {
 
+				        $item = $_POST["items"] + 1 ; //$_POST["items"] + 1 ;
+				        $fila =  '<tr>
+				                        <td>' . $item . '</td>
+				                        <td>' .$datos[0]["Codigo"]. '</td>
+				                        <td>1</td>
+				                        <td>' .$datos[0]["Nombre"]. '</td>
+				                        <td></td>
+				                        <td></td>
+				                        <td></td>
+				                        <td><input id="serie" item="1" name="serie" type="text" title="Ingresar numero de serie" class="input-large" >
+				                        </td>
+				                        <td>
+				                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+				                                    <button type="button" class="btn btn-danger del_item" item="'.$item.'" >
+				                                        <span class="glyphicon glyphicon-trash"></span>
+				                                    </button>
+				                                    <button type="button" class="btn btn-success edit_item" item="'.$item.'" >
+				                                        <span class="glyphicon glyphicon-edit"></span>
+				                                    </button>
+				                                </div>
+				                        </td>
+				                </tr> ';
+				        echo $fila;
+
+				    } //hay resultados?
+				}//es array?
+		*/
 }
 
 ?>

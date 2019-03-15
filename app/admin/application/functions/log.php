@@ -8,7 +8,7 @@
    */
   function write_log( $mensaje , $tipo="" )
   {
-  	$arch = fopen( realpath( '.' )."/".APP_PATH. "logs/log_".date("Y-m-d").".txt", "a+");
+  	$arch = fopen( realpath( '.' )."/".APP_PATH. "logs/log_".date("Y-m-d").".log", "a+");
 
   	fwrite($arch, "[".date("Y-m-d H:i:s.u")." ] ".$_SERVER['REMOTE_ADDR']." ".$mensaje.
                      " [ ".$tipo." ] \n");

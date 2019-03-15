@@ -53,24 +53,30 @@ class Producto extends Conectar
 
 			return parent::exePrepare_FetchAssoc($consulta);
     }
-
-    //recibe cadena de busqueda y retorna registro con Codigo o idProducto igual
-    public function getProductosCodigo( $txt="" , $resultados=50 )
+    /**
+     * recibe cadena de busqueda y retorna registro con Codigo o idProducto igual
+     * @param  string $txt [codigo o idProducto]
+     * @return [type]      [description]
+     */
+    public function getProductosCodigo( $txt="", $idlista=1 )
     {
     		$sql  = "SELECT a.idProducto,
-	    					ANY_VALUE(a.Nombre) as Nombre,
-							ANY_VALUE(a.Codigo) as Codigo,
-	    					ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio,
-	    					ANY_VALUE(a.Usado) as Usado,
-							ANY_VALUE(c.Margen) as Margen,
-							ANY_VALUE(d.Stock) as Stock,
-							a.Imagen
+	    					(a.Nombre) as Nombre,
+							  (a.Codigo) as Codigo,
+                (a.Costo*a.UnidxDef*e.Cambio) as Costo,
+	    					(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio,
+	    					(a.Usado) as Usado,
+							(c.Margen) as Margen,
+							(d.Stock) as Stock,
+              (b.idCategoria) as idCategoria,
+							a.Imagen as Imagen,
+              a.Promociones
 					FROM tbpro as a
 			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto
 			                   LEFT JOIN  tbpro_precios as c ON a.idProducto = c.idProducto
 			                   LEFT JOIN  tbpro_stock as d ON a.idProducto = d.idProducto
 			                   LEFT JOIN  tbmoneda as e ON a.idMoneda = e.idMoneda
-					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = 1
+					WHERE  a.Publicar = 1 AND a.Habilitado =1 AND c.idLista = ".$idlista." AND b.Principal=1
 					AND ( a.Codigo = ? OR a.idProducto = ? )
 					GROUP BY a.idProducto ";
 					//LIMIT 1, ? ";

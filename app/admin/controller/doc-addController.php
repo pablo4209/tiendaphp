@@ -6,6 +6,8 @@ $render = new DocRender();
 $html = $render->render_add();
 
 
+$_SESSION["doc_items"] = serialize($render->getItems()); //guardo en variable de sesion los items del documento
+
 $vista = new View();
 $vista->incluir( INC_CONTENT_CSS .
 								 '<link href="css/tabla_selec.css" rel="stylesheet" type="text/css" />' .
@@ -15,6 +17,7 @@ $vista->incluir( INC_CONTENT_CSS .
 							 );
 $vista->renderHeader("doc");
 //require_once( VIEW_PATH . 'doc-add.phtml' );
+
 echo $html;
 require_once( VIEW_PATH . 'buscar-prod.php' );
 

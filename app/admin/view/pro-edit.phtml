@@ -142,7 +142,7 @@
 										<button type="button" class="btn btn-default btn-lg" id="clr
 										" aria-label="Left Align">
 										  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-							</div>					   			
+							</div>
 									<img src="<?php echo $imgpath;?>" id="imgImagen" style="max-height: 320px;" class="img-thumbnail img-responsive" title="<?php echo $imgpath; ?>">
 									<input name="Imagen" id="Imagen" type="hidden" title="Imagen" value="<?php echo $p[0]["Imagen"]; ?>" />
 						 </div>
@@ -261,7 +261,7 @@
 									$proStock_max=0;
 									foreach ($proStock as $ids => $reg){
 											if($reg["idDeposito"] == $depositos[$i]['idDeposito']){
-												$proStock_stock = $reg["StockCons"];
+												$proStock_stock = $reg["Stock"];
 												$proStock_min = $reg["StockMin"];
 												$proStock_max = $reg["StockMax"];
 											}

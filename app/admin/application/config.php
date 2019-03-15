@@ -80,10 +80,10 @@ define('DB_CHAR', 'utf8');
 // Notificar todos los errores de PHP (ver el registro de cambios)
 if( DEBUG ){
 	error_reporting(E_ALL);
-	ini_set(‘display_errors’,’1’);
+	ini_set('display_errors', '1');
 }else{
 	error_reporting(0);
-	ini_set(‘display_errors’,’0’);
+	ini_set('display_errors', '0');
 }
 
 //INCLUIDO EN TODO EL SITIO

@@ -6,6 +6,8 @@ require_once( MODEL_PATH . "condFiscalModel.php");
 require_once( MODEL_PATH . "monModel.php" );
 require_once( MODEL_PATH . "depModel.php");
 require_once( MODEL_PATH . "listModel.php");
+require_once( MODEL_PATH . "docItemsModel.php");
+require_once( MODEL_PATH . "controls/cTabla.php");
 
 class DocRender
 {
@@ -19,6 +21,7 @@ class DocRender
     private $selMon;
     private $seldep;
     private $sellista;
+    private $items;
 
 
     public function __construct(){
@@ -37,6 +40,7 @@ class DocRender
         $this->seldep = $dep->crearSelect(1);
         $list = new Listas();
         $this->sellista = $list->crearSelect(1);
+        $this->items = new docItems();
     }
 
     public function setTitulo( $t ){ $this->titulo = '<h2>'.$t.'</h2>'; }
@@ -132,7 +136,7 @@ class DocRender
     }
 
     public function setTabla(){
-        return '<div id="panel_tabla"><!-- DIV TABLA -->
+        $htmlAnt = '<div id="panel_tabla"><!-- DIV TABLA -->
                     <div class="col-md-12">
                                     <table class="table table-bordered">
                                         <thead>
@@ -200,6 +204,16 @@ class DocRender
                         <div id="_AJAX_PROD_"></div>
                     </div>
                 </div><!-- END DIV TABLA -->';
+                //return $htmlAnt;
+
+                $this->items->setIdDeposito(1);
+
+                //$this->items->add(array( "Codigo"=>"PS40002", "Serie"=>"12ds", "Cantidad"=>2));
+                //$this->items->add(array( "Codigo"=>"PS40003", "Serie"=>"145678", "Cantidad"=>1));
+
+                $this->items->setIdDoc(2);
+
+                return $this->items->getTable();
 
     }
 
@@ -211,7 +225,7 @@ class DocRender
                           self::setCabecera().
                           self::setCliente().
                           self::setPanelFecha().
-                      '</div><!-- end div panel cliente-fecha-->'.                    
+                      '</div><!-- end div panel cliente-fecha-->'.
                       '<div class="row"><!-- div detalle -->'.
                           self::setTabla().
                           $this->totales.
@@ -220,6 +234,9 @@ class DocRender
 
         return $this->html;
     }
+
+    public function setItems($d){ $this->items = $d;}
+    public function getItems(){ return $this->items;}
 }
 
  ?>
