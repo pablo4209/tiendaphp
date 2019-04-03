@@ -28,12 +28,12 @@ class Producto extends Conectar
     public function getProductosBuscar( $txt="" , $resultados=50 )
     {
     		$sql  = "SELECT a.idProducto,
-	    					ANY_VALUE(a.Nombre) as Nombre,
-							ANY_VALUE(a.Codigo) as Codigo,
-	    					ANY_VALUE(Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2))  as Precio,
-	    					ANY_VALUE(a.Usado) as Usado,
-							ANY_VALUE(c.Margen) as Margen,
-							ANY_VALUE(d.Stock) as Stock,
+	    					a.Nombre as Nombre,
+							  a.Codigo as Codigo,
+	    					Round(((a.Costo*a.UnidxDef*e.Cambio*c.Margen/100)+a.Costo*a.UnidxDef*e.Cambio),2)  as Precio,
+	    					a.Usado as Usado,
+							  c.Margen as Margen,
+							  d.Stock as Stock,
 							a.Imagen
 					FROM tbpro as a
 			                   LEFT JOIN  tbpro_categorias as b ON a.idProducto = b.idProducto

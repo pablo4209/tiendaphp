@@ -46,11 +46,6 @@
             }
         }
 
-        $("body").on( "eventoResultado" , function( ev , id , codigo , nombre ){
-
-             agregarItem( id , codigo , nombre );
-
-        });
 
 
         $( "#txtNombre" ).keyup( function(e){
@@ -75,11 +70,36 @@
         });
 
         $("body").on( "click" , ".del_item" , function(){
-            alert("eliminar item: " + $(this).attr("item") );
+            $.ajax({
+            url : 'ajax.php/?mode=doc-action',
+            method  : 'POST',
+            data    : { eliminarItem:1 , idProducto: $(this).attr("idprod")   },
+            success : function(data){
+                    //alert(data);
+                    $("#t_doc_body").html(data);
+                    actualizarTotales();
+                }
+            });
         });
 
         $("body").on( "click" , ".edit_item" , function(){
-            alert("editar item: " + $(this).attr("item") );
+            alert("editar item: " + $(this).attr("idprod") );
+        });
+
+        $("body").on( "change" , "#idLista" , function(){
+            alert("cambiar a lista: " + $(this).val() );
+        });
+
+        $("body").on( "change" , "#idDeposito" , function(){
+            alert("cambiar a deposito: " + $(this).val() );
+        });
+
+        $("body").on( "click" , "#btnGuardar" , function(){
+            alert("Guardar documento" );
+        });
+
+        $("body").on( "click" , "#btnCancelar" , function(){
+            alert("cancelar documento" );
         });
 
 
@@ -97,48 +117,33 @@
             {
 
                     $.ajax({
-                    url : 'ajax.php/?mode=pro-buscar',
+                    url : 'ajax.php/?mode=doc-action',
                     method  : 'POST',
-                    data    : { buscarCodigo:1 , txtBuscar: $(this).val() , items : $("#txtItems").val()  },
+                    data    : { buscarCodigo:1 , txtBuscar: $(this).val() , txtCantidad : $("#txtCantidad").val()  },
                     success : function(data){
                             //alert(data);
                             $("#t_doc_body").html(data);
+                            actualizarTotales();
                             //document.getElementById("tabla_items").insertRow(-1).innerHTML = data ;
-                            //actualizarDatos();
+
                         }
                     });
             }
 
         });
 
-        var agregarItem = function( id , codigo , nombre ){
 
-
-            var nroItem = $("#txtItems").val() + 1 ;
-            var fila =  '<tr><td>'+nroItem+'</td><td>'+codigo+'</td><td>1</td><td>'+nombre+'</td><td></td><td></td><td></td>';
-            var edicion = ' <td><input id="serie" item="1" name="serie" type="text" title="Ingresar numero de serie" class="input-large" ></td> \
-                            <td>    \
-                                <div class="btn-group btn-group-sm" role="group" aria-label="...">   \
-                                    <button type="button" class="btn btn-danger del_item" item="'+nroItem+'" > \
-                                        <span class="glyphicon glyphicon-trash"></span>             \
-                                    </button>           \
-                                    <button type="button" class="btn btn-success edit_item" item="'+nroItem+'" >      \
-                                        <span class="glyphicon glyphicon-edit"></span>          \
-                                    </button>           \
-                                </div>  \
-                            </td>       \
-                        </tr> ';
-
-            document.getElementById("tabla_items").insertRow(-1).innerHTML = fila + edicion ;
-            actualizarDatos();
-
-        };
-
-        var actualizarDatos = function(){
-            $('#txtItems').val( $("#tabla_items tr").length );
-
-            $('#txtUnidades').val( 222 );
-
+        var actualizarTotales = function(){
+            $('#txtItems').val( $("#t_doc_body tr").length );
+              var i = 0, unidades = 0;
+              $(".clsY4").each(function(){
+                   i = i + parseFloat( $(this).text() ) ;
+              });
+              $(".clsY2").each(function(){
+                   unidades = unidades + parseInt( $(this).text() ) ;
+              });
+              $("#txtUnidades").val(unidades);
+              $("#txtSubTotal").val(parseFloat(i).toFixed(3));
         };
 
 

@@ -99,19 +99,6 @@
 	}
 .pro_imagen img {display: block;	margin-left:auto;margin-right:auto;}
 
-.TablaInterna{
-	border: 1px solid;
-	}
-.TablaInterna thead, tfoot{
-	text-transform: uppercase;
-	color: #CCC;
-	background-color: #032f5a;		
-        }
-.TablaInterna tbody, tbody td{
-        color: #000;
-	background-color: #E7E7E7;
-        border: 1px solid;
-        }
 
 .txtCosto{
 	text-align:right;}

@@ -5,7 +5,7 @@
 ////              numero: llama a getItem( $id );
 ////              null: crea un item inicializado vacio
 ////  - isSet() verfica que los campos importantes esten cargados (iddoc, idproducto, cantidad, descripcion, iddeposito)
-////  - add() crea un nuevo item si permite isSet(),
+////  - save() crea un nuevo item si permite isSet(),
 ////              si SUMAR=true (por defecto=true) verifica que ya existe edita la Cantidad y actualiza los totales
 ////              si SUMAR=false no realiza accion
 ////  - edit() edita el item cargado ID, segun isSet(). solo reemplaza valores existentes por los nuevos
@@ -73,7 +73,7 @@ class docItem extends Conectar
         $this->idCategoria=0;
     }
 
-    public function add(){
+    public function save(){
         if( $this->idDoc > 0 && $this->isSet() && $this->id == 0 && !$this->buscar() ){ //revisa q este completo y que no exista para este documento
 
             $sql="INSERT INTO `tbdoc_detalle`(

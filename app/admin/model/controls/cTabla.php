@@ -28,6 +28,7 @@ class cTabla
     private $hover;
     private $idBody;
     private $idTabla;
+    private $footer;
 
     public function __construct(){
         $this->cols = array();
@@ -39,6 +40,7 @@ class cTabla
         $this->hover = true;
         $this->idBody = "";
         $this->idTabla ="";
+        $this->footer="";
     }
 
 
@@ -100,6 +102,9 @@ class cTabla
                                   $html .= $this->renderBody();
 
               $html .= '      </tbody>
+                              <tfoot>
+                                  '.$this->footer.'
+                              </tfoot>
                             </table>
                           </div><!-- FIN DE TABLA -->
                         </div><!-- END CONTAINER -->';
@@ -110,6 +115,7 @@ class cTabla
 
     /**
      * solo retorna el contenido del body de la tabla, util para ajax
+     *
      * @return [string] html con el codigo del body
      */
     public function renderBody(){
@@ -117,16 +123,24 @@ class cTabla
 
           if( $this->countCols() > 0 ){
                 $html = "";
-                foreach ($this->rows as $row) {
+                foreach ($this->rows as $x => $row) {
                       $html .= '<tr>';
-                            foreach ($row as $value)
-                                  $html .='<td>'.$value.'</td>';
+                            foreach ($row as $col => $value)
+                                  $html .='<td class="clsY'.$col.' clsXY'.$x.$col.' clsX'.$x.'">'.$value.'</td>';
                       $html .= '</tr>
                             ';
                 }
           }
 
           return $html;
+    }
+
+    /**
+     * carga html para el tfoot de la tabla
+     *
+     */
+    public function setFooter($html){
+            $this->footer = $html;
     }
 
     private function getTableProp(){

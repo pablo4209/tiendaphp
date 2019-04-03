@@ -66,10 +66,16 @@ class docItems
           if(!isset($item["idDeposito"])) $item["idDeposito"] = $this->idDeposito;
 
           $elemento = new docItem($item);
-          if($elemento->isSet()){
+          if($elemento->isSet()){  //si esta correcto lo agrego
+              foreach ($this->listado as $value) // si ya existe sumo la cantidad
+                  if($elemento->getIdProducto() == $value->getIdProducto()){  //ya existe este item?
+                            $value->setCantidad($value->getCantidad() + $elemento->getCantidad());
+                            $value->setTotal($value->getCantidad()*$value->getPrecio()); //actualizar total a la nueva cantidad
+                            return true;
+                  }
 
-            $this->listado[] = $elemento;
-            return true;
+              $this->listado[] = $elemento; // sino lo agrego al listado
+              return true;
           }
           return false;
     }
@@ -88,7 +94,7 @@ class docItems
           }
           $ret = true;
           foreach ($this->listado as $key => $value) {
-              if($value->add())
+              if($value->save())
                     $this->error[$key] = "OK";
               else{
                   $ret = false;
@@ -132,14 +138,14 @@ class docItems
 
     public function setTable(){
 
-      $this->tabla->setTitle("");
-      $this->tabla->setStriped(true);
-      $this->tabla->setCondensed(true);
-      $this->tabla->setBorder(true);
-      $this->tabla->setIdBody("t_doc_body");
-      $this->tabla->setIdTabla("t_doc");
-      $this->tabla->setHeader(array('<div class="form-group">
-                                <label for="txtCodigo">Codigo</label>
+          $this->tabla->setTitle("");
+          $this->tabla->setStriped(true);
+          $this->tabla->setCondensed(true);
+          $this->tabla->setBorder(true);
+          $this->tabla->setIdBody("t_doc_body");
+          $this->tabla->setIdTabla("t_doc");
+          $this->tabla->setHeader(array('<div class="form-group">
+                                    <label for="txtCodigo">Codigo</label>
                                 <input type="text" placeholder="Codigo o barcode" value="" name="txtCodigo" id="txtCodigo" class="input-small ingreso_item form-control" >
                               </div>',
                               '<div class="form-group">
@@ -160,17 +166,43 @@ class docItems
                                   </div>',
                                  "ACCION"));
 
-      foreach ($this->listado as $d) //coleccion de objetos docItemModel
-            $this->tabla->addRow(array($d->getCodigo(), $d->getDescripcion(), $d->getCantidad(), $d->getPrecio(), $d->getTotal(),
-            '<div class="btn-group btn-group-sm" role="group" aria-label="...">
-                <button type="button" class="btn btn-danger del_item" item="'.$d->getIdProducto().'" >
-                    <span class="glyphicon glyphicon-trash"></span>
-                </button>
-                <button type="button" class="btn btn-success edit_item" item="'.$d->getIdProducto().'" >
-                    <span class="glyphicon glyphicon-edit"></span>
-                </button>
-            </div>'
-            ));
+
+            $unidades = 0;
+            $subtotal = 0;
+            foreach ($this->listado as $d) //coleccion de objetos docItemModel
+            {
+                  $this->tabla->addRow(array($d->getCodigo(), $d->getDescripcion(), $d->getCantidad(), $d->getPrecio(), $d->getTotal(),
+                  '<div class="btn-group btn-group-sm" role="group" aria-label="...">
+                      <button type="button" class="btn btn-danger del_item" idprod="'.$d->getIdProducto().'" >
+                          <span class="glyphicon glyphicon-trash"></span>
+                      </button>
+                      <button type="button" class="btn btn-success edit_item" idprod="'.$d->getIdProducto().'" >
+                          <span class="glyphicon glyphicon-edit"></span>
+                      </button>
+                  </div>'
+                  ));
+                  $unidades += $d->getCantidad();
+                  $subtotal += $d->getTotal();
+           }
+
+        $this->tabla->setFooter('<tr>
+                                    <td>Items:</td>
+                                    <td><input type="text" title="cantidad de items" value="'.count($this->listado).'" name="txtItems" id="txtItems" class="input" size="2" disabled="disabled"></td>
+                                    <td>Unidades:<input type="text" title="cantidad de unidades" value="'.$unidades.'" name="txtUnidades" id="txtUnidades" class="input" size="2" disabled="disabled"></td>
+                                    <td></td>
+                                    <td>Subtotal</td>
+                                    <td><input type="text" title="cantidad de unidades" value="'.$subtotal.'" name="txtSubTotal" id="txtSubTotal" class="input full"  disabled="disabled"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td>Saldo</td>
+                                    <td><input type="text" title="cantidad de unidades" value="0.00" name="txtSaldo" id="txtSaldo" class="input-extralarge"  disabled="disabled"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td>Total</td>
+                                    <td><input type="text" title="cantidad de unidades" value="0.00" name="txtTotal" id="txtTotal" class="input-extralarge"  disabled="disabled"></td>
+                                </tr>');
 
     }
 

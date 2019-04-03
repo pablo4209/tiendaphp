@@ -208,9 +208,6 @@ class DocRender
 
                 $this->items->setIdDeposito(1);
 
-                //$this->items->add(array( "Codigo"=>"PS40002", "Serie"=>"12ds", "Cantidad"=>2));
-                //$this->items->add(array( "Codigo"=>"PS40003", "Serie"=>"145678", "Cantidad"=>1));
-
                 $this->items->setIdDoc(2);
 
                 return $this->items->getTable();
@@ -229,7 +226,12 @@ class DocRender
                       '<div class="row"><!-- div detalle -->'.
                           self::setTabla().
                           $this->totales.
-                      '</div><!-- end div detalle -->'
+                      '</div><!-- end div detalle -->
+                      <div class="row text-right"><!-- guardar -->
+                            <hr class="divider">
+                            <button type="button" class="btn btn-default" id="btnCancelar" name="btnCancelar" >Cancelar</button>
+                            <button type="button" class="btn btn-success" id="btnGuardar" name="btnGuardar" >Guardar</button>
+                      </div><!-- end guardar -->'
                       ;
 
         return $this->html;

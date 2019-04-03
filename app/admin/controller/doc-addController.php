@@ -6,7 +6,7 @@ $render = new DocRender();
 $html = $render->render_add();
 
 
-$_SESSION["doc_items"] = serialize($render->getItems()); //guardo en variable de sesion los items del documento
+$_SESSION["doc"] = serialize($render); //guardo en variable de sesion la clase con el documento entero
 
 $vista = new View();
 $vista->incluir( INC_CONTENT_CSS .
