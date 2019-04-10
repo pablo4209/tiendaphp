@@ -10,11 +10,10 @@
 		 require_once(APP_PATH . 'config.php');
 		 require_once( MODEL_PATH . "proModel.php");
 		 require_once( MODEL_PATH . "docRenderModel.php");
-
+     
 			$doc = $_SESSION["doc"];
- 			$doc = unserialize($_SESSION["doc"]);
+ 			$doc = unserialize($doc);
  			$items = $doc->getItems();
-
 
 			if( isset( $_POST["buscarCodigo"] ) && $_POST["buscarCodigo"] == 1 && isset( $_POST["txtBuscar"] ) ){
 

@@ -17,6 +17,9 @@ $doc->set(["idDeposito" => 2,
             "idPtoVenta" => 32
           ]);
 
+$doc->getItems()->add(array( "Codigo"=>"PS40002", "Serie"=>"12ds", "Cantidad"=>2));
+$doc->getItems()->add(array( "Codigo"=>"PS40003", "Serie"=>"145678", "Cantidad"=>1));
+
 
 
 /*

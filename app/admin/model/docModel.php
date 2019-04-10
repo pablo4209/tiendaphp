@@ -66,8 +66,54 @@ class Doc extends Conectar
         $this->campos = " `idDoc`, `idOrden`, `idTipoDoc`, `Fecha`, `Hora`, `Fechamod`, `HoraMod`, `idDeposito`, `idUsuario`, `idEntidad`, `idLista`, `idEstado`, `idCondPago`, `CliNom`, `CliDom`, `CliLoc`, `CliCp`, `CliProv`, `CliCuit`, `CliTel`, `CliMail`, `idCondfiscal`, `CostoTotal`, `pDescuento`, `pRecargo`, `TotalIva`, `SubTotal`, `Total`, `idMoneda`, `MailNotificaciones`, `Observacion`, `ObsPrivada`, `idPtoVenta`, `Unidades`, `Items`, `AfectarVendidas`, `AfectarStock`, `Entregado` " ;
         $this->tabla = " `tbdoc` ";
         $this->countAjax =0;
-        $this->resetDoc();
         $this->Items = new docItems();
+        $this->resetDoc();
+    }
+
+
+    public function __wakeup(){
+        return array();
+    }
+
+    public function __sleep(){
+          return array( "idDoc", "idOrden",
+              "idTipoDoc",
+              "Fecha",
+              "Hora",
+              "Fechamod",
+              "HoraMod",
+              "idDeposito",
+              "idUsuario",
+              "idEntidad",
+              "idLista",
+              "idEstado",
+              "idCondPago",
+              "CliNom",
+              "CliDom",
+              "CliLoc",
+              "CliCp",
+              "CliProv",
+              "CliCuit",
+              "CliTel",
+              "CliMail",
+              "idCondfiscal",
+              "CostoTotal",
+              "pDescuento",
+              "pRecargo",
+              "TotalIva",
+              "SubTotal",
+              "Total",
+              "idMoneda",
+              "MailNotificaciones",
+              "Observacion",
+              "ObsPrivada",
+              "idPtoVenta",
+              "Unidades",
+              "cantItems",
+              "AfectarVendidas",
+              "AfectarStock",
+              "Entregado",
+              "Items" );
     }
 
     /**
@@ -86,7 +132,7 @@ class Doc extends Conectar
           if( is_array($doc) ){
 
             $this->idTipoDoc=(isset($doc["idTipoDoc"]))? $doc["idTipoDoc"] : 1;
-            $this->idDeposito=(isset($doc["idDeposito"]))? $doc["idDeposito"] : 1;
+            $this->setIdDeposito( (isset($doc["idDeposito"]))? $doc["idDeposito"] : 1 );
             $this->idUsuario=(isset($doc["idUsuario"]))? $doc["idUsuario"] : 0;
             $this->idEntidad=(isset($doc["idEntidad"]))? $doc["idEntidad"] : 0;
             $this->idLista=(isset($doc["idLista"]))? $doc["idLista"] : 1;
@@ -191,15 +237,14 @@ class Doc extends Conectar
     			$stmt->bindValue(27,$Habilitado,PDO::PARAM_INT);
 
 
-    			$res = $stmt->execute();
-        }else { header("Location:".BASE_URL."?accion=pro-add&st=4");exit; }   //ya existe
+    			if( $stmt->execute() ) {
+              $ult_id = $this->dbh->lastInsertId();
+              $this->Items->setIdDoc($ult_id);
+              return $ult_id;
+          }
+          else
+            return false;
 
-        if($res)
-        {
-			         return $this->dbh->lastInsertId();
-        }else{
-            print_r($stmt->errorInfo());
-            header("Location:".BASE_URL."?accion=pro-add&st=3");exit;
         }
 
 
@@ -344,6 +389,22 @@ class Doc extends Conectar
             }
 
     }
+
+    public function setIdTipoDoc($d){ $this->idTipoDoc = $d; }
+    public function setIdPtoVenta($d){ $this->idPtoVenta = $d; }
+    public function setIdCondFiscal($d){ $this->idCondFiscal = $d; }
+    public function setIdMoneda($d){ $this->idMoneda = $d; }
+    public function setIdDeposito($d){ $this->idDeposito = $d;$this->Items->setIdDeposito($d);  }
+    public function setIdLista($d){ $this->idLista = $d;$this->Items->setIdLista($this->idLista); }
+
+    public function getIdTipoDoc(){ return $this->idTipoDoc; }
+    public function getIdPtoVenta(){ return $this->idPtoVenta; }
+    public function getIdCondFiscal(){ return $this->idCondFiscal; }
+    public function getIdMoneda(){ return $this->idMoneda; }
+    public function getIdDeposito(){ return $this->idDeposito; }
+    public function getIdLista(){ return $this->idLista; }
+
+
 }
 
 ?>

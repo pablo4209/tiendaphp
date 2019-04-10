@@ -6,7 +6,7 @@ require_once( MODEL_PATH . "condFiscalModel.php");
 require_once( MODEL_PATH . "monModel.php" );
 require_once( MODEL_PATH . "depModel.php");
 require_once( MODEL_PATH . "listModel.php");
-require_once( MODEL_PATH . "docItemsModel.php");
+require_once( MODEL_PATH . "docModel.php");
 require_once( MODEL_PATH . "controls/cTabla.php");
 
 class DocRender
@@ -21,26 +21,35 @@ class DocRender
     private $selMon;
     private $seldep;
     private $sellista;
-    private $items;
+    private $clsDoc;
 
 
     public function __construct(){
         $this->html  = $this->totales =  $this->js = "";
+        $this->clsDoc = new Doc();
+        $this->clsDoc->setIdTipoDoc(1);
+        $this->clsDoc->setIdPtoVenta(1);
+        $this->clsDoc->setIdCondFiscal(1);
+        $this->clsDoc->setIdMoneda(1);
+        $this->clsDoc->setIdDeposito(1);
 
         self::setTitulo("Nuevo Documento") ;
-        $tipodoc = new DocTipo();
-        $this->selTipodoc = $tipodoc->crearSelect(1); // creamos un select para elegir el tipo de documento
-        $ptovta = new PtoVenta();
-        $this->selPtoVenta = $ptovta->crearSelect(1);
-        $condf = new CondFiscal();
-        $this->selcondfiscal = $condf->crearSelect(1);
-        $mon= new Moneda();
-        $this->selMon = $mon->getSelMonedas(1);
-        $dep= new Depositos();
-        $this->seldep = $dep->crearSelect(1);
-        $list = new Listas();
-        $this->sellista = $list->crearSelect(1);
-        $this->items = new docItems();
+        $this->setControles();
+    }
+
+    public function setControles(){
+      $tipodoc = new DocTipo();
+      $this->selTipodoc = $tipodoc->crearSelect($this->clsDoc->getIdTipoDoc()); // creamos un select para elegir el tipo de documento
+      $ptovta = new PtoVenta();
+      $this->selPtoVenta = $ptovta->crearSelect($this->clsDoc->getIdPtoVenta());
+      $condf = new CondFiscal();
+      $this->selcondfiscal = $condf->crearSelect($this->clsDoc->getIdCondFiscal());
+      $mon= new Moneda();
+      $this->selMon = $mon->getSelMonedas($this->clsDoc->getIdMoneda());
+      $dep= new Depositos();
+      $this->seldep = $dep->crearSelect($this->clsDoc->getIdDeposito());
+      $list = new Listas();
+      $this->sellista = $list->crearSelect($this->clsDoc->getIdLista());
     }
 
     public function setTitulo( $t ){ $this->titulo = '<h2>'.$t.'</h2>'; }
@@ -136,82 +145,7 @@ class DocRender
     }
 
     public function setTabla(){
-        $htmlAnt = '<div id="panel_tabla"><!-- DIV TABLA -->
-                    <div class="col-md-12">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th width="5%">#</th>
-                                                <th width="10%">Codigo</th>
-                                                <th width="6%">Cantidad</th>
-                                                <th width="40%">Descripcion</th>
-                                                <th width="8%">Descuento</th>
-                                                <th width="8%">Precio</th>
-                                                <th width="8%">Total</th>
-                                                <th width="5%">Serie</th>
-                                                <th width="10%">Accion</th>
-                                            </tr>
-                                            <tr>
-                                                <th></th>
-                                                <th><input type="text" placeholder="Codigo o barcode" value="" name="txtCodigo" id="txtCodigo" class="input-small ingreso_item form-control" ></th>
-                                                <th><input type="text" placeholder="Cantidad" value="1" name="txtCantidad" id="txtCantidad" class="input-small form-control ingreso_item" ></th>
-                                                <th width="30%">
-                                                    <input type="text" placeholder="descripcion o buscar (F9)" value="" name="txtNombre" id="txtNombre" class="input-large form-control  ingreso_item" autocomplete="off">
-                                                </th>
-                                                <th><input type="text" placeholder="Descuento" value="0.00" name="txtDescuento" id="txtDescuento" class="input-small form-control ingreso_item" ></th>
-                                                <th><input type="text" placeholder="Precio" value="0.00" name="txtPrecio" id="txtPrecio" class="input-small form-control ingreso_item" ></th>
-                                                <th><input type="text" placeholder="Total" value="0.00" name="txtTotal" id="txtTotal" class="input-small form-control ingreso_item" ></th>
-                                                <th><input type="text" placeholder="Serie" value="" name="txtSerie" id="txtSerie" class="input-medium form-control ingreso_item"></th>
-                                                <th>
-                                                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                                        <button type="button" class="btn btn-success" name="btnadd" id="btnadd">
-                                                            <span class="glyphicon glyphicon-plus"></span>
-                                                        </button>
-                                                        <button type="button" class="btn btn-danger" name="btndel" id="btndel">
-                                                            <span class="glyphicon glyphicon-remove"></span>
-                                                        </button>
-                                                    </div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tabla_items">
-
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td>Items:</td>
-                                                <td><input type="text" title="cantidad de items" value="0" name="txtItems" id="txtItems" class="input" size="2" disabled="disabled"></td>
-                                                <td>Unidades:<input type="text" title="cantidad de unidades" value="0" name="txtUnidades" id="txtUnidades" class="input" size="2" disabled="disabled"></td>
-                                                <td></td>
-                                                <td>Subtotal</td>
-                                                <td><input type="text" title="cantidad de unidades" value="0.00" name="txtSubTotal" id="txtSubTotal" class="input full"  disabled="disabled"></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4"></td>
-                                                <td>Saldo</td>
-                                                <td><input type="text" title="cantidad de unidades" value="0.00" name="txtSaldo" id="txtSaldo" class="input-extralarge"  disabled="disabled"></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4"></td>
-                                                <td>Total</td>
-                                                <td>0</td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-
-                        <input type="hidden" name="base_path" id="base_path" value="<?php echo BASE_URL;?>" >
-                        <input type="hidden" name="path_js" id="path_js" value="<?php echo PATH_JS;?>" >
-                        <div id="_AJAX_PROD_"></div>
-                    </div>
-                </div><!-- END DIV TABLA -->';
-                //return $htmlAnt;
-
-                $this->items->setIdDeposito(1);
-
-                $this->items->setIdDoc(2);
-
-                return $this->items->getTable();
-
+                return $this->clsDoc->getItems()->getTable();
     }
 
     public function render_add(){
@@ -237,8 +171,19 @@ class DocRender
         return $this->html;
     }
 
-    public function setItems($d){ $this->items = $d;}
-    public function getItems(){ return $this->items;}
+    public function __wakeup(){
+        return array();
+    }
+
+    public function __sleep(){
+          return array( "titulo", "body","selTipodoc", "selcondfiscal", "selPtoVenta",
+                      "totales", "js","selMon","seldep","sellista","clsDoc");
+    }
+
+    public function getDoc(){ return $this->clsDoc; }
+    public function setDoc($d){ $this->clsDoc = $d; }
+    public function setItems($d){ $this->clsDoc->setItems($d); }
+    public function getItems(){ return $this->clsDoc->getItems();}
 }
 
  ?>
